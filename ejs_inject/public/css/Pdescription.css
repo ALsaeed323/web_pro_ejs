@@ -1,0 +1,247 @@
+:root{
+    --color-danger:blue;
+}
+
+
+.danger {
+    color: var(--color-danger);
+}
+#announcement-bar{
+    width: 100%;
+    height: 1.7rem;
+    border: 2px,2px,2px,6px;
+    background-color:black ;
+    text-align: center;
+    color: white;
+}
+
+.amazona{
+    text-align: center;
+    color: black;
+    /* padding-top: -300px; */
+}
+body {
+    font-family: Arial;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  img {
+    vertical-align: middle;
+    
+  }
+  
+  /* Position the image container (needed to position the left and right arrows) */
+  .container {
+    position: relative;
+    float: left;
+    width: 55%;
+  }
+  
+  /* Hide the images by default */
+  .mySlides {
+    display: none;
+    
+  }
+  .images{
+    margin-left: 170px;
+  }
+  
+  /* Add a pointer when hovering over the thumbnail images */
+  .cursor {
+    cursor: pointer;
+  }
+  
+  /* Next & previous buttons */
+  .prev,
+  .next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: blue;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  /* Position the "next button" to the right */
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+  
+  /* On hover, add a black background color with a little bit see-through */
+  .prev:hover,
+  .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Number text (1/3 etc) */
+  .numbertext {
+    color: blue;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+  }
+  
+  /* Container for image text */
+  .caption-container {
+    text-align: center;
+    background-color: black;
+    padding: 2px 16px;
+    color: white;
+  }
+  
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Six columns side by side */
+  .column {
+    float: left;
+    width: 16.66%;
+  }
+  
+  /* Add a transparency effect for thumnbail images */
+  .demo {
+    opacity: 0.6;
+  }
+  
+  .active,
+  .demo:hover {
+    opacity: 1;
+  }
+  .productName{
+    /* text-align: center; */
+    
+    font-weight: bold;
+    font-size: large;
+}
+.maindes{
+  margin-left: 700px;
+}
+#specs{
+    margin-left: 700px;
+    width: 15%;
+    height: 200px;
+}
+th{
+    font-weight: bold;
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);
+.frame {
+  position: absolute;
+  top: 90%;
+  left: 60%;
+  width: 400px;
+  height: 400px;
+  margin-top: -200px;
+  margin-left: -200px;
+  border-radius: 2px;
+	/* box-shadow: 4px 8px 16px 0 rgba(0,0,0,0.1); */
+	overflow: hidden;
+  /* background: #fff; */
+  color: #333;
+	font-family: 'Open Sans', Helvetica, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.containerplus {
+	display: flex;
+	border: 4px solid #404040;
+	background-color: blue;
+	border-radius: 10rem;
+	width: 40%;
+	padding: 0.3rem;
+	justify-content: space-between;
+	align-items: center;
+	align-content: center;
+}
+
+h1 {
+	margin: 0;
+	padding: 0;
+	user-select: none;
+}
+
+.col-1 {
+	width: 45%;
+}
+
+.col-2 {
+	width: 25%;
+}
+
+.col > button, .number {
+	width: 100%;
+	background: blue;
+	border: 0px;
+	text-align: center;
+  margin-left: 0.2rem;
+
+}
+
+.button {
+	font-family: sans-serif;
+	font-size: 2em;
+  margin-bottom: 0.6rem;
+
+}
+
+button {
+	color: black;
+	user-select: none;
+	outline: none;
+}
+.addToCartFrame{
+    border-radius: 2rem;
+    color: black;
+    overflow: hidden;
+    border: 3rem black;
+  }
+  /* .addToCartInnerFrame{
+    display: flex;
+      border: 4px solid #404040;
+      background-color: yellow;
+      border-radius: 1rem;
+      width: 10%;
+      padding: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      align-content: center;
+  } */
+  .addToCartButton{
+    position: absolute;
+    /* right: 30%; */
+    top: 86%;
+    text-align: center;
+    outline: none;
+    left: 70%;
+    display: block;
+    width: 11%;
+    /* margin: 0%; */
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-height: 35px;
+    padding: 1.5rem;
+    background: yellow;
+    border-radius: 2rem;
+    
+  }

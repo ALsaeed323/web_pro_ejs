@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css?family=Calligraffitti|Mali");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+:root {
+  --mainYellow: #fdbe02;
+  --mainWhite: #fff;
+  --mainBlack: #071013;
+  --mainGrey: #9b9999;
+  --TransGrey: rgba(0, 0, 0, 0.1);
+}
+.card {
+  border: none;
+  border-radius: 0;
+}
+nav {
+  margin-bottom: 10px;
+}
+.card-img-top {
+width: auto;
+height: auto;
+max-width: 220px;
+max-width: 220px;
+object-fit: cover;
+}
+ body {
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+  }
+.site-header {
+    background-color: rgba(0, 0, 0, .85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+  .site-header a {
+    color: #8e8e8e;
+    transition: color .15s ease-in-out;
+  }
+  .site-header a:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+  nav {
+    padding: 0.5rem;
+
+  }
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .py-2{
+    text-decoration: none;
+  }
+  .banner{
+    min-height: calc(100vh - 101px);
+    background: url(../image/cl1.jpg);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.btn-yellow{
+  font-size: 1.2rem;
+  color: var(--mainBlack);
+  background: var(--mainYellow);
+  text-transform: capitalize;
+}
+.btn-yellow:hover{
+  background: var(--mainBlack);
+  color: var(--mainYellow);
+}
+.btn-black{
+  color: var(--mainBlack);
+  background: transparent !important;
+  font-size: 1.2rem;
+  border: 0.1rem solid var(--mainBlack);
+}
+.btn-black:hover{
+  color: var(--mainWhite);
+  background: var(--mainBlack) !important;
+}
+.text-yellow{
+  color: var(--mainYellow);
+}
+
+.text-slanted {
+  font-family: "Calligraffitti";
+  color: white;
+}
+.text-lowercase {
+  font-family: "Calligraffitti";
+  text-transform: lowercase!important;
+  color: white;
+}
+.service-icon{
+  font-size: 2rem;
+  background: var(--mainGrey);
+  color: var(--mainYellow);
+  margin-bottom: 1rem;
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border-radius: 50%;
+}
+.text-uppercase
+{
+  font-family: " Mali, cursive";
+}
+.text-muted
+{
+  font-family: "Calligraffitti";
+  color: rgb(108, 117, 125) !important;
+}
+.categorie-link{
+  color: var(--mainBlack);
+  text-decoration: none;
+}
+.categorie-link:hover{
+  color: var(--mainGrey);
+  text-decoration: none;
+}
+.categorie-underline{
+  height: 0.1rem;
+  width: 5rem;
+  background: var(--mainYellow);
+}
+.category-container{
+  position: relative;
+}
+.category-img{
+  transition: all 1s linear;
+}
+.category-container:hover .category-img{
+  opacity: 0.5;
+}
+.category-link{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: var(--mainWhite);
+  color: var(--mainBlack);
+  padding: 0.2rem 3rem 0.2rem 0.2rem;
+  clip-path: polygon(0 0, 80% 0, 100% 100%, 0 100%);
+  text-decoration: none;
+  transition: all 1s linear;
+  opacity: 0;
+}
+.category-container:hover .category-link{
+  opacity: 1;
+  text-decoration: none;
+}
+.phone-filler{
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(../image/phone1.jpg) center/cover fixed no-repeat;
+  min-height: 60vh;
+}
+.collection-link{
+  text-decoration: none;
+}
+.collection-link:hover{
+  text-decoration: none;
+  color: var(--mainGrey);
+}
+.collection-underline{
+  background: var(--mainYellow);
+  height: 0.1rem;
+  width: 5rem;
+  margin: 0 auto;
+}
+.text-capitalize{
+  font-family: " Mali, cursive";
+}
+.featured-container{
+  background: var(--TransGrey);
+  position: relative;
+  overflow: hidden;
+}
+.old-price{
+  text-decoration: line-through;
+}
+.featured-search-icon{
+  background: var(--mainWhite);
+  position: absolute;
+  padding: 0.2rem 0.4rem;
+  display: inline-block;
+  top: 50%;
+  right: 0%;
+  font-size: 1.2rem;
+  transform: translateX(110%);
+  transition: all 1s ease-in-out;
+  cursor: pointer;
+}
+.featured-container:hover .featured-search-icon{
+  transform: translateX(0%);
+}
+.featured-store-link{
+  background: var(--mainYellow);
+  color: var(--mainBlack);
+  position: absolute;
+  top: 70%;
+  right: 0%;
+  padding: 0.2rem 0.4rem;
+  transition: all 1s ease-in-out;
+  transform: translateX(110%);
+  cursor: pointer; /* sets the mouse cursor to a pointer and indicates a link. 
+  This is used to inform users of the mouse operations that can be performed at the current location */
+} 
+.featured-store-link:hover{
+  color: var(--mainBlack);
+}
+.featured-container:hover .featured-store-link{
+  transform: translateX(0%);
+}
+.skills{
+  background: var(--mainBlack);
+}
+.skill-icon{
+  color: var(--mainYellow);
+  font-size: 1rem;
+  padding: 5px;
+  
+}
+.footer{
+  background: rgba(0, 0, 0, 0.8);
+}
+.footer-title{
+  padding: 0.4rem;
+  border: 0.2rem solid var(--mainYellow);
+}
+.footer-title{
+  padding: 0.4rem;
+  border: 0.2rem solid var(--mainYellow);
+}
+.footer-icon{
+  color: var(--mainYellow);
+  font-size: 1.5rem;
+  transition: all 0.3s ease-in-out;
+
+}
+.footer-title{
+  padding: 0.4rem;
+  border: 0.2rem solid var(--mainYellow);
+}
+.footer-icon{
+  color: var(--mainYellow);
+  font-size: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+.footer-icon:hover{
+  color: var(--mainWhite);
+}
+.contact-icon{
+  color: var(--mainYellow);
+}
