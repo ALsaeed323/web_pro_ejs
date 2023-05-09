@@ -22,9 +22,14 @@
                 <!-- The following buttons would need JavaScript for functionality -->
                 <button class="btn btn-light" disabled>Out of stock</button>
                 <!-- OR -->
+                <script>
+                  function addToCart() {
+                    console.log("hi");
+                  }
+                </script>
                 <button
                   class="btn btn-primary"
-                  onclick="PLACEHOLDER_ADD_TO_CART_FUNCTION"
+                  name=<%= product.slug %>
                 >
                   Add to cart
                 </button>

@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import ejs from "ejs";
 import { products } from "./products.js";
 
 //Read the current directory name
@@ -11,11 +10,29 @@ const __dirname = path.dirname(__filename);
 const hostname = "127.0.0.1";
 const port = 80;
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+let cart = [];
 
 app.set("view engine", "ejs");
-//app.use(express.static('public'));
 app.use("/public", express.static(__dirname + "/public"));
-//app.set('views', path.join(__dirname, '../views'));
+
+function addToCart(product) {
+  const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+  if (existingProductIndex !== -1) {
+    cart[existingProductIndex].quantity += 1;
+  } else {
+    const productWithQuantity = { ...product, quantity: 1 };
+    cart.push(productWithQuantity);
+  }
+}
+
+app.post("/cart/add", function (req, res) {
+  const product = products.find((p) => p.slug === req.body.id);
+  addToCart(product);
+  res.send(cart);
+});
 
 app.get("/product/:slug", function (req, res) {
   const product = products.find((p) => p.slug === req.params.slug);
@@ -23,6 +40,8 @@ app.get("/product/:slug", function (req, res) {
     path: "product",
     title: product.name,
     payload: product,
+    //TO DO GET CATEGORIES FROM DB
+    cats: ["Shirts", "Pants"],
   });
 });
 
@@ -33,17 +52,15 @@ app.get("/:route", function (req, res) {
     about: "About Us",
     products: "Products",
   };
-  console.log(req.params.route);
   res.render("pages/route", {
-    path: req.params.route,
+    path: req.params.route.toLowerCase(),
     title: title[req.params.route],
     payload: products,
+    //TO DO GET CATEGORIES FROM DB
+    cats: ["Shirts", "Pants"],
   });
 });
 
-// app.get("/signin", function (req, res) {
-//   res.render("pages/signin");
-// });
 app.get("/", function (req, res) {
   // let data = {
   //   name: 'Yahia Khalid',
@@ -52,7 +69,10 @@ app.get("/", function (req, res) {
   //   favorite_food: 'Pizza'
   // };
   console.log("Rendering index page...");
-  res.render("pages/index");
+  res.render("pages/index", {
+    //TO DO GET CATEGORIES FROM DB
+    cats: ["Shirts", "Pants"],
+  });
 });
 
 app.get("/laaptop", function (req, res) {

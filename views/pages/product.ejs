@@ -44,11 +44,24 @@
                   <li class="list-group-item">
                     <div class="d-grid">
                       <button
-                        onclick="addToCartHandler()"
+                        id="addToCartButton"
                         class="btn btn-primary"
+                        name=<%= product.slug %>
                       >
                         Add to Cart
                       </button>
+                      <script>
+                        document.getElementById('addToCartButton').addEventListener('click', (event) => {
+                          fetch("/cart/add", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({ id: event.target.name }),
+                        });
+                      }
+                      );
+                      </script>
                     </div>
                   </li>
                 </ul>
