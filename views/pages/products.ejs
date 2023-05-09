@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <header><%- include('../partials/header'); %></header>
+    <main>
+        <div class="row">
+          <% products.forEach(function(product) { %>
+          <div class="col-sm-8 col-md-4 col-lg-3">
+            <div class="card">
+              <a href=<%= "/product/"+product.slug %>
+                >
+                <img
+                  class="card-img-top"
+                  alt="<%= product.name%>"
+                  src=<%= product.image %>
+                />
+              </a>
+              <div class="card-body">
+                <a href=<%= product.slug %>>
+                  <h5 class="card-title"><%= product.name %></h5>
+                </a>
+                <!-- Rating component would be here, but it cannot be converted directly to HTML -->
+                <p class="card-text">$<%= product.price %></p>
+                <!-- The following buttons would need JavaScript for functionality -->
+                <button class="btn btn-light" disabled>Out of stock</button>
+                <!-- OR -->
+                <button
+                  class="btn btn-primary"
+                  onclick="PLACEHOLDER_ADD_TO_CART_FUNCTION"
+                >
+                  Add to cart
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <% }); %>
+        </div>
+      </main>
+    <footer><%- include('../partials/footer'); %></footer>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <header><%- include('../partials/header'); %></header>
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img
+              class="img-fluid"
+              src=<%= product.image %>
+              alt="Sample Product"
+            />
+          </div>
+          <div class="col-md-3">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <h1>Sample Product</h1>
+              </li>
+              <li class="list-group-item">
+                <!-- Replace with appropriate star rating HTML and CSS -->
+                <div class="rating">4.5 stars (10 reviews)</div>
+              </li>
+              <li class="list-group-item">Price: $<%= product.price %></li>
+              <li class="list-group-item">
+                Description:
+                <p><%= product.description %></p>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col">Price:</div>
+                      <div class="col">$<%= product.price %></div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col">Status:</div>
+                      <div class="col">
+                        <span class="badge bg-success">In Stock</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="d-grid">
+                      <button
+                        onclick="addToCartHandler()"
+                        class="btn btn-primary"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </main>
+    <footer><%- include('../partials/footer'); %></footer>
+  </body>
+</html>

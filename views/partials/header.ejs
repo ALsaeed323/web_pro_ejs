@@ -1,20 +1,61 @@
-<header class="site-header ">
-    <nav class="container d-flex flex-column flex-md-row justify-content-between">
-      <a class="py-2" href="index.html" aria-label="Product"><i class="bi bi-house"></i> Amazona</a>
-      <a class="py-2 d-none d-md-inline-block" href="laaptop.html"><i class="bi bi-laptop"></i> Laptop</a>
-      <a class="py-2 d-none d-md-inline-block" href="phhones.html"><i class="bi bi-phone"></i> Phones</a>
-      <a class="py-2 d-none d-md-inline-block" href="#"><i class="bi bi-cart"></i> Cart</a>
-      <a class="py-2 d-none d-md-inline-block" href="loogin.html">Login and Sign up</a>
-    </nav>
-<div class="banner d-flex align-items-center pl-3 pl-lg-5">
-    <div>
-        <h1 class="text-slanted text-capitalize mb-0">
-            MSI Laptops
-        </h1>
-        <h1 class="text-lowercase font-weight-bold">
-            Gaming Laptops
-        </h1>
-        <a href="#" class="btn btn-yellow"> view collection </a>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">amazona</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#basic-navbar-nav"
+        aria-controls="basic-navbar-nav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="basic-navbar-nav">
+        <ul class="navbar-nav ms-auto w-100 justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link" href="/cart">Cart</a>
+            <!-- Replace the hardcoded value with the actual number of cart items using JavaScript 
+            <span class="badge bg-danger rounded-pill">3</span>-->
+          </li>
+          <!-- Replace the following block with the actual user info using JavaScript -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="basic-nav-dropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              User Name
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
+              <li>
+                <a class="dropdown-item" href="/profile">User Profile</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/orderhistory"
+                  >Order History</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#signout"
+                  onclick="signoutHandler()"
+                  >Sign Out</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signin">Sign In</a>
+          </li>
+        </ul>
+      </div>
     </div>
-</div>
-</header>
+  </nav>
