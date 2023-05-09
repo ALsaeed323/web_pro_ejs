@@ -17,18 +17,33 @@ app.set("view engine", "ejs");
 app.use("/public", express.static(__dirname + "/public"));
 //app.set('views', path.join(__dirname, '../views'));
 
-app.get("/products", function (req, res) {
-  res.render("pages/products", { products });
-});
 app.get("/product/:slug", function (req, res) {
   const product = products.find((p) => p.slug === req.params.slug);
-  res.render("pages/product", { product });
+  res.render("pages/route", {
+    path: "product",
+    title: product.name,
+    payload: product,
+  });
 });
 
-app.get("/signin", function (req, res) {
-  res.render("pages/signin");
+app.get("/:route", function (req, res) {
+  const title = {
+    signin: "Sign In",
+    signup: "Sign Up",
+    about: "About Us",
+    products: "Products",
+  };
+  console.log(req.params.route);
+  res.render("pages/route", {
+    path: req.params.route,
+    title: title[req.params.route],
+    payload: products,
+  });
 });
 
+// app.get("/signin", function (req, res) {
+//   res.render("pages/signin");
+// });
 app.get("/", function (req, res) {
   // let data = {
   //   name: 'Yahia Khalid',

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head' , {title:title}) %>
+  </head>
+  <body>
+    <div class="d-flex flex-column site-container">
+    <header><%- include('../partials/header') %></header>
+    <main>
+      <div class="mt-3">
+        <% switch (path) {
+            case "signin": %>
+            <%- include('../pages/signin'); %>
+          <% break;
+            case "products": %>
+            <%- include('../pages/products',{products:payload}); %>
+            <% break;
+            case "product": %>
+            <%- include('../pages/product',{product:payload}); %>
+            <% break;
+            default:%>
+            Error 404 : No Page found
+            <%break; } %>
+      </div>
+      </main>
+    <footer><%- include('../partials/footer') %></footer>
+  </div>
+</body>
+</html>
