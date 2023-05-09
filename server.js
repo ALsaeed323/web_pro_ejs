@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const hostname = "127.0.0.1";
-const port = 3000;
+const port = 80;
 const app = express();
 
 app.set("view engine", "ejs");
@@ -23,6 +23,10 @@ app.get("/products", function (req, res) {
 app.get("/product/:slug", function (req, res) {
   const product = products.find((p) => p.slug === req.params.slug);
   res.render("pages/product", { product });
+});
+
+app.get("/signin", function (req, res) {
+  res.render("pages/signin");
 });
 
 app.get("/", function (req, res) {
@@ -52,7 +56,7 @@ app.get("/phhones", function (req, res) {
   res.render("pages/loop", { browsers: browsers, tagline: tagline });
 });
 
-app.listen(3000, () => {
-  console.log(`Server running at http://${hostname}:${port}/ejs-test`);
-  console.log(`Server running at local dirname :  ${__dirname})  `);
+app.listen(port, () => {
+  console.log(`Server running at http://${hostname}:${port}`);
+  //console.log(`Server running at local dirname :  ${__dirname})  `);
 });
