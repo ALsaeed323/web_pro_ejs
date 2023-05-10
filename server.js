@@ -6,9 +6,12 @@ import { products } from "./products.js";
 //Read the current directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 const hostname = "127.0.0.1";
-const port = 80;
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -91,7 +94,6 @@ app.get("/phhones", function (req, res) {
   res.render("pages/loop", { browsers: browsers, tagline: tagline });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://${hostname}:${port}`);
-  //console.log(`Server running at local dirname :  ${__dirname})  `);
-});
+app.listen(process.env.PORT, () => {
+  console.log(`Server running at http://${hostname}:${process.env.PORT}`)
+})
