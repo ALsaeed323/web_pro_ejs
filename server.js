@@ -1,9 +1,11 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { products } from "./products.js";
 import seedRouter from "./routes/seedRoutes.js";
 import mongoose from "mongoose";
+import User from "./models/userModel.js";
+import productRouter from "./routes/productRoutes.js";
+import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -51,38 +53,19 @@ app.post("/cart/add", function (req, res) {
 });
 
 app.use("/api/seed", seedRouter);
+app.use("/products", productRouter);
 
-app.get("/products/:slug", function (req, res) {
-  const product = products.find((p) => p.slug === req.params.slug);
-  res.render("pages/route", {
-    path: "product",
-    title: product.name,
-    product,
-    //TO DO GET CATEGORIES FROM DB
-    cats: ["Shirts", "Pants"],
-  });
-});
-app.get("/products", function (req, res) {
-  res.render("pages/route", {
-    path: req.params.route.toLowerCase(),
-    title: title[req.params.route],
-    products,
-    //TO DO GET CATEGORIES FROM DB
-    cats: ["Shirts", "Pants"],
-  });
-});
-
-app.get("/:route", function (req, res) {
+app.get("/:route", async (req, res) => {
   const title = {
     signin: "Sign In",
     signup: "Sign Up",
     about: "About Us",
   };
+  const cats = await Product.find().distinct("category");
   res.render("pages/route", {
     path: req.params.route.toLowerCase(),
     title: title[req.params.route],
-    //TO DO GET CATEGORIES FROM DB
-    /*cats = sections*/ cats: ["Shirts", "Pants"],
+    /*cats = sections*/ cats,
   });
 });
 

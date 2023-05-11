@@ -1,9 +1,40 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import Product from '../models/productModel.js';
+import express from "express";
+//import expressAsyncHandler from "express-async-handler";
+import Product from "../models/productModel.js";
 
 const productRouter = express.Router();
 
+productRouter.get("/", async (req, res) => {
+  const products = await Product.find();
+  const cats = await Product.find().distinct("category");
+  res.render("pages/route", {
+    path: "products",
+    title: "Product",
+    products,
+    cats,
+  });
+});
+productRouter.get("/:id", async (req, res) => {
+  const cats = await Product.find().distinct("category");
+
+  try {
+    const product = await Product.findById(req.params.id);
+    res.render("pages/route", {
+      path: "product",
+      title: product.name,
+      product,
+      cats,
+    });
+  } catch {
+    res.render("pages/route", {
+      path: "404",
+      title: "404 Not Found",
+      cats,
+    });
+  }
+});
+
+/* 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
   res.send(products);
@@ -112,5 +143,5 @@ productRouter.get('/:id', async (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
-
+*/
 export default productRouter;

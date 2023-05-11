@@ -5,7 +5,7 @@
           <% products.forEach(function(product) { %>
           <div class="col-sm-8 col-md-4 col-lg-3">
             <div class="card">
-              <a href=<%= "/product/"+product.slug %>
+              <a href=<%= "/products/slug/"+product.slug %>
                 >
                 <img
                   class="card-img-top"
@@ -14,7 +14,8 @@
                 />
               </a>
               <div class="card-body">
-                <a href=<%= product.slug %>>
+              
+                <a href=<%= "/products/"+product._id %>>
                   <h5 class="card-title"><%= product.name %></h5>
                 </a>
                 <!-- Rating component would be here, but it cannot be converted directly to HTML -->
