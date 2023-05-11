@@ -3,6 +3,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import seedRouter from "./routes/seedRoutes.js";
 import mongoose from "mongoose";
+import session from "express-session";
+import bcryptjs from "bcryptjs";
 import User from "./models/userModel.js";
 import productRouter from "./routes/productRoutes.js";
 import Product from "./models/productModel.js";
@@ -14,6 +16,7 @@ const hostname = "127.0.0.1";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+app.use(session({ secret: "Your_Secret_Key" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -54,6 +57,32 @@ app.post("/cart/add", function (req, res) {
 
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
+
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.create({
+    email,
+    password: bcryptjs.hashSync(password),
+  });
+  res.send(user);
+});
+
+app.post("/login", async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    if (bcryptjs.compareSync(req.body.password, user.password)) {
+      req.session.user = user;
+      console.log(req.session.user);
+      res.status(200).send({ message: "Logged in" });
+      return;
+    }
+  }
+  res.status(401).send({ message: "Invalid email or password" });
+});
+
+app.get("/logout", (req, res) => {
+  res.sendFile("C:\\Users\\melkmeshi\\Desktop\\backend\\login.html");
+});
 
 app.get("/:route", async (req, res) => {
   const title = {

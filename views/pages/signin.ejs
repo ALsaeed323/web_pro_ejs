@@ -1,7 +1,7 @@
 
       <div class=" mt-3 container small-container">
         <h3 class="my-3">Sign In</h3>
-        <form>
+        <form id="form">
           <div class="form-group mb-3">
             <label for="email">Email Address</label>
             <input type="email" class="form-control" id="email" required placeholder="Enter email">
@@ -19,4 +19,27 @@
           </div>
         </form>
       </div>
+      <script>
+        const form = document.querySelector('#form');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.querySelector('#email').value;
+          const password = document.querySelector('#password').value;
+          const req = fetch('/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+          })
+          const data = await req;
+          console.log(data);
+          if (data.status === 200) {
+            window.location.href = '/';
+          }
+          else {
+            alert('Invalid email or password');
+          }
+        });
+      </script>
 
