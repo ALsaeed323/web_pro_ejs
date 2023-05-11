@@ -93,6 +93,9 @@ app.get("/phhones", function (req, res) {
   let tagline = "Browsers and their market share";
   res.render("pages/loop", { browsers: browsers, tagline: tagline });
 });
+app.use((req,res)=> {
+  res.status(404).render('404');
+})
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running at http://${hostname}:${process.env.PORT}`)
