@@ -13,13 +13,13 @@
             <%- include('../pages/signin'); %>
           <% break;
             case "products": %>
-            <%- include('../pages/products',{products:payload}); %>
+            <%- include('../pages/products',{products}); %>
             <% break;
             case "product": %>
-            <%- include('../pages/product',{product:payload}); %>
+            <%- include('../pages/product',{product}); %>
             <% break;
             default:%>
-            Error 404 : No Page found
+            <h1>Error 404 : No Page found</h1>
             <%break; } %>
       </div>
       </main>

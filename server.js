@@ -32,12 +32,21 @@ app.post("/cart/add", function (req, res) {
   res.send(cart);
 });
 
-app.get("/product/:slug", function (req, res) {
+app.get("/products/:slug", function (req, res) {
   const product = products.find((p) => p.slug === req.params.slug);
   res.render("pages/route", {
     path: "product",
     title: product.name,
-    payload: product,
+    product,
+    //TO DO GET CATEGORIES FROM DB
+    cats: ["Shirts", "Pants"],
+  });
+});
+app.get("/products", function (req, res) {
+  res.render("pages/route", {
+    path: req.params.route.toLowerCase(),
+    title: title[req.params.route],
+    products,
     //TO DO GET CATEGORIES FROM DB
     cats: ["Shirts", "Pants"],
   });
@@ -48,14 +57,12 @@ app.get("/:route", function (req, res) {
     signin: "Sign In",
     signup: "Sign Up",
     about: "About Us",
-    products: "Products",
   };
   res.render("pages/route", {
     path: req.params.route.toLowerCase(),
     title: title[req.params.route],
-    payload: products,
     //TO DO GET CATEGORIES FROM DB
-    cats: ["Shirts", "Pants"],
+    /*cats = sections*/ cats: ["Shirts", "Pants"],
   });
 });
 
@@ -66,15 +73,6 @@ app.get("/", function (req, res) {
   });
 });
 
-app.get("/laaptop", function (req, res) {
-  res.render("/pages/laaptop");
-});
-
-app.get("/phhones", function (req, res) {
-  res.render("/pages/phhones");
-  let tagline = "Browsers and their market share";
-  res.render("pages/loop", { browsers: browsers, tagline: tagline });
-});
 let PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}`);
