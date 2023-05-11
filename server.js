@@ -2,21 +2,16 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { products } from "./products.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 //Read the current directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import dotenv from 'dotenv';
-dotenv.config();
-
-
-const hostname = "127.0.0.1";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-let cart = [];
 
 app.set("view engine", "ejs");
 app.use("/public", express.static(__dirname + "/public"));
@@ -65,13 +60,6 @@ app.get("/:route", function (req, res) {
 });
 
 app.get("/", function (req, res) {
-  // let data = {
-  //   name: 'Yahia Khalid',
-  //   age: 21,
-  //   city: 'Cairo',
-  //   favorite_food: 'Pizza'
-  // };
-  console.log("Rendering index page...");
   res.render("pages/index", {
     //TO DO GET CATEGORIES FROM DB
     cats: ["Shirts", "Pants"],
@@ -83,17 +71,11 @@ app.get("/laaptop", function (req, res) {
 });
 
 app.get("/phhones", function (req, res) {
-  // let browsers = [
-  //   { name: 'chrome', org: "Google", share: "62%"},
-  //   { name: 'Safari', org: "Apple", share: "24%"},
-  //   { name: 'Edge', org: "Microsoft", share: "5%"}
-  // ];
   res.render("/pages/phhones");
-
   let tagline = "Browsers and their market share";
   res.render("pages/loop", { browsers: browsers, tagline: tagline });
 });
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server running at http://${hostname}:${process.env.PORT}`)
-})
+let PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running at http://${hostname}:${PORT}`);
+});
