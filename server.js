@@ -57,6 +57,7 @@ app.post("/cart/add", function (req, res) {
   const product = products.find((p) => p.slug === req.body.id);
   addToCart(product);
   res.send(cart);
+  console.log("The product added to the cart ");
 });
 
 app.use("/api/seed", seedRouter);
