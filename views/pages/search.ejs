@@ -52,9 +52,6 @@
             </ul>
         </div>
     </div>  
-    <!-- <div class="col-md-9">
-        
-    </div>   -->
     <div class="col-md-9">
             <div class="row justify-content-between mb-3">
                 <div class="col-md-6">
@@ -105,7 +102,7 @@
             <% if (products.length === 0) { %>
                 <div class="message-box">No Product Found</div>
             <% } %>
-            <div class="row">
+            <div class="col sm-6 lg-4 mb-3">
                 <%- include('../pages/products',{products}); %>
             </div>
             <div>
@@ -113,9 +110,8 @@
                     <a href="<%= getFilterUrl({ page: x + 1 }) %>" class="mx-1">
                         <button class="btn btn-light <%= Number(page) === x + 1 ? 'text-bold' : '' %>">
                             <%= x + 1 %>
-                        </button>
-                    </a>
-                <% } %>
+                        </button></a>
+                        <% } %>
             </div>
     </div>
     

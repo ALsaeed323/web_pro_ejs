@@ -1,0 +1,56 @@
+<h1>Shopping Cart</h1>
+<div class="row">
+    <div class="col-md-8">
+        <!-- Replace this with a dynamic check for whether the cart is empty -->
+        <!-- If the cart is empty, show this message -->
+        <div class="alert alert-info">
+            Cart is empty. <a href="/">Go Shopping</a>
+        </div>
+        <!-- If the cart is not empty, show the list of items -->
+        <ul class="list-group">
+            <!-- Repeat this block for each item in the cart -->
+            <li class="list-group-item">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <img src="item.image" alt="item.name" class="img-fluid rounded img-thumbnail">
+                        <a href="/product/item.slug">Item Name</a>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-light" onclick="updateCartHandler(item, item.quantity - 1)" disabled>
+                            <i class="fas fa-minus-circle"></i>
+                        </button>
+                        <span>Item Quantity</span>
+                        <button class="btn btn-light" onclick="updateCartHandler(item, item.quantity + 1)" disabled>
+                            <i class="fas fa-plus-circle"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-3">$Item Price</div>
+                    <div class="col-md-2">
+                        <button class="btn btn-light" onclick="removeItemHandler(item)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+            <!-- End of block for each item in the cart -->
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h3>Subtotal (Total Items) : $Total Price</h3>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-grid">
+                            <button class="btn btn-primary" onclick="checkoutHandler()" disabled>
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -98,7 +98,14 @@ app.get("/:route", async (req, res) => {
     signin: "Sign In",
     signup: "Sign Up",
     about: "About Us",
+    contact: "Contact Us",
+    cart: "Cart",
   };
+  const products = await Product.find();
+  products.map((product) => {
+    return { ...product, quantity: 1 };
+  });
+  console.log(products);
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
     path: req.params.route.toLowerCase(),
@@ -108,10 +115,10 @@ app.get("/:route", async (req, res) => {
   });
 });
 
-app.get("/", function (req, res) {
+app.get("/", async (req, res) => {
+  const cats = await Product.find().distinct("category");
   res.render("pages/index", {
-    //TO DO GET CATEGORIES FROM DB
-    cats: ["Shirts", "Pants"],
+    cats,
     user: req.session.user,
   });
 });

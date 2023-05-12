@@ -24,6 +24,9 @@
             case "search": %>
             <%- include('../pages/search',{prices,cats,q,countProducts,page,pages}); %>
             <% break;
+            case "cart": %>
+            <%- include('../pages/cart',{}); %>
+            <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>

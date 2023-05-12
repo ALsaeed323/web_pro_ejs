@@ -28,7 +28,7 @@
               function searchHandler(e) {
                 e.preventDefault();
                 const q = document.getElementById("q").value;
-                window.location.href = `/products/search?q=${q}`;
+                window.location.href = `/products/search?query=${q}`;
               }
             </script>
             <button
@@ -46,7 +46,7 @@
           </li>
           <% cats.forEach((cat) => { %>
             <li class="nav-item">
-              <a class="nav-link" href='/<%= cat.toLowerCase() %>'><%= cat %></a>
+              <a class="nav-link" href='/products/search/?category=<%= cat %>'><%= cat %></a>
             </li>
             <% }); %>
           <li class="nav-item">

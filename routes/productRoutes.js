@@ -15,6 +15,7 @@ productRouter.get("/", async (req, res) => {
     user: req.session.user,
   });
 });
+
 const prices = [
   {
     name: "$1 to $50",
@@ -29,19 +30,16 @@ const prices = [
     value: "201-1000",
   },
 ];
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 1;
 productRouter.get("/search", async (req, res) => {
-  //delete rating
   const cats = await Product.find().distinct("category");
-  let { page, order, rating, price, category, query, pageSize } = req.query;
-  const q = { page, order, rating, price, category, query };
-  //const { query } = req;
+  let { page, order, price, category, query, pageSize } = req.query;
   pageSize = pageSize || PAGE_SIZE;
+  const q = { page, order, price, category, query };
   page = page || 1;
-  category = category || "";
-  price = price || "";
-  rating = rating || "";
   order = order || "";
+  price = price || "";
+  category = category || "";
   const searchQuery = query || "";
 
   const queryFilter =
@@ -54,14 +52,6 @@ productRouter.get("/search", async (req, res) => {
         }
       : {};
   const categoryFilter = category && category !== "all" ? { category } : {};
-  const ratingFilter =
-    rating && rating !== "all"
-      ? {
-          rating: {
-            $gte: Number(rating),
-          },
-        }
-      : {};
   const priceFilter =
     price && price !== "all"
       ? {
@@ -73,33 +63,25 @@ productRouter.get("/search", async (req, res) => {
         }
       : {};
   const sortOrder =
-    order === "featured"
-      ? { featured: -1 }
-      : order === "lowest"
+    order === "lowest"
       ? { price: 1 }
       : order === "highest"
       ? { price: -1 }
-      : order === "toprated"
-      ? { rating: -1 }
       : order === "newest"
-      ? { createdAt: -1 }
+      ? { createdAt: -1, _id: -1 }
       : { _id: -1 };
-
   const products = await Product.find({
     ...queryFilter,
     ...categoryFilter,
     ...priceFilter,
-    ...ratingFilter,
   })
     .sort(sortOrder)
     .skip(pageSize * (page - 1))
     .limit(pageSize);
-
   const countProducts = await Product.countDocuments({
     ...queryFilter,
     ...categoryFilter,
     ...priceFilter,
-    ...ratingFilter,
   });
   res.render("pages/route", {
     path: "search",
