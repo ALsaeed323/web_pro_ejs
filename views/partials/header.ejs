@@ -24,13 +24,20 @@
               aria-describedby="button-search"
               class="form-control"
             />
+            <script>
+              function searchHandler(e) {
+                e.preventDefault();
+                const q = document.getElementById("q").value;
+                window.location.href = `/products/search?q=${q}`;
+              }
+            </script>
             <button
-              class="btn btn-outline-primary"
-              type="submit"
-              id="button-search"
-            >
-              <i class="fas fa-search"></i>
-            </button>
+            class="btn btn-outline-primary"
+            onclick="searchHandler(event)"
+            id="button-search"
+          >
+            <i class="fas fa-search"></i>
+          </button>          
           </div>
         </form>
         <ul class="navbar-nav ms-auto w-100 justify-content-end">
