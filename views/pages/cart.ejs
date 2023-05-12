@@ -1,46 +1,76 @@
 <h1>Shopping Cart</h1>
 <div class="row">
     <div class="col-md-8">
-        <!-- Replace this with a dynamic check for whether the cart is empty -->
-        <!-- If the cart is empty, show this message -->
-        <div class="alert alert-info">
-            Cart is empty. <a href="/">Go Shopping</a>
-        </div>
-        <!-- If the cart is not empty, show the list of items -->
-        <ul class="list-group">
-            <!-- Repeat this block for each item in the cart -->
-            <li class="list-group-item">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <img src="item.image" alt="item.name" class="img-fluid rounded img-thumbnail">
-                        <a href="/product/item.slug">Item Name</a>
-                    </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-light" onclick="updateCartHandler(item, item.quantity - 1)" disabled>
-                            <i class="fas fa-minus-circle"></i>
-                        </button>
-                        <span>Item Quantity</span>
-                        <button class="btn btn-light" onclick="updateCartHandler(item, item.quantity + 1)" disabled>
-                            <i class="fas fa-plus-circle"></i>
-                        </button>
-                    </div>
-                    <div class="col-md-3">$Item Price</div>
-                    <div class="col-md-2">
-                        <button class="btn btn-light" onclick="removeItemHandler(item)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            </li>
-            <!-- End of block for each item in the cart -->
-        </ul>
+        <% if (cart.length === 0) { %>
+            <div class="alert alert-info">
+                Cart is empty. <a href="/">Go Shopping</a>
+            </div>
+        <% } else { %>
+                <ul class="list-group">
+                    <% cart.forEach(product => { %>
+                        <li class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <img src=<%= product.image %> alt="<%= product.name%>" class="img-fluid rounded img-thumbnail">
+                                    <a href="<%= "/products/"+product._id %>"><%= product.name%></a>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-light" data-id="<%= product._id %>" onclick="updateCartHandler(event.currentTarget.dataset.id,  - 1)" <%= product.quantity === 1 && "disabled"%>>
+                                        <i class="fas fa-minus-circle"></i>
+                                    </button>
+                                    <span><%= product.quantity %></span>
+                                    <button class="btn btn-light" data-id="<%= product._id %>" onclick="updateCartHandler(event.currentTarget.dataset.id,  1)"  <%= product.quantity === product.countInStock && "disabled"%>>
+                                        <i class="fas fa-plus-circle"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-3"><%= product.price %></div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-light cartdel" data-id="<%= product._id %>"
+                                        onclick="removeItemHandler(event.currentTarget.dataset.id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+
+
+                                </div>
+                            </div>
+                        </li>            
+                    <% }) %>
+                </ul>
+        <% } %>     
+        <script>
+        const removeItemHandler = async (productId) => {
+            const response = await fetch('/cart/remove', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: productId})
+            })
+            if (response.status === 200) {
+                window.location.reload();
+            }
+        }    
+        const updateCartHandler = async (productId, quantity) => {
+            const response = await fetch('/cart/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: productId, quantity})
+            })
+            if (response.status === 200) {
+                window.location.reload();
+            }
+        }
+        </script> 
     </div>
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h3>Subtotal (Total Items) : $Total Price</h3>
+                        <h3>Subtotal (<%= cart.reduce((a, c) => a + c.quantity,0)%> items) : $<%=  cart.reduce((a, c) =>a + c.price * c.quantity,0)%>
+                        </h3>
                     </li>
                     <li class="list-group-item">
                         <div class="d-grid">

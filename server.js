@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import seedRouter from "./routes/seedRoutes.js";
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 import session from "express-session";
 import bcryptjs from "bcryptjs";
 import User from "./models/userModel.js";
@@ -77,15 +78,27 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (user) {
-    if (bcryptjs.compareSync(req.body.password, user.password)) {
-      req.session.user = user;
-      res.status(200).send({ message: "Logged in" });
-      return;
-    }
+  const { email, password } = req.body;
+
+  // Check for email and password in the request
+  if (!email || !password) {
+    return res.status(400).send({ message: "Email and password are required" });
   }
-  res.status(401).send({ message: "Invalid email or password" });
+
+  try {
+    const user = await User.findOne({ email });
+
+    // Check if user exists and password is correct
+    if (user && bcryptjs.compareSync(password, user.password)) {
+      req.session.user = user;
+      return res.status(200).send({ message: "Logged in" });
+    } else {
+      return res.status(401).send({ message: "Invalid email or password" });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: "Internal server error" });
+  }
 });
 
 app.post("/logout", (req, res) => {
@@ -93,6 +106,38 @@ app.post("/logout", (req, res) => {
   res.status(200).send({ message: "Logged out" });
 });
 
+// app.post("/cart/add", function (req, res) {
+//   const product = products.find((p) => p.slug === req.body.id);
+//   addToCart(product);
+//   res.send(cart);
+// });
+app.delete("/cart/remove", (req, res) => {
+  const itemId = req.body.id;
+  if (!itemId) {
+    return res.status(400).send({ message: "Item ID is required" });
+  }
+  const initialCartSize = req.session.cart.length;
+  req.session.cart = req.session.cart.filter((p) => p._id !== itemId);
+  if (initialCartSize === req.session.cart.length) {
+    return res.status(404).send({ message: "Item not found in the cart" });
+  }
+  res.status(200).send({ message: "Item removed" });
+});
+app.put("/cart/update", (req, res) => {
+  console.log(req.body);
+  console.log("req.session.cart");
+  const quantity = req.body.quantity;
+  const itemId = req.body.id;
+  if (!itemId) {
+    return res.status(400).send({ message: "Item ID is required" });
+  }
+  req.session.cart.forEach((p) => {
+    if (p._id === itemId) {
+      p.quantity += quantity;
+    }
+  });
+  res.status(200).send({ message: "Item added" });
+});
 app.get("/:route", async (req, res) => {
   const title = {
     signin: "Sign In",
@@ -101,21 +146,32 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
   };
-  const products = await Product.find();
-  products.map((product) => {
-    return { ...product, quantity: 1 };
-  });
-  console.log(products);
+
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
     path: req.params.route.toLowerCase(),
     title: title[req.params.route],
     cats,
     user: req.session.user,
+    cart: req.session.cart,
   });
 });
 
 app.get("/", async (req, res) => {
+  //test for melkmeshi
+  const productss = await Product.find();
+  const cart = productss.map((product) => {
+    return {
+      name: product.name,
+      _id: product._id,
+      image: product.image,
+      price: product.price,
+      countInStock: product.countInStock,
+      quantity: 1,
+    };
+  });
+  req.session.cart = cart;
+  //end test
   const cats = await Product.find().distinct("category");
   res.render("pages/index", {
     cats,
