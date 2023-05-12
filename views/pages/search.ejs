@@ -1,0 +1,122 @@
+<% let { page, order, rating, price, category, query } = q %>
+<%    query = query || "all"; %>
+<%    category = category || "all"; %>
+<%    price = price || "all"; %>
+<%    rating = rating || "all"; %>
+<%    order = order || "newest"; %>
+<%    page = page || 1; %>
+<%    const getFilterUrl = (filter) => {
+        const filterPage = filter.page || page;
+        const filterCategory = filter.category || category;
+        const filterQuery = filter.query || query;
+        const filterRating = filter.rating || rating;
+        const filterPrice = filter.price || price;
+        const sortOrder = filter.order || order;
+        return  `/products/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`
+    };
+    %>
+<div class="row">
+    <div class="col-md-3">
+        <h3>Department</h3>
+        <div>
+            <ul>
+                <li>
+                    <a href="<%= getFilterUrl({ category: 'all' }) %>" class="<%= 'all' === category ? 'text-bold' : '' %>">
+                        Any
+                    </a>
+                </li>
+                <% cats.forEach(function(cat) { %>
+                    <li>
+                        <a href="<%= getFilterUrl({ category: cat }) %>" class="<%= cat === category ? 'text-bold' : '' %>">
+                            <%= cat %>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+        <div>
+            <h3>Price</h3>
+            <ul>
+                <li>
+                    <a href="<%= getFilterUrl({ price: 'all' }) %>" class="<%= 'all' === price ? 'text-bold' : '' %>">
+                        Any
+                    </a>
+                </li>
+                <% prices.forEach(function(p) { %>
+                    <li>
+                        <a href="<%= getFilterUrl({ price: p.value }) %>" class="<%= p.value === price ? 'text-bold' : '' %>">
+                            <%= p.name %>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>  
+    <!-- <div class="col-md-9">
+        
+    </div>   -->
+    <div class="col-md-9">
+            <div class="row justify-content-between mb-3">
+                <div class="col-md-6">
+                    <div>
+                        <%= countProducts === 0 ? "No" : countProducts %> Results
+                        <%= query !== "all" ? " : " + query : "" %>
+                        <%= category !== "all" ? " : " + category : "" %>
+                        <%= price !== "all" ? " : Price " + price : "" %>
+                        <% if(query !== "all" || category !== "all" || rating !== "all" || price !== "all") { %>
+                            <button class="btn btn-light" onClick="window.location.href = '/products/search'">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col text-end">
+                    Sort by
+                    <script>
+                          const sp = new URLSearchParams(window.location.search);
+                            const query = sp.get("query") || "all";
+                            const category = sp.get("category") || "all";
+                            const price = sp.get("price") || "all";
+                            const rating = sp.get("rating") || "all";
+                            const order = sp.get("order") || "newest";
+                            const page = sp.get("page") || 1;
+                        const getFilterUrl = (filter) => {
+                            const filterPage = filter.page || page;
+                            const filterCategory = filter.category || category;
+                            const filterQuery = filter.query || query;
+                            const filterRating = filter.rating || rating;
+                            const filterPrice = filter.price || price;
+                            const sortOrder = filter.order || order;
+                            return `/products/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+                        };
+                        function handlechange(event) {
+                            window.location.href = getFilterUrl({ order: event.target.value }) ;
+                        }
+                    </script>
+                    <select
+                        onChange="handlechange(event)"
+                    >
+                        <option value="newest" <%= order === "newest" && "selected" %>>Newest Arrivals</option>
+                        <option value="lowest" <%= order === "lowest" && "selected"  %> >Price: Low to High</option>
+                        <option value="highest" <%= order === "highest" && "selected" %> >Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+            <% if (products.length === 0) { %>
+                <div class="message-box">No Product Found</div>
+            <% } %>
+            <div class="row">
+                <%- include('../pages/products',{products}); %>
+            </div>
+            <div>
+                <% for(var x = 0; x < pages; x++) { %>
+                    <a href="<%= getFilterUrl({ page: x + 1 }) %>" class="mx-1">
+                        <button class="btn btn-light <%= Number(page) === x + 1 ? 'text-bold' : '' %>">
+                            <%= x + 1 %>
+                        </button>
+                    </a>
+                <% } %>
+            </div>
+    </div>
+    
+</div>
