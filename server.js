@@ -50,6 +50,8 @@ function addToCart(product) {
     const productWithQuantity = { ...product, quantity: 1 };
     cart.push(productWithQuantity);
   }
+   // Store the cart array in the session
+   req.session.existingProductIndex = cart;
 }
 app.post("/cart/add", function (req, res) {
   const product = products.find((p) => p.slug === req.body.id);
