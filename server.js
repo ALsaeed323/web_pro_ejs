@@ -46,10 +46,21 @@ if (process.env.MONGODB_URI) {
 //   const product = products.find((p) => p.slug === req.body.id);
 //   addToCart(product);
 //   res.send(cart);
-  
+
 // });
 function addToCart(req, product, cart) {
+  // if (!product || !product.id) {
+  //   console.log("Invalid product object passed to addToCart:", product);
+  //   return;
+  // }
+
+  if (!cart || !Array.isArray(cart)) {
+    // Initialize the cart array if it's not defined or not an array
+    cart = [];
+  }
+
   const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+  console.log(existingProductIndex);
   if (existingProductIndex !== -1) {
     cart[existingProductIndex].quantity += 1;
   } else {
@@ -57,10 +68,12 @@ function addToCart(req, product, cart) {
     cart.push(productWithQuantity);
   }
   // Store the cart array in the session
-  req.session.existingProductIndex = cart; 
-  req.session.existingProductIndex = cart;
+  req.session.cart = cart;
   console.log("The product added to the cart ");
 }
+
+
+
 
 app.post("/cart/add", async (req, res) => {
   const products = await Product.find();
