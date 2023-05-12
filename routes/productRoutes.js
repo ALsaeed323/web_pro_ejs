@@ -5,6 +5,7 @@ import Product from "../models/productModel.js";
 const productRouter = express.Router();
 
 productRouter.get("/", async (req, res) => {
+  if (!req.session.cart) req.session.cart = [];
   const products = await Product.find();
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
@@ -13,6 +14,7 @@ productRouter.get("/", async (req, res) => {
     products,
     cats,
     user: req.session.user,
+    cart: req.session.cart,
   });
 });
 
@@ -116,6 +118,7 @@ productRouter.get("/:id", async (req, res) => {
       title: "404 Not Found",
       cats,
       user: req.session.user,
+      cart: req.session.cart || [],
     });
   }
 });

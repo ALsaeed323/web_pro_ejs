@@ -4,17 +4,13 @@
             <img
               class="img-fluid"
               src=<%= product.image %>
-              alt="Sample Product"
+              alt=<%= product.name %>
             />
           </div>
           <div class="col-md-3">
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                <h1>Sample Product</h1>
-              </li>
-              <li class="list-group-item">
-                <!-- Replace with appropriate star rating HTML and CSS -->
-                <div class="rating">4.5 stars (10 reviews)</div>
+                <h1><%= product.name %></h1>
               </li>
               <li class="list-group-item">Price: $<%= product.price %></li>
               <li class="list-group-item">
@@ -37,8 +33,12 @@
                     <div class="row">
                       <div class="col">Status:</div>
                       <div class="col">
-                        <span class="badge bg-success">In Stock</span>
-                      </div>
+                        <% if (product.countInStock === 0) { %>
+                          <span class="badge bg-danger">Out of Stock</span>
+                         <% } else  { %>
+                          <span class="badge bg-success">In Stock</span>
+                          <% } %>
+                        </div>
                     </div>
                   </li>
                   <li class="list-group-item">
@@ -46,22 +46,10 @@
                       <button
                         id="addToCartButton"
                         class="btn btn-primary"
-                        name=<%= product.slug %>
+                        onclick="addToCartHandler('<%= product._id %>')"
                       >
                         Add to Cart
                       </button>
-                      <script>
-                        document.getElementById('addToCartButton').addEventListener('click', (event) => {
-                          fetch("/cart/add", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({ id: event.target.name }),
-                        });
-                      }
-                      );
-                      </script>
                     </div>
                   </li>
                 </ul>
@@ -70,4 +58,3 @@
           </div>
         </div>
       </div>
-

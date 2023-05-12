@@ -42,50 +42,34 @@ if (process.env.MONGODB_URI) {
     "process.env.MONGODB_URI not set. Please provide a valid database connection string."
   );
 }
-// app.post("/cart/add", async (req, res) =>{
-//   const products = await Product.find();
-//   const product = products.find((p) => p.slug === req.body.id);
-//   addToCart(product);
-//   res.send(cart);
 
-// });
-function addToCart(req, product, cart) {
-  // if (!product || !product.id) {
-  //   console.log("Invalid product object passed to addToCart:", product);
-  //   return;
-  // }
-
-  if (!cart || !Array.isArray(cart)) {
-    // Initialize the cart array if it's not defined or not an array
+function addToCart(product, cart) {
+  if (!cart) {
     cart = [];
   }
-
-  const existingProductIndex = cart.findIndex((item) => item.id === product.id);
-  console.log(existingProductIndex);
-  if (existingProductIndex !== -1) {
-    cart[existingProductIndex].quantity += 1;
+  const cartItem = cart.find((p) => p._id === product._id.toString());
+  console.log(cartItem);
+  if (cartItem) {
+    cartItem.quantity += 1;
   } else {
-    const productWithQuantity = { ...product, quantity: 1 };
-    cart.push(productWithQuantity);
+    cart.push({
+      name: product.name,
+      _id: product._id,
+      image: product.image,
+      price: product.price,
+      countInStock: product.countInStock,
+      quantity: 1,
+    });
   }
-  // Store the cart array in the session
-  req.session.cart = cart;
-  console.log("The product added to the cart ");
+  console.log(cart);
 }
 
-
-
-
 app.post("/cart/add", async (req, res) => {
-  const products = await Product.find();
-  const id = req.body.id;
-  const product = products.find(p => p.id === id);
-  addToCart(req, product, req.session.cart);
-  res.send({ message: 'Product added to cart', cart: req.session.cart });
+  const _id = req.body.id;
+  const product = await Product.find({ _id });
+  addToCart(product[0], req.session.cart);
+  res.send({ message: "Product added to cart", cart: req.session.cart });
 });
-
-
-
 
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
@@ -135,11 +119,6 @@ app.post("/logout", (req, res) => {
   res.status(200).send({ message: "Logged out" });
 });
 
-// app.post("/cart/add", function (req, res) {
-//   const product = products.find((p) => p.slug === req.body.id);
-//   addToCart(product);
-//   res.send(cart);
-// });
 app.delete("/cart/remove", (req, res) => {
   const itemId = req.body.id;
   if (!itemId) {
@@ -187,24 +166,11 @@ app.get("/:route", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-  //test for melkmeshi
-  const productss = await Product.find();
-  const cart = productss.map((product) => {
-    return {
-      name: product.name,
-      _id: product._id,
-      image: product.image,
-      price: product.price,
-      countInStock: product.countInStock,
-      quantity: 1,
-    };
-  });
-  req.session.cart = cart;
-  //end test
   const cats = await Product.find().distinct("category");
   res.render("pages/index", {
     cats,
     user: req.session.user,
+    cart: req.session.cart || [],
   });
 });
 

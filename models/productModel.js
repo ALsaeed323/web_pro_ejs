@@ -19,5 +19,4 @@ const Product = mongoose.model(
   )
 );
 
-
 export default Product;

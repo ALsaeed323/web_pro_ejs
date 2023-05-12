@@ -50,9 +50,9 @@
             </li>
             <% }); %>
           <li class="nav-item">
-            <a class="nav-link" href="/cart">Cart</a>
-            <!-- Replace the hardcoded value with the actual number of cart items using JavaScript 
-            <span class="badge bg-danger rounded-pill">3</span>-->
+            <a class="nav-link" href="/cart">Cart<span class="badge bg-danger rounded-pill"><%= cart.reduce((a, c) => a + c.quantity,0)%></span></a>
+            <!-- Replace the hardcoded value with the actual number of cart items using JavaScript -->
+            
           </li>
           <!-- Replace the following block with the actual user info using JavaScript -->
           <% if (typeof user !== "undefined") { %>

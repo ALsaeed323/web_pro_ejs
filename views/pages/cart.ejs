@@ -15,18 +15,18 @@
                                     <a href="<%= "/products/"+product._id %>"><%= product.name%></a>
                                 </div>
                                 <div class="col-md-3">
-                                    <button class="btn btn-light" data-id="<%= product._id %>" onclick="updateCartHandler(event.currentTarget.dataset.id,  - 1)" <%= product.quantity === 1 && "disabled"%>>
+                                    <button class="btn btn-light" onclick="updateCartHandler('<%= product._id %>',  - 1)" <%= product.quantity === 1 && "disabled"%>>
                                         <i class="fas fa-minus-circle"></i>
                                     </button>
                                     <span><%= product.quantity %></span>
-                                    <button class="btn btn-light" data-id="<%= product._id %>" onclick="updateCartHandler(event.currentTarget.dataset.id,  1)"  <%= product.quantity === product.countInStock && "disabled"%>>
+                                    <button class="btn btn-light" onclick="updateCartHandler('<%= product._id %>',  1)"  <%= product.quantity === product.countInStock && "disabled"%>>
                                         <i class="fas fa-plus-circle"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-3"><%= product.price %></div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-light cartdel" data-id="<%= product._id %>"
-                                        onclick="removeItemHandler(event.currentTarget.dataset.id)">
+                                    <button class="btn btn-light cartdel"
+                                        onclick="removeItemHandler('<%= product._id %>')">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
