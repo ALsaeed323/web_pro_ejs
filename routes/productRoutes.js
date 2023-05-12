@@ -12,6 +12,7 @@ productRouter.get("/", async (req, res) => {
     title: "Product",
     products,
     cats,
+    user: req.session.user,
   });
 });
 productRouter.get("/:id", async (req, res) => {
@@ -24,12 +25,14 @@ productRouter.get("/:id", async (req, res) => {
       title: product.name,
       product,
       cats,
+      user: req.session.user,
     });
   } catch {
     res.render("pages/route", {
       path: "404",
       title: "404 Not Found",
       cats,
+      user: req.session.user,
     });
   }
 });

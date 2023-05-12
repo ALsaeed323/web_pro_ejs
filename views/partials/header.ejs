@@ -48,42 +48,56 @@
             <span class="badge bg-danger rounded-pill">3</span>-->
           </li>
           <!-- Replace the following block with the actual user info using JavaScript -->
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="basic-nav-dropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              User Name
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
-              <li>
-                <a class="dropdown-item" href="/profile">User Profile</a>
+          <% if (typeof user !== "undefined") { %>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="basic-nav-dropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <%= user.name %>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
+                <li>
+                  <a class="dropdown-item" href="/profile">User Profile</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#signout"
+                    onclick="signoutHandler()"
+                    >Sign Out</a
+                  >
+                </li>
+              </ul>
+            </li>
+            
+            <% } else {%>
+              <li class="nav-item">
+                <a class="nav-link" href="/signin">Sign In</a>
               </li>
-              <li>
-                <a class="dropdown-item" href="/orderhistory"
-                  >Order History</a
-                >
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  href="#signout"
-                  onclick="signoutHandler()"
-                  >Sign Out</a
-                >
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signin">Sign In</a>
-          </li>
+              <% } %>
         </ul>
       </div>
     </div>
   </nav>
-  
+  <script>
+    function signoutHandler() {
+      fetch("/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        if (res.status === 200) {
+          window.location.href = "/";
+        } else {
+          console.log("Failed to sign out");
+        }
+      });  
+    }
+  </script>

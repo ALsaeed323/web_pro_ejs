@@ -16,7 +16,9 @@ const hostname = "127.0.0.1";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-app.use(session({ secret: "Your_Secret_Key" }));
+app.use(
+  session({ secret: "Your_Secret_Key", resave: false, saveUninitialized: true })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -59,12 +61,19 @@ app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
 
 app.post("/signup", async (req, res) => {
+  //need check if email already exists
   const { email, password } = req.body;
-  const user = await User.create({
-    email,
-    password: bcryptjs.hashSync(password),
-  });
-  res.send(user);
+  try {
+    const user = await User.create({
+      email,
+      password: bcryptjs.hashSync(password),
+    });
+    const createdUser = await user.save();
+    req.session.user = createdUser;
+    res.status(200).send({ message: "Logged in" });
+  } catch (err) {
+    res.status(401).send({ message: "Invalid email" });
+  }
 });
 
 app.post("/login", async (req, res) => {
@@ -72,7 +81,6 @@ app.post("/login", async (req, res) => {
   if (user) {
     if (bcryptjs.compareSync(req.body.password, user.password)) {
       req.session.user = user;
-      console.log(req.session.user);
       res.status(200).send({ message: "Logged in" });
       return;
     }
@@ -80,8 +88,9 @@ app.post("/login", async (req, res) => {
   res.status(401).send({ message: "Invalid email or password" });
 });
 
-app.get("/logout", (req, res) => {
-  res.sendFile("C:\\Users\\melkmeshi\\Desktop\\backend\\login.html");
+app.post("/logout", (req, res) => {
+  req.session.destroy();
+  res.status(200).send({ message: "Logged out" });
 });
 
 app.get("/:route", async (req, res) => {
@@ -94,7 +103,8 @@ app.get("/:route", async (req, res) => {
   res.render("pages/route", {
     path: req.params.route.toLowerCase(),
     title: title[req.params.route],
-    /*cats = sections*/ cats,
+    cats,
+    user: req.session.user,
   });
 });
 
@@ -102,6 +112,7 @@ app.get("/", function (req, res) {
   res.render("pages/index", {
     //TO DO GET CATEGORIES FROM DB
     cats: ["Shirts", "Pants"],
+    user: req.session.user,
   });
 });
 
