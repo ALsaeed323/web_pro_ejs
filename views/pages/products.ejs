@@ -1,45 +1,52 @@
-<script>
-  function addToCart() {
-    console.log("hi");
-  }
-</script>
-      <div class="container products">
-        <h1>Latest Products</h1>
-        <div class="products">
-        <div class="row">
-          <% products.forEach(function(product) { %>
-          <div class="col-sm-8 col-md-4 col-lg-3">
-            <div class="card">
-              <a href=<%= "/products/"+product._id %>
-                >
-                <img
-                  class="card-img-top"
-                  alt="<%= product.name%>"
-                  src=<%= product.image %>
-                />
+<div class="container products">
+  <h1>Latest Products</h1>
+  <div class="products">
+    <div class="row">
+      <% products.forEach(function(product) { %>
+        <div class="col-sm-8 col-md-4 col-lg-3">
+          <div class="card">
+            <a href=<%="/products/slug/" +product.slug %>
+              >
+              <img class="card-img-top" alt="<%= product.name%>" src=<%=product.image %>
+              />
+            </a>
+            <div class="card-body">
+
+              <a href=<%="/products/" +product._id %>>
+                <h5 class="card-title">
+                  <%= product.name %>
+                </h5>
               </a>
-              <div class="card-body">
-                <a href=<%= "/products/"+product._id %>>
-                  <h5 class="card-title"><%= product.name %></h5>
-                </a>
-                <!-- Rating component would be here, but it cannot be converted directly to HTML -->
-                <p class="card-text">$<%= product.price %></p>
-                <!-- The following buttons would need JavaScript for functionality -->
-                <% if (product.countInStock === 0) { %>
-                  <button class="btn btn-light" disabled>Out of stock</button>
-                <% } else { %>
-                  <button
-                    class="btn btn-primary"
-                    name=<%= product.slug %>
-                  >
-                    Add to cart
-                  </button>
-                  <% }  %>
-              </div>
+              <!-- Rating component would be here, but it cannot be converted directly to HTML -->
+              <p class="card-text">$<%= product.price %>
+              </p>
+              <!-- The following buttons would need JavaScript for functionality -->
+              <button class="btn btn-light" disabled>Out of stock</button>
+              <!-- OR -->
+              <script>
+                function addToCart() {
+                  document.getElementById('addToCartButtons').addEventListener('click', (event) => {
+                  const productId = event.target.name;
+                  fetch("/cart/add", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ id: productId }),
+                  });
+                });
+
+                }
+              </script>
+              <button class="btn btn-primary" id="addToCartButtons" name=<%=product.slug %>
+                >
+                Add to cart
+              </button>
+              
             </div>
           </div>
-          <% }); %>
         </div>
-      </div>
-      </div>
-     
+        <% }); %>
+    </div>
+  </div>
+</div>
