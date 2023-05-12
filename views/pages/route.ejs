@@ -21,6 +21,9 @@
             case "signup": %>
             <%- include('../pages/signup'); %>
             <% break;
+            case "search": %>
+            <%- include('../pages/search',{prices,cats,q,countProducts,page,pages}); %>
+            <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>

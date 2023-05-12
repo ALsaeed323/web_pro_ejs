@@ -15,6 +15,107 @@ productRouter.get("/", async (req, res) => {
     user: req.session.user,
   });
 });
+const prices = [
+  {
+    name: "$1 to $50",
+    value: "1-50",
+  },
+  {
+    name: "$51 to $200",
+    value: "51-200",
+  },
+  {
+    name: "$201 to $1000",
+    value: "201-1000",
+  },
+];
+const PAGE_SIZE = 3;
+productRouter.get("/search", async (req, res) => {
+  //delete rating
+  const cats = await Product.find().distinct("category");
+  let { page, order, rating, price, category, query, pageSize } = req.query;
+  const q = { page, order, rating, price, category, query };
+  //const { query } = req;
+  pageSize = pageSize || PAGE_SIZE;
+  page = page || 1;
+  category = category || "";
+  price = price || "";
+  rating = rating || "";
+  order = order || "";
+  const searchQuery = query || "";
+
+  const queryFilter =
+    searchQuery && searchQuery !== "all"
+      ? {
+          name: {
+            $regex: searchQuery,
+            $options: "i",
+          },
+        }
+      : {};
+  const categoryFilter = category && category !== "all" ? { category } : {};
+  const ratingFilter =
+    rating && rating !== "all"
+      ? {
+          rating: {
+            $gte: Number(rating),
+          },
+        }
+      : {};
+  const priceFilter =
+    price && price !== "all"
+      ? {
+          // 1-50
+          price: {
+            $gte: Number(price.split("-")[0]),
+            $lte: Number(price.split("-")[1]),
+          },
+        }
+      : {};
+  const sortOrder =
+    order === "featured"
+      ? { featured: -1 }
+      : order === "lowest"
+      ? { price: 1 }
+      : order === "highest"
+      ? { price: -1 }
+      : order === "toprated"
+      ? { rating: -1 }
+      : order === "newest"
+      ? { createdAt: -1 }
+      : { _id: -1 };
+
+  const products = await Product.find({
+    ...queryFilter,
+    ...categoryFilter,
+    ...priceFilter,
+    ...ratingFilter,
+  })
+    .sort(sortOrder)
+    .skip(pageSize * (page - 1))
+    .limit(pageSize);
+
+  const countProducts = await Product.countDocuments({
+    ...queryFilter,
+    ...categoryFilter,
+    ...priceFilter,
+    ...ratingFilter,
+  });
+  res.render("pages/route", {
+    path: "search",
+    title: "Search Products",
+    cats,
+    prices,
+    user: req.session.user,
+    q,
+    products,
+    countProducts,
+    page,
+    pages: Math.ceil(countProducts / pageSize),
+  });
+});
+
+//always at the end
 productRouter.get("/:id", async (req, res) => {
   const cats = await Product.find().distinct("category");
 
@@ -36,7 +137,6 @@ productRouter.get("/:id", async (req, res) => {
     });
   }
 });
-
 /* 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
