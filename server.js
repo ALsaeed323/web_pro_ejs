@@ -41,8 +41,14 @@ if (process.env.MONGODB_URI) {
     "process.env.MONGODB_URI not set. Please provide a valid database connection string."
   );
 }
-
-function addToCart(product) {
+// app.post("/cart/add", async (req, res) =>{
+//   const products = await Product.find();
+//   const product = products.find((p) => p.slug === req.body.id);
+//   addToCart(product);
+//   res.send(cart);
+  
+// });
+function addToCart(req, product, cart) {
   const existingProductIndex = cart.findIndex((item) => item.id === product.id);
   if (existingProductIndex !== -1) {
     cart[existingProductIndex].quantity += 1;
@@ -50,15 +56,22 @@ function addToCart(product) {
     const productWithQuantity = { ...product, quantity: 1 };
     cart.push(productWithQuantity);
   }
-   // Store the cart array in the session
-   req.session.existingProductIndex = cart;
-}
-app.post("/cart/add", function (req, res) {
-  const product = products.find((p) => p.slug === req.body.id);
-  addToCart(product);
-  res.send(cart);
+  // Store the cart array in the session
+  req.session.existingProductIndex = cart; 
+  req.session.existingProductIndex = cart;
   console.log("The product added to the cart ");
+}
+
+app.post("/cart/add", async (req, res) => {
+  const products = await Product.find();
+  const id = req.body.id;
+  const product = products.find(p => p.id === id);
+  addToCart(req, product, req.session.cart);
+  res.send({ message: 'Product added to cart', cart: req.session.cart });
 });
+
+
+
 
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
