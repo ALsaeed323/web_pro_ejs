@@ -34,6 +34,7 @@ const prices = [
 ];
 const PAGE_SIZE = 1;
 productRouter.get("/search", async (req, res) => {
+  if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");
   let { page, order, price, category, query, pageSize } = req.query;
   pageSize = pageSize || PAGE_SIZE;
@@ -89,6 +90,7 @@ productRouter.get("/search", async (req, res) => {
     path: "search",
     title: "Search Products",
     cats,
+    cart: req.session.cart,
     prices,
     user: req.session.user,
     q,
@@ -101,8 +103,8 @@ productRouter.get("/search", async (req, res) => {
 
 //always at the end
 productRouter.get("/:id", async (req, res) => {
+  if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");
-
   try {
     const product = await Product.findById(req.params.id);
     res.render("pages/route", {
@@ -110,6 +112,7 @@ productRouter.get("/:id", async (req, res) => {
       title: product.name,
       product,
       cats,
+      cart: req.session.cart,
       user: req.session.user,
     });
   } catch {

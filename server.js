@@ -147,14 +147,15 @@ app.put("/cart/update", (req, res) => {
   res.status(200).send({ message: "Item added" });
 });
 app.get("/:route", async (req, res) => {
+  if (!req.session.cart) req.session.cart = [];
   const title = {
     signin: "Sign In",
     signup: "Sign Up",
     about: "About Us",
     contact: "Contact Us",
     cart: "Cart",
+    search: "Search",
   };
-
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
     path: req.params.route.toLowerCase(),
@@ -166,11 +167,12 @@ app.get("/:route", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
+  if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");
   res.render("pages/index", {
     cats,
     user: req.session.user,
-    cart: req.session.cart || [],
+    cart: req.session.cart,
   });
 });
 
