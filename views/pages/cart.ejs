@@ -74,7 +74,10 @@
                     </li>
                     <li class="list-group-item">
                         <div class="d-grid">
-                            <button class="btn btn-primary" onclick="checkoutHandler()" disabled>
+                            <button class="btn btn-primary" 
+                            onclick="redirect('<%= user ? `/shipping` : `/signin` %>')" 
+                            <%= cart.length === 0 && "disabled"%> 
+                            >
                                 Proceed to Checkout
                             </button>
                         </div>
@@ -84,3 +87,10 @@
         </div>
     </div>
 </div>
+<script>
+    
+
+
+
+
+</script>

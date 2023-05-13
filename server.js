@@ -63,7 +63,6 @@ app.post("/signup", async (req, res) => {
     res.status(409).send({ message: "Invalid email" });
   }
 });
-
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -87,10 +86,29 @@ app.post("/login", async (req, res) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 });
-
 app.post("/logout", (req, res) => {
   req.session.destroy();
   res.status(200).send({ message: "Logged out" });
+});
+app.post("/shipping", async (req, res) => {
+  try {
+    const { fullName, address, city, postalCode, country } = req.body;
+    const newShippingAddress = { fullName, address, city, postalCode, country };
+    const user = await User.findOneAndUpdate(
+      { _id: req.session.user._id },
+      {
+        shippingAddress: newShippingAddress,
+      },
+      {
+        new: true,
+      }
+    );
+    req.session.user = user;
+    res.status(200).send({ message: "Shipping address saved" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Internal server error" });
+  }
 });
 
 app.get("/:route", async (req, res) => {
@@ -112,7 +130,6 @@ app.get("/:route", async (req, res) => {
     cart: req.session.cart,
   });
 });
-
 app.get("/", async (req, res) => {
   if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");

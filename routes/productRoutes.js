@@ -32,7 +32,7 @@ const prices = [
     value: "201-1000",
   },
 ];
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 3;
 productRouter.get("/search", async (req, res) => {
   if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");

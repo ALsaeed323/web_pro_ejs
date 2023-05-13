@@ -22,7 +22,7 @@ function addToCart(product, cart) {
   }
 }
 
-cartRouter.post("/cart/add", async (req, res) => {
+cartRouter.post("/add", async (req, res) => {
   const _id = req.body.id;
   const product = await Product.find({ _id });
   addToCart(product[0], req.session.cart);

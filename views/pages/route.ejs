@@ -10,22 +10,25 @@
       <div class="container mt-3">
         <% switch (path) {
             case "signin": %>
-            <%- include('../pages/signin'); %>
+            <%- include('./signin'); %>
           <% break;
             case "products": %>
-            <%- include('../pages/products',{products}); %>
+            <%- include('./products',{products}); %>
             <% break;
             case "product": %>
-            <%- include('../pages/product',{product}); %>
+            <%- include('./product',{product}); %>
             <% break;
             case "signup": %>
-            <%- include('../pages/signup'); %>
+            <%- include('./signup'); %>
             <% break;
             case "search": %>
-            <%- include('../pages/search',{prices,cats,q,countProducts,page,pages}); %>
+            <%- include('./search',{prices,cats,q,countProducts,page,pages}); %>
             <% break;
             case "cart": %>
-            <%- include('../pages/cart',{cart}); %>
+            <%- include('./cart',{cart,user}); %>
+            <% break;
+            case "shipping": %>
+            <%- include('./shipping'); %>
             <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>

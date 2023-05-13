@@ -8,6 +8,13 @@ const User = mongoose.model(
       email: { type: String, required: true, unique: true },
       password: { type: String, required: true },
       isAdmin: { type: Boolean, default: false, required: true },
+      shippingAddress: {
+        fullName: { type: String, required: false },
+        address: { type: String, required: false },
+        city: { type: String, required: false },
+        postalCode: { type: String, required: false },
+        country: { type: String, required: false },
+      },
     },
     {
       timestamps: true,
