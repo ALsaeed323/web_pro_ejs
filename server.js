@@ -120,6 +120,7 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
     search: "Search",
+   
   };
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
