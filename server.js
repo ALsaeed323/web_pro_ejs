@@ -3,11 +3,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import seedRouter from "./routes/seedRoutes.js";
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 import session from "express-session";
 import bcryptjs from "bcryptjs";
 import User from "./models/userModel.js";
 import productRouter from "./routes/productRoutes.js";
+import cartRouter from "./routes/cartRoutes.js";
 import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -43,50 +43,24 @@ if (process.env.MONGODB_URI) {
   );
 }
 
-function addToCart(product, cart) {
-  if (!cart) {
-    cart = [];
-  }
-  const cartItem = cart.find((p) => p._id === product._id.toString());
-  console.log(cartItem);
-  if (cartItem) {
-    cartItem.quantity += 1;
-  } else {
-    cart.push({
-      name: product.name,
-      _id: product._id,
-      image: product.image,
-      price: product.price,
-      countInStock: product.countInStock,
-      quantity: 1,
-    });
-  }
-  console.log(cart);
-}
-
-app.post("/cart/add", async (req, res) => {
-  const _id = req.body.id;
-  const product = await Product.find({ _id });
-  addToCart(product[0], req.session.cart);
-  res.send({ message: "Product added to cart", cart: req.session.cart });
-});
-
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
+app.use("/cart", cartRouter);
 
 app.post("/signup", async (req, res) => {
-  //need check if email already exists
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   try {
     const user = await User.create({
+      name,
       email,
       password: bcryptjs.hashSync(password),
+      isAdmin: false,
     });
     const createdUser = await user.save();
     req.session.user = createdUser;
     res.status(200).send({ message: "Logged in" });
   } catch (err) {
-    res.status(401).send({ message: "Invalid email" });
+    res.status(409).send({ message: "Invalid email" });
   }
 });
 
@@ -119,33 +93,6 @@ app.post("/logout", (req, res) => {
   res.status(200).send({ message: "Logged out" });
 });
 
-app.delete("/cart/remove", (req, res) => {
-  const itemId = req.body.id;
-  if (!itemId) {
-    return res.status(400).send({ message: "Item ID is required" });
-  }
-  const initialCartSize = req.session.cart.length;
-  req.session.cart = req.session.cart.filter((p) => p._id !== itemId);
-  if (initialCartSize === req.session.cart.length) {
-    return res.status(404).send({ message: "Item not found in the cart" });
-  }
-  res.status(200).send({ message: "Item removed" });
-});
-app.put("/cart/update", (req, res) => {
-  console.log(req.body);
-  console.log("req.session.cart");
-  const quantity = req.body.quantity;
-  const itemId = req.body.id;
-  if (!itemId) {
-    return res.status(400).send({ message: "Item ID is required" });
-  }
-  req.session.cart.forEach((p) => {
-    if (p._id === itemId) {
-      p.quantity += quantity;
-    }
-  });
-  res.status(200).send({ message: "Item added" });
-});
 app.get("/:route", async (req, res) => {
   if (!req.session.cart) req.session.cart = [];
   const title = {

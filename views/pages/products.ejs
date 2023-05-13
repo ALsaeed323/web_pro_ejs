@@ -5,7 +5,7 @@
       <% products.forEach(function(product) { %>
         <div class="col-sm-8 col-md-4 col-lg-3">
           <div class="card">
-            <a href=<%="/products/slug/" +product.slug %>
+            <a href=<%="/products/" +product._id %>
               >
               <img class="card-img-top" alt="<%= product.name%>" src=<%=product.image %>
               />
