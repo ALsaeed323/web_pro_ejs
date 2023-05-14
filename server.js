@@ -148,6 +148,7 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
     search: "Search",
+   
   };
   const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
   res.render("pages/route", {
