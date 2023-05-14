@@ -15,6 +15,7 @@ const User = mongoose.model(
         postalCode: { type: String, required: false },
         country: { type: String, required: false },
       },
+      paymentMethod: { type: String, required: false },
     },
     {
       timestamps: true,

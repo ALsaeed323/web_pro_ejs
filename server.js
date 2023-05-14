@@ -124,6 +124,28 @@ app.post("/shipping", async (req, res) => {
     res.status(500).send({ message: "Internal server error" });
   }
 });
+app.post("/payment", async (req, res) => {
+  try {
+    // Get the shipping address from the request
+    const { paymentMethod } = req.body;
+    // Find the user in the database and update the Payment Method
+    const user = await User.findOneAndUpdate(
+      { _id: req.session.user._id },
+      {
+        paymentMethod,
+      },
+      {
+        new: true,
+      }
+    );
+    // Save the user with new data in the session
+    req.session.user = user;
+    res.status(200).send({ message: "Shipping address saved" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
 
 app.get("/", async (req, res) => {
   //if there is no cart, create one
@@ -148,7 +170,6 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
     search: "Search",
-   
   };
   const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
   res.render("pages/route", {

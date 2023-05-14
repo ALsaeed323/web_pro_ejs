@@ -4,15 +4,15 @@
         <h1 class="my-3">Payment Method</h1>
         <form id="paymentForm" onsubmit="paymentHandler(event)">
             <div class="mb-3">
-                <input type="radio" id="PayPal" name="paymentMethod" value="PayPal" >
+                <input type="radio" id="PayPal" name="paymentMethod" value="PayPal" <%= user.paymentMethod === "PayPal" && "checked" %>>
                 <label for="PayPal">PayPal</label>
             </div>
             <div class="mb-3">
-                <input type="radio" id="Stripe" name="paymentMethod" value="Stripe" >
+                <input type="radio" id="Stripe" name="paymentMethod" value="Stripe" <%= user.paymentMethod === "Stripe" && "checked" %> >
                 <label for="Stripe">Stripe</label>
             </div>
             <div class="mb-3">
-                <input type="radio" id="Cash" name="paymentMethod" value="Cash" >
+                <input type="radio" id="Cash" name="paymentMethod" value="Cash" <%= user.paymentMethod === "Cash" && "checked" %> >
                 <label for="Cash">Cash on delivery</label>
             </div>
             <div class="mb-3">
