@@ -27,8 +27,14 @@
             case "cart": %>
             <%- include('./cart',{cart,user}); %>
             <% break;
+            case "admin": %>
+            <%= "Hi admin" %>
+            <% break;
             case "shipping": %>
             <%- include('./shipping'); %>
+            <% break;
+            case "payment": %>
+            <%- include('./payment'); %>
             <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>

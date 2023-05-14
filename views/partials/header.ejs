@@ -24,13 +24,6 @@
               aria-describedby="button-search"
               class="form-control"
             />
-            <script>
-              function searchHandler(e) {
-                e.preventDefault();
-                const q = document.getElementById("q").value;
-                window.location.href = `/products/search?query=${q}`;
-              }
-            </script>
             <button
             class="btn btn-outline-primary"
             onclick="searchHandler(event)"
@@ -50,11 +43,8 @@
             </li>
             <% }); %>
           <li class="nav-item">
-            <a class="nav-link" href="/cart">Cart<sup><span class="badge bg-danger rounded-pill"><%= cart.reduce((a, c) => a + c.quantity,0)%></span></sup> </a>
-            <!-- Replace the hardcoded value with the actual number of cart items using JavaScript -->
-            
+            <a class="nav-link" href="/cart">Cart<% if (cart.length !== 0) {%><sup><span class="badge bg-danger rounded-pill"><%= cart.reduce((a, c) => a + c.quantity,0)%></span></sup><%}%></a>            
           </li>
-          <!-- Replace the following block with the actual user info using JavaScript -->
           <% if (typeof user !== "undefined") { %>
             <li class="nav-item dropdown">
               <a
@@ -75,14 +65,13 @@
                 <li>
                   <a
                     class="dropdown-item"
-                    href="#signout"
+                    href="/"
                     onclick="signoutHandler()"
                     >Sign Out</a
                   >
                 </li>
               </ul>
             </li>
-            
             <% } else {%>
               <li class="nav-item">
                 <a class="nav-link" href="/signin">Sign In</a>
@@ -92,19 +81,3 @@
       </div>
     </div>
   </nav>
-  <script>
-    function signoutHandler() {
-      fetch("/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          window.location.href = "/";
-        } else {
-          console.log("Failed to sign out");
-        }
-      });  
-    }
-  </script>

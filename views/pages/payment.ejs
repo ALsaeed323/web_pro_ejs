@@ -1,1 +1,23 @@
-<%- include('../partials/checkoutsteps',{step1:true,step2:true}) %>
+<div>
+    <%- include('../partials/checkoutsteps', { step1: true, step2: true, step3: true }) %>
+    <div class="container small-container">
+        <h1 class="my-3">Payment Method</h1>
+        <form action="/" method="POST">
+            <div class="mb-3">
+                <input type="radio" id="PayPal" name="paymentMethod" value="PayPal" >
+                <label for="PayPal">PayPal</label>
+            </div>
+            <div class="mb-3">
+                <input type="radio" id="Stripe" name="paymentMethod" value="Stripe" >
+                <label for="Stripe">Stripe</label>
+            </div>
+            <div class="mb-3">
+                <input type="radio" id="Cash" name="paymentMethod" value="Cash" >
+                <label for="Cash">Cash on delivery</label>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary">Continue</button>
+            </div>
+        </form>
+    </div>
+</div>

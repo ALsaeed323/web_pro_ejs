@@ -6,38 +6,76 @@
   const redirect = async (link) => {
     window.location.href = link;
   };
-    const addToCartHandler = async (productId) => {
-      const fet = await fetch("/cart/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: productId }),
-      });
-    
-    if(fet.status === 200) {
-        window.location.reload();
-    }
-    };
-    const form = document.getElementById('loginForm');
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = document.getElementById('loginEmail').value;
-          const password = document.getElementById('loginPassword').value;
-          const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-          });
-          
-          if (response.status === 200) {
-            window.location.href = '/';
-          } else {
-            const data = await response.json(); // extract the body data
-            console.log(data);
-            alert('Invalid email or password');
-          }
+  const addToCartHandler = async (productId) => {
+    const fet = await fetch("/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: productId }),
+    });
+  
+  if(fet.status === 200) {
+      window.location.reload();
+  }
+  };
+  const loginHandler = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
         });
-  </script>
+        
+        if (response.status === 200) {
+          window.location.href = '/';
+        } else {
+          const data = await response.json(); // extract the body data
+          console.log(data);
+          alert('Invalid email or password');
+        }
+      };
+  const signoutHandler = (e) => {
+    e.preventDefault();
+    fetch("/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        console.log("Failed to sign out");
+      }
+      else {
+        window.location.href = "/";
+      }
+    });  
+  }
+  const searchHandler = (e)  => {
+    e.preventDefault();
+    const q = document.getElementById("q").value;
+    window.location.href = `/products/search?query=${q}`;
+  }
+  const shippingHandler =   async (e) => {
+        e.preventDefault();
+        const data = {
+            fullName: shippingForm.fullName.value,
+            address: shippingForm.address.value,
+            city: shippingForm.city.value,
+            postalCode: shippingForm.postalCode.value,
+            country: shippingForm.country.value,
+        };
+        const resposnce = await fetch("/shipping", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        redirect("/payment");
+    }
+</script>

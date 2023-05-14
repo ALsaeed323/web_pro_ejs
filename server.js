@@ -14,6 +14,7 @@ dotenv.config();
 
 //Read the current directory name
 const hostname = "127.0.0.1";
+const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use("/public", express.static(__dirname + "/public"));
 
+//connection database
 if (process.env.MONGODB_URI) {
   mongoose
     .connect(process.env.MONGODB_URI, {
@@ -48,15 +50,19 @@ app.use("/products", productRouter);
 app.use("/cart", cartRouter);
 
 app.post("/signup", async (req, res) => {
+  // Get name, email and password from the request
   const { name, email, password } = req.body;
   try {
+    // Create a new user
     const user = await User.create({
       name,
       email,
       password: bcryptjs.hashSync(password),
       isAdmin: false,
     });
+    // Save the user in the database
     const createdUser = await user.save();
+    // Save the user in the session
     req.session.user = createdUser;
     res.status(200).send({ message: "Logged in" });
   } catch (err) {
@@ -64,21 +70,22 @@ app.post("/signup", async (req, res) => {
   }
 });
 app.post("/login", async (req, res) => {
+  // Get email and password from the request
   const { email, password } = req.body;
-
   // Check for email and password in the request
   if (!email || !password) {
     return res.status(400).send({ message: "Email and password are required" });
   }
-
   try {
+    // Find the user in the database
     const user = await User.findOne({ email });
-
     // Check if user exists and password is correct
     if (user && bcryptjs.compareSync(password, user.password)) {
+      // Save the user in the session
       req.session.user = user;
       return res.status(200).send({ message: "Logged in" });
     } else {
+      // Send error message if user doesn't exist or password is incorrect
       return res.status(401).send({ message: "Invalid email or password" });
     }
   } catch (err) {
@@ -87,13 +94,19 @@ app.post("/login", async (req, res) => {
   }
 });
 app.post("/logout", (req, res) => {
+  // Destroy the session
   req.session.destroy();
+  // make empty cart
+  req.session.cart = [];
   res.status(200).send({ message: "Logged out" });
 });
 app.post("/shipping", async (req, res) => {
   try {
+    // Get the shipping address from the request
     const { fullName, address, city, postalCode, country } = req.body;
+    // Create a new shipping address Object
     const newShippingAddress = { fullName, address, city, postalCode, country };
+    // Find the user in the database and update the shipping address
     const user = await User.findOneAndUpdate(
       { _id: req.session.user._id },
       {
@@ -103,6 +116,7 @@ app.post("/shipping", async (req, res) => {
         new: true,
       }
     );
+    // Save the user with new data in the session
     req.session.user = user;
     res.status(200).send({ message: "Shipping address saved" });
   } catch (err) {
@@ -111,6 +125,20 @@ app.post("/shipping", async (req, res) => {
   }
 });
 
+app.get("/", async (req, res) => {
+  //if there is no cart, create one
+  if (!req.session.cart) req.session.cart = [];
+  //get all the categories
+  const cats = await Product.find().distinct("category");
+  //render the index page
+  res.render("pages/index", {
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart, //the cart
+  });
+});
+
+//anything under this route won't be seen
 app.get("/:route", async (req, res) => {
   if (!req.session.cart) req.session.cart = [];
   const title = {
@@ -121,26 +149,15 @@ app.get("/:route", async (req, res) => {
     cart: "Cart",
     search: "Search",
   };
-  const cats = await Product.find().distinct("category");
+  const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
   res.render("pages/route", {
-    path: req.params.route.toLowerCase(),
-    title: title[req.params.route],
-    cats,
-    user: req.session.user,
-    cart: req.session.cart,
+    path: req.params.route.toLowerCase(), //the path that user entered
+    title: title[req.params.route], //the title of the page
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart, //the cart
   });
 });
-app.get("/", async (req, res) => {
-  if (!req.session.cart) req.session.cart = [];
-  const cats = await Product.find().distinct("category");
-  res.render("pages/index", {
-    cats,
-    user: req.session.user,
-    cart: req.session.cart,
-  });
-});
-
-let PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}`);
 });
