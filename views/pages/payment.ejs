@@ -2,7 +2,7 @@
     <%- include('../partials/checkoutsteps', { step1: true, step2: true, step3: true }) %>
     <div class="container small-container">
         <h1 class="my-3">Payment Method</h1>
-        <form action="/" method="POST">
+        <form id="paymentForm" onsubmit="paymentHandler(event)">
             <div class="mb-3">
                 <input type="radio" id="PayPal" name="paymentMethod" value="PayPal" >
                 <label for="PayPal">PayPal</label>

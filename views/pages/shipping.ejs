@@ -4,23 +4,23 @@
     <form id="shippingForm" onsubmit="shippingHandler(event)">
         <div class="mb-3">
             <label class="mb-1">Full Name</label>
-            <input class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" )? user.shippingAddress.fullName: "" %>" name="fullName" required/>
+            <input id="shippingFullName" class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" )? user.shippingAddress.fullName: "" %>" name="fullName" required/>
         </div>
         <div class="mb-3">
             <label class="mb-1">Address</label>
-            <input class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.address : "" %>" name="address" required/>
+            <input id="shippingAddress" class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.address : "" %>" name="address" required/>
         </div>
         <div class="mb-3">
             <label class="mb-1">City</label>
-            <input class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.city : "" %>" name="city" required/>
+            <input id="shippingCity" class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.city : "" %>" name="city" required/>
         </div>
         <div class="mb-3">
             <label class="mb-1">Postal Code</label>
-            <input class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.postalCode : "" %>" name="postalCode" required/>
+            <input id="shippingPostalCode" class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.postalCode : "" %>" name="postalCode" required/>
         </div>
         <div class="mb-3">
             <label class="mb-1">Country</label>
-            <input class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.country : "" %>" name="country" required/>
+            <input id="shippingCountry" class="form-control" value="<%= (typeof user !== "undefined" && typeof user.shippingAddress !== "undefined" ) ? user.shippingAddress.country : "" %>" name="country" required/>
         </div>
         <div class="mb-3">
             <button class="btn btn-primary" type="submit">Continue</button>

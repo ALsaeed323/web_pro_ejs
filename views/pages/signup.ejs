@@ -1,6 +1,6 @@
 <div class="small-container container">
 <h3 class="my-3">Sign Up</h3>
-    <form id="signupForm">
+    <form id="signupForm" onsubmit="signupHandler(event)">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
@@ -25,33 +25,3 @@
         </div>
     </form>
 </div>
-<script>
-const form = document.getElementById('signupForm');
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const name = document.getElementById('signupName').value;
-          const email = document.getElementById('signupEmail').value;
-          const password = document.getElementById('signupPassword').value;
-          const confimPassword = document.getElementById('signupConfirmPassword').value;
-          if(password !== confimPassword) {
-            alert('Password and Confirm Password do not match');
-            return;
-          }
-          const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name,email, password }),
-          });
-          if (response.status === 200) {
-            window.location.href = '/';
-          } else if(response.status === 409) {
-            alert('Email already exists');
-            } else {
-            const data = await response.json(); // extract the body data
-            console.log(data);
-            alert('Something went wrong');
-          }
-        });
-</script>

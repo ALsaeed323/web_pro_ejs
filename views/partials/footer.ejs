@@ -39,6 +39,33 @@
           alert('Invalid email or password');
         }
       };
+  const signupHandler = async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    const confimPassword = document.getElementById('signupConfirmPassword').value;
+    if(password !== confimPassword) {
+      alert('Password and Confirm Password do not match');
+      return;
+    }
+    const response = await fetch('/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name,email, password }),
+    });
+    if (response.status === 200) {
+      window.location.href = '/';
+    } else if(response.status === 409) {
+      alert('Email already exists');
+      } else {
+      const data = await response.json(); // extract the body data
+      console.log(data);
+      alert('Something went wrong');
+    }
+  };
   const signoutHandler = (e) => {
     e.preventDefault();
     fetch("/logout", {
@@ -63,11 +90,11 @@
   const shippingHandler =   async (e) => {
         e.preventDefault();
         const data = {
-            fullName: shippingForm.fullName.value,
-            address: shippingForm.address.value,
-            city: shippingForm.city.value,
-            postalCode: shippingForm.postalCode.value,
-            country: shippingForm.country.value,
+            fullName: document.getElementById('shippingFullName').value,
+            address: document.getElementById('shippingAddress').value,
+            city: document.getElementById('shippingCity').value,
+            postalCode: document.getElementById('shippingPostalCode').value,
+            country: document.getElementById('shippingCountry').value,
         };
         const resposnce = await fetch("/shipping", {
             method: "POST",
@@ -77,5 +104,19 @@
             body: JSON.stringify(data),
         })
         redirect("/payment");
+    }
+  const paymentHandler = async (e) => {
+        e.preventDefault();
+        const data = {
+            paymentMethod: document.getElementById('paymentForm').paymentMethod.value,
+        };
+        const resposnce = await fetch("/payment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        redirect("/placeorder");
     }
 </script>
