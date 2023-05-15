@@ -52,6 +52,7 @@ app.use("/products", productRouter);
 app.use("/cart", cartRouter);
 app.use("/orders", orderRouter);
 
+
 app.post("/signup", async (req, res) => {
   // Get name, email and password from the request
   const { name, email, password } = req.body;
