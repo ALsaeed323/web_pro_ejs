@@ -74,12 +74,12 @@
         "Content-Type": "application/json",
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        console.log("Failed to sign out");
+      if (res.status === 200) {
+        location.reload();
       }
       else {
-        window.location.href = "/";
-      }
+      console.log("Failed to sign out");
+    }
     });  
   }
   const searchHandler = (e)  => {

@@ -96,8 +96,6 @@ app.post("/login", async (req, res) => {
 app.post("/logout", (req, res) => {
   // Destroy the session
   req.session.destroy();
-  // make empty cart
-  req.session.cart = [];
   res.status(200).send({ message: "Logged out" });
 });
 app.post("/shipping", async (req, res) => {
