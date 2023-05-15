@@ -42,6 +42,12 @@
             case "payment": %>
             <%- include('./payment'); %>
             <% break;
+            case "placeorder": %>
+            <%- include('./placeorder',{user,cart}); %>
+            <% break;
+            case "order": %>
+            <%- include('./order',{order}); %>
+            <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>

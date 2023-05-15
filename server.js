@@ -8,6 +8,7 @@ import bcryptjs from "bcryptjs";
 import User from "./models/userModel.js";
 import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -43,11 +44,13 @@ if (process.env.MONGODB_URI) {
   console.error(
     "process.env.MONGODB_URI not set. Please provide a valid database connection string."
   );
+
 }
 
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
 app.use("/cart", cartRouter);
+app.use("/orders", orderRouter);
 
 app.post("/signup", async (req, res) => {
   // Get name, email and password from the request
