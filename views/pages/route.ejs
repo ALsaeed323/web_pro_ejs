@@ -48,6 +48,9 @@
             case "order": %>
             <%- include('./order',{order}); %>
             <% break;
+            case "profile": %>
+            <%- include('./profile',{user}); %>
+            <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>

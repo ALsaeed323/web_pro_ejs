@@ -148,6 +148,22 @@ app.post("/payment", async (req, res) => {
   }
 });
 
+app.post("/profile", async (req, res) => {
+  const user = await User.findById(req.session.user._id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = bcryptjs.hashSync(req.body.password);
+    }
+    const updatedUser = await user.save();
+    req.session.user = updatedUser;
+    res.status(200).send({message : "User Updated"});
+  } else {
+    res.status(404).send({ message: "User Not Found" });
+  }
+});
+
 app.get("/", async (req, res) => {
   //if there is no cart, create one
   if (!req.session.cart) req.session.cart = [];
