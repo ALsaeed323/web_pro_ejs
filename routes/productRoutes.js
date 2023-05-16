@@ -19,7 +19,7 @@ productRouter.get("/", async (req, res) => {
 });
 //product add new for mange card
 productRouter.post('addcard', async (req, res) => {
-  
+
   const newProduct = new Product({
     name: 'sample name ' + Date.now(),
     slug: 'sample-name-' + Date.now(),
@@ -36,6 +36,32 @@ productRouter.post('addcard', async (req, res) => {
    res.send({message: "product created and",product});
 
 });
+//
+//handle edit product
+//
+productRouter.put(
+  '/:id',(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (product) {
+      product.name = req.body.name;
+      product.slug = req.body.slug;
+      product.price = req.body.price;
+      product.image = req.body.image;
+      product.category = req.body.category;
+      product.brand = req.body.brand;
+      product.countInStock = req.body.countInStock;
+      product.description = req.body.description;
+      await product.save();
+      res.send({ message: 'Product Updated' });
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
+///
+///
+
 
 const prices = [
   {
