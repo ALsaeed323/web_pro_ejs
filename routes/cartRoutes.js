@@ -21,6 +21,7 @@ function addToCart(product, cart) {
   } else {
     // If product does not exist, add it to the cart
     cart.push({
+      slug: product.slug,
       name: product.name,
       _id: product._id,
       image: product.image,
