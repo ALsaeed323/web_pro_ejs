@@ -1,0 +1,33 @@
+<h1>Order History</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>DATE</th>
+      <th>TOTAL</th>
+      <th>PAID</th>
+      <th>DELIVERED</th>
+      <th>ACTIONS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% orders.forEach((order) => { %>
+      <tr>
+        <td><%= order._id %></td>
+        <td><%= order.createdAt.toString().substring(0, 10) %></td>
+        <td><%= order.totalPrice.toFixed(2) %></td>
+        <td>
+          <%= order.isPaid ? order.paidAt.toString().substring(0, 10) : "No" %>
+        </td>
+        <td>
+          <%= order.isDelivered  ? order.deliveredAt.toString().substring(0, 10)  : "No" %>
+        </td>
+        <td>
+          <button type="button" class="btn btn-light" onclick="window.location.href='/orders/' + '<%= order._id %>'">
+            Details
+          </button>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

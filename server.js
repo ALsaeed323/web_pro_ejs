@@ -1,3 +1,5 @@
+import http from 'http';
+import { Server } from 'socket.io';
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -8,6 +10,7 @@ import bcryptjs from "bcryptjs";
 import User from "./models/userModel.js";
 import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -43,11 +46,14 @@ if (process.env.MONGODB_URI) {
   console.error(
     "process.env.MONGODB_URI not set. Please provide a valid database connection string."
   );
+
 }
 
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
 app.use("/cart", cartRouter);
+app.use("/orders", orderRouter);
+
 
 app.post("/signup", async (req, res) => {
   // Get name, email and password from the request
@@ -142,6 +148,22 @@ app.post("/payment", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Internal server error" });
+  }
+});
+
+app.post("/profile", async (req, res) => {
+  const user = await User.findById(req.session.user._id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = bcryptjs.hashSync(req.body.password);
+    }
+    const updatedUser = await user.save();
+    req.session.user = updatedUser;
+    res.status(200).send({message : "User Updated"});
+  } else {
+    res.status(404).send({ message: "User Not Found" });
   }
 });
 
