@@ -18,21 +18,24 @@ productRouter.get("/", async (req, res) => {
   });
 });
 //product add new for mange card
-productRouter.post( async (req, res) => {
-   const NewProduct =new Product({
-    name:'sample-name'+Date.now(),
-    slug:'sample-slug'+Date.now(),
-    category:'sample-cat',
-    image:"/public/image/p1.jpg",
+productRouter.post('addcard', async (req, res) => {
+  
+  const newProduct = new Product({
+    name: 'sample name ' + Date.now(),
+    slug: 'sample-name-' + Date.now(),
+    image: '/images/p1.jpg',
     price: 0,
-    countInStock:0,
-    brand:"nike",
-    description:"jj"
-   })
+    category: 'sample category',
+    brand: 'sample brand',
+    countInStock: 0,
+    rating: 0,
+    numReviews: 0,
+    description: 'sample description',
+  });
    const product =await NewProduct.save();
    res.send({message: "product created and",product});
 
-});const mon ="moniem";
+});
 
 const prices = [
   {

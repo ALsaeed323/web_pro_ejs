@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+</head>
+<body>
+    <Container className="small-container">
+        <Helmet>
+          <title>Edit Product</title>
+        </Helmet>
+        <h1>Edit Product </h1>
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" id="name" name="name" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label for="slug" class="form-label">Slug</label>
+              <input type="text" id="slug" name="slug" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" id="price" name="price" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Image File</label>
+              <input type="text" id="image" name="image" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label for="category" class="form-label">Category</label>
+              <input type="text" id="category" name="category" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label for="brand" class="form-label">Brand</label>
+              <input type="text" id="brand" name="brand" class="form-control" value=" required">
+            </div>
+            <div class="mb-3">
+              <label for="countInStock" class="form-label">Count In Stock</label>
+              <input type="number" id="countInStock" name="countInStock" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" name="description" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+          </form>
+      </Container>
+</body>
+</html>
