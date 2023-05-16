@@ -92,24 +92,33 @@
         <h2>Display all product </h2>
         <a href="/views/pages/addcard" class="navigation-button">Add New Card</a>
     </div>
-    
+   
     <table>
+      <thead>
         <tr>
+          <th>Id</th>
           <th>Name</th>
-          
           <th>Price</th>
-          <th>Count</th>
+          <th>Category</th>
           <th class="action-col">Image</th>
+          <th>Brand</th>
           <th >Delete</th>
           <th>Modify</th>
         </tr>
+
+      </thead>
+
+
+      <tbody>
+<% products.forEach((product) => { %>
         <tr>
-          <td>Product 1</td>
-          <td>12</td>
-          <td>5</td>
-          <td class="action-col">
-            http:moniem mskapd
-          </td>
+          
+            <tr>
+              <td><%= product._id %></td>
+              <td><%= product.name %></td>
+              <td><%= product.price %></td>
+              <td><%= product.category %></td>
+              <td><%= product.brand %></td>
           <td>
             <a class="delete-btn">Delete</a>
           </td>
@@ -117,7 +126,18 @@
             <a class="modify-btn">Modify</a>
           </td>
         </tr>
-        
+        <%}%>
+      </tbody>
       </table>
+      <div>
+        <% for (let x = 0; x < pages; x++) { %>
+          <a class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
+             href="/admin/products?page=<%= x + 1 %>">
+            <%= x + 1 %>
+          </a>
+        <% } %>
+      </div>
+  
+       
 </body>
 </html>

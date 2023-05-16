@@ -17,6 +17,22 @@ productRouter.get("/", async (req, res) => {
     cart: req.session.cart,
   });
 });
+//product add new for mange card
+productRouter.post( async (req, res) => {
+   const NewProduct =new Product({
+    name:'sample-name'+Date.now(),
+    slug:'sample-slug'+Date.now(),
+    category:'sample-cat',
+    image:"/public/image/p1.jpg",
+    price: 0,
+    countInStock:0,
+    brand:"nike",
+    description:"jj"
+   })
+   const product =await NewProduct.save();
+   res.send({message: "product created and",product});
+
+});const mon ="moniem";
 
 const prices = [
   {
