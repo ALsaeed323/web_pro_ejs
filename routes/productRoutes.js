@@ -48,6 +48,25 @@ const prices = [
     value: "201-1000",
   },
 ];
+
+
+productRouter.get('/disallcard',async(req,res)=>{
+    const { query } = req;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+
+    const products = await Product.find()
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    const countProducts = await Product.countDocuments();
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    })
+  })
+
 const PAGE_SIZE = 3;
 productRouter.get("/search", async (req, res) => {
   if (!req.session.cart) req.session.cart = [];
