@@ -1,226 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <%- include('../partials/head' , {title:title}) %>
 
     <style>
-        /* CSS styling for the form */
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #f2f2f2;
-         
-        }
-    
-        h2 {
-          text-align: center;
-        }
-    
-        .form-container {
-          max-width: 750px;
-          margin: 0 auto;
-          background-color: #ffffff;
-          padding: 20px;
-          border-radius: 5px;
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-    
-        .form-group {
-          margin-bottom: 20px;
-        }
-    
-        .form-group label {
-          display: block;
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-    
-        .form-group input[type="text"],
-        .form-group input[type="number"],select {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          margin-bottom: 5px;
-        }
-    
-        .form-group textarea {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          resize: vertical;
-          margin-bottom: 5px;
-        }
-    
-        .form-group input[type="submit"] {
-          background-color: #4CAF50;
-         
-          color: #ffffff;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          display: flex;
-          margin: 0 auto;
-        }
-    
-        .form-group input[type="submit"]:hover {
-          background-color: #45a049;
-        }
+      /* CSS styling for the form */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
 
-        div .handle{
-            color:red;
-            margin-left: 5px;
-        }
-      </style>
-</head>
-<body>
+      h2 {
+        text-align: center;
+      }
+
+      .form-container {
+        max-width: 750px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="number"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 5px;
+      }
+
+      .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        margin-bottom: 5px;
+      }
+
+      .form-group input[type="submit"] {
+        background-color: #4caf50;
+
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        margin: 0 auto;
+      }
+
+      .form-group input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      div .handle {
+        color: red;
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
     <h2>Create New Product</h2>
 
-  <div class="form-container">
-    <form onsubmit="return validateForm()">
-      <div class="form-group">
-        <label for="product-name">Name:</label>
-        <input type="text" id="product-name" name="product-name" placeholder="Enter product name" required>
-        <div class="handle" id="name-p"></div>
-      </div>
-      <div class="form-group">
-        <label for="product-slug">Slug:</label>
-        <input type="text" id="product-slug" name="product-slug" placeholder="Enter product slug" required>
-        <div class="handle" id="slug-p"></div>
-      </div>
-      <div class="form-group">
-    <label for="product-category">Category:</label>
-    <select id="product-category" name="product-category">
-      <option value="short">Short</option>
-      <option value="bantalon">Bantalon</option>
-      <option value="t-shirt">T-Shirt</option>
-    </select>
-  </div>
-      <div class="form-group">
-        <label for="product-image">Image:</label>
-        <input type="text" id="product-image" name="product-image" placeholder="Enter product image URL" required>
-        <div class="handle" id="img-p"></div>
-      </div>
-      <div class="form-group">
-        <label for="product-price">Price:</label>
-        <input type="number" id="product-price" name="product-price" placeholder="Enter product price"required>
-        <div class="handle" id="price-p"></div>
-      </div>
-      <div class="form-group">
-        <label for="product-count">Count:</label>
-        <input type="number" id="product-count" name="product-count" placeholder="Enter product count"required>
-        <div class="handle" id="count-p"></div>
-      </div>
-      <div class="form-group">
-<label for="product-brand">Brand:</label>
-        <input type="text" id="product-brand" name="product-brand" placeholder="Enter product brand"required>
-        <div class="handle" id="brand-p"></div>
-      </div>
-      <div class="form-group">
-        <label for="product-description">Description:</label>
-        <textarea id="product-description" name="product-description" placeholder="Enter product description"required></textarea>
-        <div class="handle" id="dis-p"></div>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Create Product">
-      </div>
-    </form>
-  </div>
+    <div class="form-container">
+      <form onsubmit="return validateForm()">
+        <div class="form-group">
+          <label for="product-name">Name:</label>
+          <input
+            type="text"
+            id="product-name"
+            name="product-name"
+            placeholder="Enter product name"
+          />
+          <div class="handle" id="name-p"></div>
+        </div>
+        <div class="form-group">
+          <label for="product-slug">Slug:</label>
+          <input
+            type="text"
+            id="product-slug"
+            name="product-slug"
+            placeholder="Enter product slug"
+          />
+          <div class="handle" id="slug-p"></div>
+        </div>
+        <div class="form-group">
+          <label for="product-category">Category:</label>
+          <select id="product-category" name="product-category">
+            <option value="short">Short</option>
+            <option value="bantalon">Bantalon</option>
+            <option value="t-shirt">T-Shirt</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="product-image">Image:</label>
+          <input
+            type="text"
+            id="product-image"
+            name="product-image"
+            placeholder="Enter product image URL"
+          />
+          <div class="handle" id="img-p"></div>
+        </div>
+        <div class="form-group">
+          <label for="product-price">Price:</label>
+          <input
+            type="number"
+            id="product-price"
+            name="product-price"
+            placeholder="Enter product price"
+          />
+          <div class="handle" id="price-p"></div>
+        </div>
+        <div class="form-group">
+          <label for="product-count">Count:</label>
+          <input
+            type="number"
+            id="product-count"
+            name="product-count"
+            placeholder="Enter product count"
+          />
+          <div class="handle" id="count-p"></div>
+        </div>
+        <div class="form-group">
+          <label for="product-brand">Brand:</label>
+          <input
+            type="text"
+            id="product-brand"
+            name="product-brand"
+            placeholder="Enter product brand"
+          />
+          <div class="handle" id="brand-p"></div>
+        </div>
+        <div class="form-group">
+          <label for="product-description">Description:</label>
+          <textarea
+            id="product-description"
+            name="product-description"
+            placeholder="Enter product description"
+          ></textarea>
+          <div class="handle" id="dis-p"></div>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Create Product" />
+        </div>
+      </form>
+    </div>
 
-  <script>
-    function validateForm() {
-  var productName = document.getElementById('product-name').value;
-  var productSlug = document.getElementById('product-slug').value;
-  var productCategory = document.getElementById('product-category').value;
-  var productImage = document.getElementById('product-image').value;
-  var productPrice = document.getElementById('product-price').value;
-  var productCount = document.getElementById('product-count').value;
-  var productBrand = document.getElementById('product-brand').value;
-  var productDescription = document.getElementById('product-description').value;
+    <script>
+      function validateForm() {
+  var productName = document.getElementById("product-name").value;
+  var productSlug = document.getElementById("product-slug").value;
+  var productImage = document.getElementById("product-image").value;
+  var productPrice = document.getElementById("product-price").value;
+  var productCount = document.getElementById("product-count").value;
+  var productBrand = document.getElementById("product-brand").value;
+  var productDescription = document.getElementById("product-description").value;
 
-  // Validate name
-  if (productName.trim() === '') {
-    document.getElementById('name-p').innerHTML="you must enter name";
-    return false;
-  }
-  else{
-    document.getElementById('name-p').innerHTML="";
-  }
+  var namePattern = /^[A-Za-z\s'-]+$/; // Allows alphabetical characters, spaces, apostrophes, and hyphens
+  var slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/; // Allows lowercase alphanumeric characters and hyphens
+  var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/; // Validates URL format
+  var pricePattern = /^\d+(\.\d{1,2})?$/; // Allows positive decimal numbers up to 2 decimal places
+  var countPattern = /^\d+$/; // Allows positive integers only
 
-  // Validate slug
-  if (productSlug.trim() === '') {
-    document.getElementById('slug-p').innerHTML="you must enter slug";
-    return false;
-  }
-  else{
-    document.getElementById('slug-p').innerHTML="";
-  }
+  var isValid = true;
 
-
-  // Validate image URL
-  if (productImage.trim() === '') {
-    document.getElementById('img-p').innerHTML="you must enter url of image";
-    return false;
-  }
-  else{
-    document.getElementById('img-p').innerHTML="";
-  }
-
-  // Validate price
-  if (productPrice.trim() === '' || isNaN(productPrice)) {
-    document.getElementById('price-p').innerHTML="you must enter price";
-    return false;
-  }
-  else{
-    document.getElementById('price-p').innerHTML="";
-  }
-
-  // Validate count
-  if (productCount.trim() === '' || isNaN(productCount)) {
-    document.getElementById('count-p').innerHTML="you must enter nuber of product";
-    return false;
-  }
-  else{
-    document.getElementById('count-p').innerHTML="";
-  }
-
-  // Validate category
-  if (productCategory.trim() === '') {
-    alert('Please select a product category.');
-    return false;
-  }
-// Validate brand
-if (productBrand.trim() === '') {
-    document.getElementById('brand-p').innerHTML="you must enter name of brand";
-    return false;
-  }
-  else{
-    document.getElementById('brand-p').innerHTML="";
+  // Validate product name
+  if (!namePattern.test(productName)) {
+    document.getElementById("name-p").innerHTML = "Invalid name";
+    isValid = false;
+  } else {
+    document.getElementById("name-p").innerHTML = "";
   }
 
-  // Validate description
-  if (productDescription.trim() === '') {
-    document.getElementById('dis-p').innerHTML="you must enter discreption";
-    return false;
-  }
-  else{
-    document.getElementById('dis-p').innerHTML="";
+  // Validate product slug
+  if (!slugPattern.test(productSlug)) {
+    document.getElementById("slug-p").innerHTML = "Invalid slug";
+    isValid = false;
+  } else {
+    document.getElementById("slug-p").innerHTML = "";
   }
 
-  // All validations passed, submit the form
-  submitForm();
+  // Validate product image URL
+  if (!urlPattern.test(productImage)) {
+    document.getElementById("img-p").innerHTML = "Invalid image URL";
+    isValid = false;
+  } else {
+    document.getElementById("img-p").innerHTML = "";
+  }
 
-  // Prevent the form from submitting by default
-  return false;
+  // Validate product price
+  if (!pricePattern.test(productPrice)) {
+    document.getElementById("price-p").innerHTML = "Invalid price";
+    isValid = false;
+  } else {
+    document.getElementById("price-p").innerHTML = "";
+  }
+
+  // Validate product count
+  if (!countPattern.test(productCount)) {
+    document.getElementById("count-p").innerHTML = "Invalid count";
+    isValid = false;
+  } else {
+    document.getElementById("count-p").innerHTML = "";
+  }
+
+  // Validate product brand
+  if (!namePattern.test(productBrand)) {
+    document.getElementById("brand-p").innerHTML = "Invalid brand";
+    isValid = false;
+  } else {
+    document.getElementById("brand-p").innerHTML = "";
+  }
+
+  // Validate product description
+  if (productDescription.trim() === "") {
+    document.getElementById("dis-p").innerHTML = "Description is required";
+    isValid = false;
+  } else {
+    document.getElementById("dis-p").innerHTML = "";
+  }
+
+  return isValid;
 }
-
-function submitForm() {
-  // You can perform additional actions or submit the form here
-  document.getElementById('myForm').submit();
-}
-
-
-  </script>
-</body>
+    </script>
+  </body>
 </html>
