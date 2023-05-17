@@ -16,7 +16,7 @@
         }
     
         .form-container {
-          max-width: 500px;
+          max-width: 750px;
           margin: 0 auto;
           background-color: #ffffff;
           padding: 20px;
@@ -81,12 +81,12 @@
     <form onsubmit="return validateForm()">
       <div class="form-group">
         <label for="product-name">Name:</label>
-        <input type="text" id="product-name" name="product-name" placeholder="Enter product name">
+        <input type="text" id="product-name" name="product-name" placeholder="Enter product name" required>
         <div class="handle" id="name-p"></div>
       </div>
       <div class="form-group">
         <label for="product-slug">Slug:</label>
-        <input type="text" id="product-slug" name="product-slug" placeholder="Enter product slug">
+        <input type="text" id="product-slug" name="product-slug" placeholder="Enter product slug" required>
         <div class="handle" id="slug-p"></div>
       </div>
       <div class="form-group">
@@ -99,27 +99,27 @@
   </div>
       <div class="form-group">
         <label for="product-image">Image:</label>
-        <input type="text" id="product-image" name="product-image" placeholder="Enter product image URL">
+        <input type="text" id="product-image" name="product-image" placeholder="Enter product image URL" required>
         <div class="handle" id="img-p"></div>
       </div>
       <div class="form-group">
         <label for="product-price">Price:</label>
-        <input type="number" id="product-price" name="product-price" placeholder="Enter product price">
+        <input type="number" id="product-price" name="product-price" placeholder="Enter product price"required>
         <div class="handle" id="price-p"></div>
       </div>
       <div class="form-group">
         <label for="product-count">Count:</label>
-        <input type="number" id="product-count" name="product-count" placeholder="Enter product count">
+        <input type="number" id="product-count" name="product-count" placeholder="Enter product count"required>
         <div class="handle" id="count-p"></div>
       </div>
       <div class="form-group">
 <label for="product-brand">Brand:</label>
-        <input type="text" id="product-brand" name="product-brand" placeholder="Enter product brand">
+        <input type="text" id="product-brand" name="product-brand" placeholder="Enter product brand"required>
         <div class="handle" id="brand-p"></div>
       </div>
       <div class="form-group">
         <label for="product-description">Description:</label>
-        <textarea id="product-description" name="product-description" placeholder="Enter product description"></textarea>
+        <textarea id="product-description" name="product-description" placeholder="Enter product description"required></textarea>
         <div class="handle" id="dis-p"></div>
       </div>
       <div class="form-group">

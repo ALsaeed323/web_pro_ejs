@@ -72,7 +72,30 @@ productRouter.delete('/:id',(async (req, res) => {
   })
 );
 
+productRouter.get('/admin',
+  async (req, res) => {
+    const { query } = req;
+   
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
 
+    const products = await Product.find()
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    const countProducts = await Product.countDocuments();
+    const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
+    res.render("pages/route", {
+      title:"ssss",
+      path:"disallcard", //the path that user entered
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart, //the cart
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    });
+  });
 
 const prices = [
   {

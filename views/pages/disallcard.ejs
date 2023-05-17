@@ -84,7 +84,7 @@
   <body>
     <div class="handle">
       <h2>Display all product</h2>
-      <a href="/views/pages/addcard" class="navigation-button">Add New Card</a>
+      <a href="/addcard" class="navigation-button">Add New Card</a>
     </div>
 
     <table>
@@ -108,6 +108,7 @@
           <td><%= product.name %></td>
           <td><%= product.price %></td>
           <td><%= product.category %></td>
+          <td><%= product.image %></td>
           <td><%= product.brand %></td>
           <td>
             <a class="delete-btn">Delete</a>
@@ -123,7 +124,7 @@
       <% for (let x = 0; x < pages; x++) { %>
       <a
         class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
-        href="/admin/products?page=<%= x + 1 %>"
+        href="/products/admin?page=<%= x + 1 %>"
       >
         <%= x + 1 %>
       </a>

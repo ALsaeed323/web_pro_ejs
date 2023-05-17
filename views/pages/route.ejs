@@ -54,6 +54,9 @@
             case "orders": %>
             <%- include('./orders',{orders}); %>
             <% break;
+            case "disallcard": %>
+            <%- include('./disallcard',{products,countProducts,page,pages}); %>
+            <% break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>
