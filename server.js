@@ -75,6 +75,18 @@ app.post("/signup", async (req, res) => {
     res.status(409).send({ message: "Invalid email" });
   }
 });
+app.get("/user", async (req, res) => {
+  const users = await User.find();
+  const cats = await Product.find().distinct("category"); 
+   res.render("pages/route",{
+    users,
+    title:"ssss",
+    path:"user", //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart,});
+});
+
 app.post("/login", async (req, res) => {
   // Get email and password from the request
   const { email, password } = req.body;
