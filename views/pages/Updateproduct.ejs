@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,16 +76,17 @@
     </style>
   </head>
   <body>
-    <h2>Create New Product</h2>
+    <h2>Edit Product Id:<%=product.id%></h2>
 
     <div class="form-container">
-      <form onsubmit="return validateForm()">
+      <form >
         <div class="form-group">
           <label for="product-name">Name:</label>
           <input
             type="text"
             id="product-name"
             name="product-name"
+            value="<%=product%>"
             placeholder="Enter product name"
           />
           <div class="handle" id="name-p"></div>
@@ -95,13 +97,14 @@
             type="text"
             id="product-slug"
             name="product-slug"
+            value="<%=product%>"
             placeholder="Enter product slug"
           />
           <div class="handle" id="slug-p"></div>
         </div>
         <div class="form-group">
           <label for="product-category">Category:</label>
-          <select id="product-category" name="product-category">
+          <select id="product-category" name="product-category" value="<%=product%>">
             <option value="short">Short</option>
             <option value="bantalon">Bantalon</option>
             <option value="t-shirt">T-Shirt</option>
@@ -113,6 +116,7 @@
             type="text"
             id="product-image"
             name="product-image"
+            value="<%=product%>"
             placeholder="Enter product image URL"
           />
           <div class="handle" id="img-p"></div>
@@ -123,6 +127,7 @@
             type="number"
             id="product-price"
             name="product-price"
+            value="<%=product%>"
             placeholder="Enter product price"
           />
           <div class="handle" id="price-p"></div>
@@ -133,6 +138,7 @@
             type="number"
             id="product-count"
             name="product-count"
+            value="<%=product%>"
             placeholder="Enter product count"
           />
           <div class="handle" id="count-p"></div>
@@ -143,6 +149,7 @@
             type="text"
             id="product-brand"
             name="product-brand"
+            value="<%=product%>"
             placeholder="Enter product brand"
           />
           <div class="handle" id="brand-p"></div>
@@ -152,6 +159,7 @@
           <textarea
             id="product-description"
             name="product-description"
+            value="<%=product%>"
             placeholder="Enter product description"
           ></textarea>
           <div class="handle" id="dis-p"></div>
@@ -161,83 +169,5 @@
         </div>
       </form>
     </div>
-
-    <script>
-      function validateForm() {
-  var productName = document.getElementById("product-name").value;
-  var productSlug = document.getElementById("product-slug").value;
-  var productImage = document.getElementById("product-image").value;
-  var productPrice = document.getElementById("product-price").value;
-  var productCount = document.getElementById("product-count").value;
-  var productBrand = document.getElementById("product-brand").value;
-  var productDescription = document.getElementById("product-description").value;
-
-  var namePattern = /^[A-Za-z\s'-]+$/; // Allows alphabetical characters, spaces, apostrophes, and hyphens
-  var slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/; // Allows lowercase alphanumeric characters and hyphens
-  var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/; // Validates URL format
-  var pricePattern = /^\d+(\.\d{1,2})?$/; // Allows positive decimal numbers up to 2 decimal places
-  var countPattern = /^\d+$/; // Allows positive integers only
-
-  var isValid = true;
-
-  // Validate product name
-  if (!namePattern.test(productName)) {
-    document.getElementById("name-p").innerHTML = "Invalid name";
-    isValid = false;
-  } else {
-    document.getElementById("name-p").innerHTML = "";
-  }
-
-  // Validate product slug
-  if (!slugPattern.test(productSlug)) {
-    document.getElementById("slug-p").innerHTML = "Invalid slug";
-    isValid = false;
-  } else {
-    document.getElementById("slug-p").innerHTML = "";
-  }
-
-  // Validate product image URL
-  if (!urlPattern.test(productImage)) {
-    document.getElementById("img-p").innerHTML = "Invalid image URL";
-    isValid = false;
-  } else {
-    document.getElementById("img-p").innerHTML = "";
-  }
-
-  // Validate product price
-  if (!pricePattern.test(productPrice)) {
-    document.getElementById("price-p").innerHTML = "Invalid price";
-    isValid = false;
-  } else {
-    document.getElementById("price-p").innerHTML = "";
-  }
-
-  // Validate product count
-  if (!countPattern.test(productCount)) {
-    document.getElementById("count-p").innerHTML = "Invalid count";
-    isValid = false;
-  } else {
-    document.getElementById("count-p").innerHTML = "";
-  }
-
-  // Validate product brand
-  if (!namePattern.test(productBrand)) {
-    document.getElementById("brand-p").innerHTML = "Invalid brand";
-    isValid = false;
-  } else {
-    document.getElementById("brand-p").innerHTML = "";
-  }
-
-  // Validate product description
-  if (productDescription.trim() === "") {
-    document.getElementById("dis-p").innerHTML = "Description is required";
-    isValid = false;
-  } else {
-    document.getElementById("dis-p").innerHTML = "";
-  }
-
-  return isValid;
-}
-    </script>
   </body>
 </html>
