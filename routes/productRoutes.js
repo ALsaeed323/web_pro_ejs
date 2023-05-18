@@ -5,7 +5,6 @@ import Product from "../models/productModel.js";
 const productRouter = express.Router();
 
 productRouter.get("/", async (req, res) => {
-  if (!req.session.cart) req.session.cart = [];
   const products = await Product.find();
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
@@ -34,7 +33,6 @@ const prices = [
 ];
 const PAGE_SIZE = 3;
 productRouter.get("/search", async (req, res) => {
-  if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");
   let { page, order, price, category, query, pageSize } = req.query;
   pageSize = pageSize || PAGE_SIZE;
@@ -103,7 +101,6 @@ productRouter.get("/search", async (req, res) => {
 
 //always at the end
 productRouter.get("/:id", async (req, res) => {
-  if (!req.session.cart) req.session.cart = [];
   const cats = await Product.find().distinct("category");
   try {
     const product = await Product.findById(req.params.id);

@@ -1,7 +1,8 @@
+<% const emptyCart = cart && cart.length === 0 || cart === undefined || cart === [] %>
 <h1>Shopping Cart</h1>
 <div class="row">
     <div class="col-md-8">
-        <% if (cart.length === 0) { %>
+        <% if (emptyCart) { %>
             <div class="alert alert-info">
                 Cart is empty. <a href="/">Go Shopping</a>
             </div>
@@ -67,14 +68,14 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h3>Subtotal (<%= cart.reduce((a, c) => a + c.quantity,0)%> items) : $<%=  cart.reduce((a, c) =>a + c.price * c.quantity,0)%>
+                        <h3>Subtotal (<%= emptyCart ? 0: cart.reduce((a, c) => a + c.quantity,0) %> items) : $<%= emptyCart ? 0: cart.reduce((a, c) =>a + c.price * c.quantity,0)%>
                         </h3>
                     </li>
                     <li class="list-group-item">
                         <div class="d-grid">
                             <button class="btn btn-primary" 
                             onclick="redirect('<%= user ? `/shipping` : `/signin` %>')" 
-                            <%= cart.length === 0 && "disabled"%> 
+                            <%= emptyCart && "disabled"%> 
                             >
                                 Proceed to Checkout
                             </button>
