@@ -77,7 +77,12 @@
       },
     }).then((res) => {
       if (res.status === 200) {
-        location.reload();
+        if(window.location.href === "/"){
+          location.reload();
+        }
+        else{
+          window.location.href = "/";
+        }
       } else {
         console.log("Failed to sign out");
       }

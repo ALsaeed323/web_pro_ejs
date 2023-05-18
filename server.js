@@ -46,14 +46,12 @@ if (process.env.MONGODB_URI) {
   console.error(
     "process.env.MONGODB_URI not set. Please provide a valid database connection string."
   );
-
 }
 
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
 app.use("/cart", cartRouter);
 app.use("/orders", orderRouter);
-
 
 app.post("/signup", async (req, res) => {
   // Get name, email and password from the request
@@ -173,7 +171,7 @@ app.post("/profile", async (req, res) => {
     }
     const updatedUser = await user.save();
     req.session.user = updatedUser;
-    res.status(200).send({message : "User Updated"});
+    res.status(200).send({ message: "User Updated" });
   } else {
     res.status(404).send({ message: "User Not Found" });
   }
@@ -181,8 +179,6 @@ app.post("/profile", async (req, res) => {
 
 app.get("/", async (req, res) => {
   //if there is no cart, create one
-  if (!req.session.cart) req.session.cart = [];
-  //get all the categories
   const cats = await Product.find().distinct("category");
   //render the index page
   res.render("pages/index", {
@@ -194,7 +190,6 @@ app.get("/", async (req, res) => {
 
 //anything under this route won't be seen
 app.get("/:route", async (req, res) => {
-  if (!req.session.cart) req.session.cart = [];
   const title = {
     signin: "Sign In",
     signup: "Sign Up",

@@ -5,9 +5,7 @@ const cartRouter = express.Router();
 
 function addToCart(product, cart) {
   // Check if cart exists
-  if (!cart) {
-    cart = [];
-  }
+
   // Check if product already exists in the cart
   const cartItem = cart.find((p) => p._id === product._id.toString());
   if (cartItem) {
@@ -32,6 +30,7 @@ function addToCart(product, cart) {
   }
 }
 cartRouter.post("/add", async (req, res) => {
+  if (!req.session.cart) req.session.cart = [];
   //get product id from request body
   const _id = req.body.id;
   //find product by id
@@ -65,7 +64,7 @@ cartRouter.put("/update", (req, res) => {
     // Check if item exists in the cart
     if (p._id === itemId) {
       // Check if quantity exceeds stock
-      if (quantity > p.countInStock) {
+      if (p.quantity >= p.countInStock) {
         // Set quantity to stock if quantity exceeds stock
         p.quantity = p.countInStock;
         return;
