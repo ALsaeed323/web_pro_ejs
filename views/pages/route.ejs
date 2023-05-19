@@ -59,6 +59,9 @@
             <% break;
             case "user": %>
             <%- include('./UserList',{users}); %>
+            <% break;
+            case "useredit": %>
+            <%- include('./UserEdit',{user}); %>
             <%break;
             default:%>
             <h1>Error 404 : No Page found</h1>

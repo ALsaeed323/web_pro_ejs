@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+ <style>
+    .button {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #007bff;
+  text-decoration: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+ </style>
 </head>
 <body>
     <div>
@@ -22,7 +38,7 @@
                   <td><%= user.name %></td>
                   <td><%= user.email %></td>
                   <td><%= user.isAdmin ? 'YES' : 'NO' %></td>
-                  <td></td>
+                  <td><a href="/user/<%= user._id %>"class="button">Edit</a></td>
                 </tr>
               <% }); %>
             </tbody>

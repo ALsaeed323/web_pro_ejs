@@ -73,6 +73,47 @@ app.post("/signup", async (req, res) => {
     res.status(409).send({ message: "Invalid email" });
   }
 });
+  //
+  //for display all user
+
+app.get("/user", async (req, res) => {
+  const users = await User.find();
+  const cats = await Product.find().distinct("category"); 
+   res.render("pages/route",{
+    users,
+    title:"List of user",
+    path:"user", //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart,});
+});
+///
+/// for edit user
+
+app.get('/user/:mon', async (req, res) => {
+  try {
+    const users = await User.findById(req.params.mon);
+    const cats = await Product.find().distinct("category"); 
+    if (users) {
+      res.render("pages/UserEdit",{users,
+        title:"Edit User", //the path that user entered
+        
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,});
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
+
+//
+//  user dispaly list of user pages
 app.get("/user", async (req, res) => {
   const users = await User.find();
   const cats = await Product.find().distinct("category"); 
