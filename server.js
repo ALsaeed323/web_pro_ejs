@@ -23,6 +23,7 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+const io = new Server(server);
 app.use(
   session({ secret: "Your_Secret_Key", resave: false, saveUninitialized: true })
 );
