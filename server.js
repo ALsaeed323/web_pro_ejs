@@ -329,6 +329,22 @@ app.get("/:route", async (req, res) => {
     cart: req.session.cart, //the cart
   });
 });
+
+///////////////////////////////////////
+io.on("connection", function (socket) {
+  socket.on("newuser", function (username) {
+    socket.broadcast.emit("update", username + " joined the conversation");
+  });
+
+  socket.on("exituser", function (username) {
+    socket.broadcast.emit("update", username + " left the conversation");
+  });
+
+  socket.on("chat", function (message) {
+    socket.broadcast.emit("chat", message);
+  });
+});
+////////////////////////////////////////////////////////
 app.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}`);
 });
