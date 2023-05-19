@@ -1,7 +1,6 @@
 import http from 'http';
 import { Server } from 'socket.io';
 import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -23,6 +22,7 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+const server = createServer(app);
 const io = new Server(server);
 app.use(
   session({ secret: "Your_Secret_Key", resave: false, saveUninitialized: true })
@@ -319,6 +319,7 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
     search: "Search",
+    chat:"Chat"
   };
   const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
   res.render("pages/route", {
