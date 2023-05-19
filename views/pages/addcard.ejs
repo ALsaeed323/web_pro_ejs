@@ -85,6 +85,7 @@
             type="text"
             id="product-name"
             name="product-name"
+            value="<%= product.name%>"
             placeholder="Enter product name"
           />
           <div class="handle" id="name-p"></div>
@@ -95,13 +96,14 @@
             type="text"
             id="product-slug"
             name="product-slug"
+            value="<%= product.slug%>"
             placeholder="Enter product slug"
           />
           <div class="handle" id="slug-p"></div>
         </div>
         <div class="form-group">
           <label for="product-category">Category:</label>
-          <select id="product-category" name="product-category">
+          <select id="product-category" name="product-category"value="<%= product.category%>">
             <option value="short">Short</option>
             <option value="bantalon">Bantalon</option>
             <option value="t-shirt">T-Shirt</option>
@@ -113,6 +115,7 @@
             type="text"
             id="product-image"
             name="product-image"
+            value="<%= product.image%>"
             placeholder="Enter product image URL"
           />
           <div class="handle" id="img-p"></div>
@@ -123,6 +126,7 @@
             type="number"
             id="product-price"
             name="product-price"
+            value="<%= product.price%>"
             placeholder="Enter product price"
           />
           <div class="handle" id="price-p"></div>
@@ -143,6 +147,7 @@
             type="text"
             id="product-brand"
             name="product-brand"
+            value="<%= product.brand%>"
             placeholder="Enter product brand"
           />
           <div class="handle" id="brand-p"></div>
@@ -152,6 +157,7 @@
           <textarea
             id="product-description"
             name="product-description"
+            value="<%= product.description%>"
             placeholder="Enter product description"
           ></textarea>
           <div class="handle" id="dis-p"></div>
