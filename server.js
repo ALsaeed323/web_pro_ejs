@@ -111,6 +111,22 @@ app.get('/user/:mon', async (req, res) => {
   }
 });
 
+/////////////////////////
+app.post(
+  '/user/:id',
+  (async (req, res) => {
+    const users = await User.findById(req.params.id);
+    if (users) {
+      users.name = req.body.name || user.name;
+      users.email = req.body.email || user.email;
+      users.isAdmin = Boolean(req.body.isAdmin);
+      const updatedUser = await users.save();
+      res.send({ message: 'User Updated', user: updatedUser });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+);
 
 //
 //  user dispaly list of user pages
