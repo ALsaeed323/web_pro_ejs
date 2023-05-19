@@ -1,0 +1,47 @@
+
+<body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="panel panel-primary">
+            <div class="panel-heading" id="accordion">
+              <span class="glyphicon glyphicon-comment"></span> Chat
+              <div class="btn-group pull-right">
+                <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion"
+                  href="#collapseOne">
+                  <span class="glyphicon glyphicon-chevron-down"></span>
+                </a>
+              </div>
+            </div>
+            <div class="panel-collapse collapse" id="collapseOne">
+              <div class="panel-body">
+                <ul class="chat">
+                  <div class="app">
+                    <div class="chat-screen">
+                      <div class="message"></div>
+                      <div class="input-group">
+                        <input id="message-input" type="text" class="form-control input-sm"
+                          placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                          <button class="btn btn-warning btn-sm" id="send-message">
+                            Send</button>
+                        </span>
+                      </div>
+                      <button class="btn btn-danger btn-sm" id="exit-chat">Exit Chat</button>
+                    </div>
+                    <div class="join-screen active">
+                      <input type="text" id="username" placeholder="Enter your username" />
+                      <button id="join-user">Join</button>
+                    </div>
+                  </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    </html>
