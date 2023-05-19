@@ -117,8 +117,8 @@ app.post(
   (async (req, res) => {
     const users = await User.findById(req.params.id);
     if (users) {
-      users.name = req.body.name || user.name;
-      users.email = req.body.email || user.email;
+      users.name = req.body.name || users.name;
+      users.email = req.body.email || users.email;
       users.isAdmin = Boolean(req.body.isAdmin);
       const updatedUser = await users.save();
       res.send({ message: 'User Updated', user: updatedUser });
@@ -127,6 +127,68 @@ app.post(
     }
   })
 );
+
+
+//
+//
+//
+//pages ubdate product
+app.get(
+  '/products/admin/:id',
+    (async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    const cats = await Product.find().distinct("category");
+    try{
+      res.render("pages/route",{product,title:"Updateproduct",
+      path:"Updateproduct", //the path that user entered
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,});
+    }catch(error)
+    {
+       
+    }
+  })
+);
+
+///
+//
+//edit product
+app.post(
+  '/products/admin/:id',
+  (async (req, res) => {
+    try{
+
+   
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (product) {
+      product.name = req.body.name ;
+      product.slug = req.body.slug;
+      product.price = req.body.price;
+      product.image = req.body.image;
+      product.category = req.body.category;
+      product.brand = req.body.brand;
+      product.countInStock = req.body.countInStock;
+      product.description = req.body.description;
+      await product.save();
+      res.send({ message: 'Product Updated' });
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  }
+  catch (error){
+    
+  };
+       
+  })
+);
+
+
+
+///products/admin
+
 
 //
 //  user dispaly list of user pages
