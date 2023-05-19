@@ -318,7 +318,7 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
     search: "Search",
-    chat:"Chat"
+    chat:"Chat",
   };
   const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
   res.render("pages/route", {
@@ -327,8 +327,10 @@ app.get("/:route", async (req, res) => {
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
+    
   });
 });
+
 
 ///////////////////////////////////////
 io.on("connection", function (socket) {
@@ -346,6 +348,10 @@ io.on("connection", function (socket) {
 });
 
 ////////////////////////////////////////////////////////
-app.listen(PORT, () => {
+
+//With this change, your server will open the socket and be able to handle WebSocket events when running.
+server.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}`);
 });
+
+
