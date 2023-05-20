@@ -19,6 +19,11 @@
     "express-session": "^1.17.3",
     "mongoos": "^0.0.1-security",
     "mongoose": "^7.1.1",
+    "socket.io": "^4.6.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "prettier": "2.8.8",
+    "prettier-plugin-ejs": "^0.0.10"
   }
 }

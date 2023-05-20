@@ -1,0 +1,100 @@
+<h1 className="my-3">Order <%= order._id %></h1>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Shipping</h5>
+        <p class="card-text">
+          <strong>Name:</strong> <%= order.shippingAddress.fullName %> <br />
+          <strong>Address: </strong> <%= order.shippingAddress.address %>, <%=
+          order.shippingAddress.city %>, <%= order.shippingAddress.postalCode
+          %>, <%= order.shippingAddress.country %>
+        </p>
+        <% if(order.isDelivered) { %>
+        <div class="alert alert-success">
+          Delivered at <%= order.deliveredAt.toString() %>
+        </div>
+        <% } else { %>
+        <div class="alert alert-danger">Not Delivered</div>
+        <% } %>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Payment</h5>
+        <p class="card-text">
+          <strong>Method:</strong> <%= order.paymentMethod %>
+        </p>
+        <% if(order.isPaid) { %>
+        <div class="alert alert-success">
+          Paid at <%= order.paidAt.toString() %>
+        </div>
+        <% } else { %>
+        <div class="alert alert-danger">Not Paid</div>
+        <% } %>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Items</h5>
+        <ul class="list-group list-group-flush">
+          <% order.orderItems.forEach(function(item) { %>
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <img
+                  src="<%= item.image %>"
+                  alt="<%= item.name %>"
+                  class="img-fluid rounded img-thumbnail"
+                />
+                <a href="/products/<%= item._id %>"><%= item.name %></a>
+              </div>
+              <div class="col-md-3">
+                <span><%= item.quantity %></span>
+              </div>
+              <div class="col-md-3">$<%= item.price %></div>
+            </div>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Order Summary</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">Items</div>
+              <div class="col">$<%= order.itemsPrice.toFixed(2) %></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">Shipping</div>
+              <div class="col">$<%= order.shippingPrice.toFixed(2) %></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">Tax</div>
+              <div class="col">$<%= order.taxPrice.toFixed(2) %></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">
+                <strong> Order Total</strong>
+              </div>
+              <div class="col">
+                <strong>$<%= order.totalPrice.toFixed(2) %></strong>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

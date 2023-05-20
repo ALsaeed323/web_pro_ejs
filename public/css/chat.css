@@ -1,0 +1,49 @@
+
+  .panel-heading {
+    background-color: #337ab7;
+    color: #fff;
+    padding: 10px;
+  }
+
+  .panel-heading .glyphicon {
+    margin-right: 5px;
+  }
+
+  .panel-heading .btn-group {
+    margin-top: -3px;
+  }
+
+  .chat-screen {
+    margin-top: 13px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    
+  }
+
+  .message {
+    margin-bottom: 10px;
+  }
+
+  .input-group {
+    margin-top: 10px;
+  }
+
+  #message-input {
+    border-radius: 0;
+  }
+
+  #send-message {
+    border-radius: 0;
+  }
+
+  #exit-chat {
+    margin-top: 10px;
+  }
+
+  .join-screen {
+    display: none;
+  }
+
+  .join-screen.active {
+    display: block;
+  }

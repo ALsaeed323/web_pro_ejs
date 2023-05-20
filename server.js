@@ -1,3 +1,5 @@
+import { createServer } from "http";
+import { Server } from 'socket.io';
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -8,6 +10,7 @@ import bcryptjs from "bcryptjs";
 import User from "./models/userModel.js";
 import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -18,6 +21,8 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 app.use(
   session({ secret: "Your_Secret_Key", resave: false, saveUninitialized: true })
 );
@@ -48,6 +53,7 @@ if (process.env.MONGODB_URI) {
 app.use("/api/seed", seedRouter);
 app.use("/products", productRouter);
 app.use("/cart", cartRouter);
+app.use("/orders", orderRouter);
 
 app.post("/signup", async (req, res) => {
   // Get name, email and password from the request
@@ -69,6 +75,137 @@ app.post("/signup", async (req, res) => {
     res.status(409).send({ message: "Invalid email" });
   }
 });
+  //
+  //for display all user
+
+app.get("/user", async (req, res) => {
+  const users = await User.find();
+  const cats = await Product.find().distinct("category"); 
+   res.render("pages/route",{
+    users,
+    title:"List of user",
+    path:"user", //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart,});
+});
+///
+/// for edit user
+
+app.get('/user/:mon', async (req, res) => {
+  try {
+    const users = await User.findById(req.params.mon);
+    const cats = await Product.find().distinct("category"); 
+    if (users) {
+      res.render("pages/UserEdit",{users,
+        title:"Edit User", //the path that user entered
+        
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,});
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
+/////////////////////////
+app.post(
+  '/user/:id',
+  (async (req, res) => {
+    const users = await User.findById(req.params.id);
+    if (users) {
+      users.name = req.body.name || users.name;
+      users.email = req.body.email || users.email;
+      users.isAdmin = Boolean(req.body.isAdmin);
+      const updatedUser = await users.save();
+      res.send({ message: 'User Updated', user: updatedUser });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+);
+
+
+//
+//
+//
+//pages ubdate product
+app.get(
+  '/products/admin/:id',
+    (async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    const cats = await Product.find().distinct("category");
+    try{
+      res.render("pages/route",{product,title:"Updateproduct",
+      path:"Updateproduct", //the path that user entered
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,});
+    }catch(error)
+    {
+       
+    }
+  })
+);
+
+///
+//
+//edit product
+app.post(
+  '/products/admin/:id',
+  (async (req, res) => {
+    try{
+
+   
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (product) {
+      product.name = req.body.name ;
+      product.slug = req.body.slug;
+      product.price = req.body.price;
+      product.image = req.body.image;
+      product.category = req.body.category;
+      product.brand = req.body.brand;
+      product.countInStock = req.body.countInStock;
+      product.description = req.body.description;
+      await product.save();
+      res.send({ message: 'Product Updated' });
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  }
+  catch (error){
+    
+  };
+       
+  })
+);
+
+
+
+///products/admin
+
+
+//
+//  user dispaly list of user pages
+app.get("/user", async (req, res) => {
+  const users = await User.find();
+  const cats = await Product.find().distinct("category"); 
+   res.render("pages/route",{
+    users,
+    title:"ssss",
+    path:"user", //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart,});
+});
+
 app.post("/login", async (req, res) => {
   // Get email and password from the request
   const { email, password } = req.body;
@@ -145,10 +282,24 @@ app.post("/payment", async (req, res) => {
   }
 });
 
+app.post("/profile", async (req, res) => {
+  const user = await User.findById(req.session.user._id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = bcryptjs.hashSync(req.body.password);
+    }
+    const updatedUser = await user.save();
+    req.session.user = updatedUser;
+    res.status(200).send({ message: "User Updated" });
+  } else {
+    res.status(404).send({ message: "User Not Found" });
+  }
+});
+
 app.get("/", async (req, res) => {
   //if there is no cart, create one
-  if (!req.session.cart) req.session.cart = [];
-  //get all the categories
   const cats = await Product.find().distinct("category");
   //render the index page
   res.render("pages/index", {
@@ -178,7 +329,6 @@ app.post("/reports", (req, res) => {
 
 //anything under this route won't be seen
 app.get("/:route", async (req, res) => {
-  if (!req.session.cart) req.session.cart = [];
   const title = {
     signin: "Sign In",
     signup: "Sign Up",
@@ -186,6 +336,7 @@ app.get("/:route", async (req, res) => {
     contact: "Contact Us",
     cart: "Cart",
     search: "Search",
+    chat:"Chat",
   };
   const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
   res.render("pages/route", {
@@ -194,8 +345,31 @@ app.get("/:route", async (req, res) => {
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
+    
   });
 });
-app.listen(PORT, () => {
+
+
+///////////////////////////////////////
+io.on("connection", function (socket) {
+  socket.on("newuser", function (username) {
+    socket.broadcast.emit("update", username + " joined the conversation");
+  });
+
+  socket.on("exituser", function (username) {
+    socket.broadcast.emit("update", username + " left the conversation");
+  });
+
+  socket.on("chat", function (message) {
+    socket.broadcast.emit("chat", message);
+  });
+});
+
+////////////////////////////////////////////////////////
+
+//With this change, your server will open the socket and be able to handle WebSocket events when running.
+server.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}`);
 });
+
+

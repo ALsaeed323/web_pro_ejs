@@ -33,18 +33,45 @@
             case "payment": %>
             <%- include('./payment',{user}); %>
             <% break;
+            case "chat": %>
+            <%- include('./chat',{user}); %>
+            <% break;
             case "shipping": %>
             <%- include('./shipping'); %>
             <% break;
             case "addcard": %>
             <%- include('./addcard'); %>
             <% break;
-            case "disallcard": %>
-            <%- include('./disallcard'); %>
+            case "updateproduct": %>
+            <%- include('./updateproduct'); %>
             <% break;
             case "payment": %>
             <%- include('./payment'); %>
             <% break;
+            case "placeorder": %>
+            <%- include('./placeorder',{user,cart}); %>
+            <% break;
+            case "order": %>
+            <%- include('./order',{order}); %>
+            <% break;
+            case "profile": %>
+            <%- include('./profile',{user}); %>
+            <% break;
+            case "orders": %>
+            <%- include('./orders',{orders}); %>
+            <% break;
+            case "disallcard": %>
+            <%- include('./disallcard',{products,countProducts,page,pages}); %>
+            <% break;
+            case "user": %>
+            <%- include('./UserList',{users}); %>
+            <% break;
+            case "useredit": %>
+            <%- include('./UserEdit',{user}); %>
+            <% break;
+            case "Updateproduct": %>
+            <%- include('./Updateproduct',{product}); %>
+            <%break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>
