@@ -158,6 +158,24 @@ app.get("/", async (req, res) => {
   });
 });
 
+
+
+
+
+
+
+
+// Handle form submission
+app.post("/reports", (req, res) => {
+  const data = req.body;
+  // Process the data and generate the report as needed
+  console.log(data);
+  res.send('Report generated successfully!');
+});
+
+
+
+
 //anything under this route won't be seen
 app.get("/:route", async (req, res) => {
   if (!req.session.cart) req.session.cart = [];

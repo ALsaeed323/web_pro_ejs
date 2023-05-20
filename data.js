@@ -15,6 +15,12 @@ const data = {
       isAdmin: true,
     },
   ],
+  reports:[
+    {
+      problems:" the cart doesn't want to add a new product"
+      
+    }
+  ],
   products: [
     {
       name: "Nike Slim shirt",

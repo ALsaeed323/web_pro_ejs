@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .generate-Reports{
+        margin-top:20px;
+      }
+      .add-button {
+        margin-top: 20px;
+      }
+  </style>
+</head>
+
+<body>
+    <h2>Reports</h2>
+    <table id="reportTable">
+        <thead>
+            <tr>
+                <th>your Problem</th>
+            </tr>
+        </thead>
+        <tbody class="body">
+            <tr>
+                <td><input type='text'></td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="add-button" onclick="addRow()">Add Row</button>
+    <button class="generate-Reports" onclick="generateReport()">Generate Report</button>
+
+    <script>
+        function addRow() {
+          var table = document.getElementById("reportTable").getElementsByTagName('tbody')[0];
+          var newRow = table.insertRow(table.rows.length);
+          var columnsCount = table.rows[0].cells.length;
+    
+          for (var i = 0; i < columnsCount; i++) {
+            var cell = newRow.insertCell(i);
+            cell.innerHTML = "<input type='text'>";
+          }
+        }
+    
+        function generateReport() {
+          var table = document.getElementById("reportTable");
+          var data = [];
+    
+          // Iterate through table rows
+          for (var i = 1; i < table.rows.length; i++) {
+            var rowData = [];
+    
+            // Iterate through cells in each row
+            for (var j = 0; j < table.rows[i].cells.length; j++) {
+              var cellData = table.rows[i].cells[j].querySelector('input').value;
+              rowData.push(cellData);
+            }
+    
+            data.push(rowData);
+          }
+    
+          // Here, you can process the data and generate the report as needed
+          console.log(data);
+        }
+    </script>
+</body>
+
+</html>
