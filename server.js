@@ -77,9 +77,16 @@ app.post("/signup", async (req, res) => {
 });
   //
   //for display all user
-
+  const PAGE_SIZE = 5;
 app.get("/user", async (req, res) => {
-  const users = await User.find();
+    const { query } = req;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+
+    const users = await User.find()
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+      const countUsers = await User.countDocuments();
   const cats = await Product.find().distinct("category"); 
    res.render("pages/route",{
     users,
@@ -87,8 +94,28 @@ app.get("/user", async (req, res) => {
     path:"user", //the path that user entered
     cats, //the categories
     user: req.session.user, //the user
-    cart: req.session.cart,});
+    cart: req.session.cart,
+    page,
+    pages: Math.ceil(countUsers / pageSize),
+  });
 });
+
+
+
+
+app.get(
+  '/user/addnewuser',
+  (async (req, res) => {
+    
+    const cats = await Product.find().distinct("category"); 
+    res.render("pages/route",{
+      title:"Add New User",
+      path:"addnewuser", //the path that user entered
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,});
+  })
+);
 ///
 /// for edit user
 
@@ -127,6 +154,28 @@ app.post(
     } else {
       res.status(404).send({ message: 'User Not Found' });
     }
+  })
+);
+
+//
+//
+// add user by admin
+
+app.get(
+  'addnewuser',
+  (async (req, res) => {
+   
+
+    res.send("hello");
+  })
+);
+
+app.get(
+  '/user/addnewuser',
+  (async (req, res) => {
+   
+
+    res.render('addnewuser');
   })
 );
 

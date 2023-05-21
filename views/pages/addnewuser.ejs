@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+</head>
+<body>
+    <div class="small-container container">
+        <h3 class="my-3">Create New Account for User</h3>
+            <form id="signupForm" onsubmit="signupHandler(event)">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="signupEmail" required placeholder="Enter email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signupPassword" required placeholder="Enter Password">
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="signupConfirmPassword" required placeholder="Confirm Password">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Create </button>
+                </div>
+                
+            </form>
+        </div>
+
+        <script>
+            const form = document.getElementById('addnewuser');
+            const passwordInput = document.getElementById('signupPassword');
+            const confirmPasswordInput = document.getElementById('signupConfirmPassword');
+          
+            form.addEventListener('submit', function(event) {
+              if (!isPasswordValid(passwordInput.value)) {
+                event.preventDefault();
+                alert('Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+              } else if (passwordInput.value !== confirmPasswordInput.value) {
+                event.preventDefault();
+                alert('Passwords do not match.');
+              }
+            });
+          
+            function isPasswordValid(password) {
+              const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+              return passwordRegex.test(password);
+            }
+          </script>
+</body>
+</html>
