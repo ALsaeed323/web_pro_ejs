@@ -255,6 +255,27 @@ app.get("/user", async (req, res) => {
     cart: req.session.cart,});
 });
 
+
+
+
+
+///
+///
+///dash board {{{{{{{{{{{{ hello }}}}}}}}}}}}
+
+app.get('/dash',
+async (req, res) => {
+
+   const cats = await Product.find().distinct("category"); 
+   res.render("pages/route",{
+    title:"Dashboard",
+    path:"dashboard", //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart,});
+});
+
+
 app.post("/login", async (req, res) => {
   // Get email and password from the request
   const { email, password } = req.body;
