@@ -86,7 +86,6 @@
       <h2>Display all product</h2>
       <a href="/addcard" class="navigation-button">Add New Card</a>
     </div>
-
     <table>
       <thead>
         <tr>
@@ -100,7 +99,6 @@
           <th>Modify</th>
         </tr>
       </thead>
-
       <tbody>
         <% products.forEach((product) => { %>
         <tr>
@@ -111,10 +109,10 @@
           <td><%= product.image %></td>
           <td><%= product.brand %></td>
           <td>
-            <a href="/products/admin/delete/<%= product._id %>" class="delete-btn">Delete</a>
+            <a href="/admin/products/delete/<%= product._id %>" class="delete-btn">Delete</a>
           </td>
           <td>
-            <a href="/products/admin/<%= product._id%>" class="modify-btn">Modify</a>
+            <a href="/admin/products/<%= product._id%>" class="modify-btn">Modify</a>
           </td>
         </tr>
         <%})%>
@@ -124,7 +122,7 @@
       <% for (let x = 0; x < pages; x++) { %>
       <a
         class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
-        href="/products/admin?page=<%= x + 1 %>"
+        href="/admin/products?page=<%= x + 1 %>"
       >
         <%= x + 1 %>
       </a>
