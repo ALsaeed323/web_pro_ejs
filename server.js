@@ -160,6 +160,24 @@ app.post(
 
 //
 //
+//  delete user 
+app.get('/user/delete/:id',(async (req, res) => {
+  
+  const user = await User.findById(req.params.id); 
+  if (user) {
+     await user.deleteOne();
+     res.send({ message:" hello " });
+  }
+  else{
+    res.send({ message: 'Product not Deleted' });
+  }
+
+})
+);
+
+
+//
+//
 // add user by admin
 
 app.get(
@@ -278,14 +296,14 @@ app.post(
 
 app.get('/products/admin/delete/:mon',(async (req, res) => {
   
-    const product = await Product.findById(req.params.mon); 
-    if (product) {
-       await product.deleteOne();
-       res.send({ message:"hello " });
-    }
-    else{
-      res.send({ message: 'Product not Deleted' });
-    }
+  const product = await Product.findById(req.params.mon); 
+  if (product) {
+     await product.deleteOne();
+     res.send({ message:"hello " });
+  }
+  else{
+    res.send({ message: 'Product not Deleted' });
+  }
 
 })
 );

@@ -57,7 +57,7 @@
                   <td><%= user.email %></td>
                   <td><%= user.isAdmin ? 'YES' : 'NO' %></td>
                   <td><a href="/user/<%= user._id %>"class="button">Edit</a>
-                    <a  action="delete"  href="/user/<%= user._id %>"class="button">Delete</a></td>
+                    <a  action="delete"  href="/user/delete/<%= user._id %>"class="button">Delete</a></td>
                 </tr>
               <% }); %>
             </tbody>
