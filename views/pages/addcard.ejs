@@ -78,86 +78,79 @@
     <h2>Create New Product</h2>
 
     <div class="form-container">
-      <form onsubmit="return validateForm()">
+      <form action="/log" method="post" onsubmit="return validateFormm()">
         <div class="form-group">
-          <label for="product-name">Name:</label>
+          <label for="produc_tname">Name:</label>
           <input
             type="text"
-            id="product-name"
-            name="product-name"
-            value="<%= product.name%>"
+            id="product_name"
+            name="product_name"
             placeholder="Enter product name"
           />
           <div class="handle" id="name-p"></div>
         </div>
         <div class="form-group">
-          <label for="product-slug">Slug:</label>
+          <label for="product_slug">Slug:</label>
           <input
             type="text"
-            id="product-slug"
-            name="product-slug"
-            value="<%= product.slug%>"
+            id="product_slug"
+            name="product_slug"
+           
             placeholder="Enter product slug"
           />
           <div class="handle" id="slug-p"></div>
         </div>
         <div class="form-group">
-          <label for="product-category">Category:</label>
-          <select id="product-category" name="product-category"value="<%= product.category%>">
+          <label for="product_category">Category:</label>
+          <select id="product_category" name="product_category">
             <option value="short">Short</option>
             <option value="bantalon">Bantalon</option>
             <option value="t-shirt">T-Shirt</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="product-image">Image:</label>
-          <input
-            type="text"
-            id="product-image"
-            name="product-image"
-            value="<%= product.image%>"
-            placeholder="Enter product image URL"
-          />
+          <label for="product_image">Upload Image:</label>
+          <input type="file" id="product_image" name="product_image" accept="image/*">
           <div class="handle" id="img-p"></div>
         </div>
         <div class="form-group">
-          <label for="product-price">Price:</label>
+          <label for="product_price">Price:</label>
           <input
             type="number"
-            id="product-price"
-            name="product-price"
-            value="<%= product.price%>"
+            id="product_price"
+            name="product_price"
+          
             placeholder="Enter product price"
           />
           <div class="handle" id="price-p"></div>
         </div>
         <div class="form-group">
-          <label for="product-count">Count:</label>
+          <label for="product_count">Count:</label>
           <input
             type="number"
-            id="product-count"
-            name="product-count"
+            id="product_count"
+            name="product_count"
             placeholder="Enter product count"
           />
           <div class="handle" id="count-p"></div>
         </div>
         <div class="form-group">
-          <label for="product-brand">Brand:</label>
+          <label for="product_brand">Brand:</label>
           <input
             type="text"
-            id="product-brand"
-            name="product-brand"
-            value="<%= product.brand%>"
+            id="product_brand"
+            name="product_brand"
+           
             placeholder="Enter product brand"
           />
           <div class="handle" id="brand-p"></div>
         </div>
         <div class="form-group">
-          <label for="product-description">Description:</label>
+          <label for="product_description">Description:</label>
           <textarea
-            id="product-description"
-            name="product-description"
-            value="<%= product.description%>"
+            id="product_description"
+            name="product_description"
+        
             placeholder="Enter product description"
           ></textarea>
           <div class="handle" id="dis-p"></div>
@@ -169,81 +162,6 @@
     </div>
 
     <script>
-      function validateForm() {
-  var productName = document.getElementById("product-name").value;
-  var productSlug = document.getElementById("product-slug").value;
-  var productImage = document.getElementById("product-image").value;
-  var productPrice = document.getElementById("product-price").value;
-  var productCount = document.getElementById("product-count").value;
-  var productBrand = document.getElementById("product-brand").value;
-  var productDescription = document.getElementById("product-description").value;
-
-  var namePattern = /^[A-Za-z\s'-]+$/; // Allows alphabetical characters, spaces, apostrophes, and hyphens
-  var slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/; // Allows lowercase alphanumeric characters and hyphens
-  var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/; // Validates URL format
-  var pricePattern = /^\d+(\.\d{1,2})?$/; // Allows positive decimal numbers up to 2 decimal places
-  var countPattern = /^\d+$/; // Allows positive integers only
-
-  var isValid = true;
-
-  // Validate product name
-  if (!namePattern.test(productName)) {
-    document.getElementById("name-p").innerHTML = "Invalid name";
-    isValid = false;
-  } else {
-    document.getElementById("name-p").innerHTML = "";
-  }
-
-  // Validate product slug
-  if (!slugPattern.test(productSlug)) {
-    document.getElementById("slug-p").innerHTML = "Invalid slug";
-    isValid = false;
-  } else {
-    document.getElementById("slug-p").innerHTML = "";
-  }
-
-  // Validate product image URL
-  if (!urlPattern.test(productImage)) {
-    document.getElementById("img-p").innerHTML = "Invalid image URL";
-    isValid = false;
-  } else {
-    document.getElementById("img-p").innerHTML = "";
-  }
-
-  // Validate product price
-  if (!pricePattern.test(productPrice)) {
-    document.getElementById("price-p").innerHTML = "Invalid price";
-    isValid = false;
-  } else {
-    document.getElementById("price-p").innerHTML = "";
-  }
-
-  // Validate product count
-  if (!countPattern.test(productCount)) {
-    document.getElementById("count-p").innerHTML = "Invalid count";
-    isValid = false;
-  } else {
-    document.getElementById("count-p").innerHTML = "";
-  }
-
-  // Validate product brand
-  if (!namePattern.test(productBrand)) {
-    document.getElementById("brand-p").innerHTML = "Invalid brand";
-    isValid = false;
-  } else {
-    document.getElementById("brand-p").innerHTML = "";
-  }
-
-  // Validate product description
-  if (productDescription.trim() === "") {
-    document.getElementById("dis-p").innerHTML = "Description is required";
-    isValid = false;
-  } else {
-    document.getElementById("dis-p").innerHTML = "";
-  }
-
-  return isValid;
-}
     </script>
   </body>
 </html>

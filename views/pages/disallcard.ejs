@@ -111,7 +111,7 @@
           <td><%= product.image %></td>
           <td><%= product.brand %></td>
           <td>
-            <a class="delete-btn">Delete</a>
+            <a href="/products/admin/delete/<%= product._id %>" class="delete-btn">Delete</a>
           </td>
           <td>
             <a href="/products/admin/<%= product._id%>" class="modify-btn">Modify</a>

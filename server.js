@@ -13,6 +13,7 @@ import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import Product from "./models/productModel.js";
 import dotenv from "dotenv";
+import { Console } from "console";
 dotenv.config();
 
 //Read the current directory name
@@ -255,9 +256,39 @@ app.get("/user", async (req, res) => {
     cart: req.session.cart,});
 });
 
+/////
+///// add product
 
+app.post(
+  '/log',(async (req, res) => {
+    const newProduct = new Product({
+      name: req.body.product_name,
+      slug: req.body.product_slug,
+      image: req.body.product_image,
+      price: req.body.product_price,
+      category: req.body.product_category,
+      brand: req.body.product_brand,
+      countInStock: req.body.product_count,
+      description: req.body.product_description,
+    });
+    const product = await newProduct.save();
+    res.send({ message: 'Product Created', product });
+  })
+);
 
+app.get('/products/admin/delete/:mon',(async (req, res) => {
+  
+    const product = await Product.findById(req.params.mon); 
+    if (product) {
+       await product.deleteOne();
+       res.send({ message:"hello " });
+    }
+    else{
+      res.send({ message: 'Product not Deleted' });
+    }
 
+})
+);
 
 ///
 ///

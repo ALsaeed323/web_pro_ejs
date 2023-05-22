@@ -17,6 +17,18 @@ productRouter.get("/", async (req, res) => {
   });
 });
 //product add new for mange card
+productRouter.get('addcard', async (req, res) => {
+  const cats = await Product.find().distinct("category");
+  res.render("pages/route", {
+    path: "products",
+    title: "addcard",
+    cats,
+    user: req.session.user,
+    cart: req.session.cart,
+  });
+  
+
+});
 productRouter.post('addcard', async (req, res) => {
 
   const newProduct = new Product({
@@ -84,7 +96,7 @@ productRouter.get('/admin',
     const countProducts = await Product.countDocuments();
     const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
     res.render("pages/route", {
-      title:"ssss",
+      title:"Display all probucts",
       path:"disallcard", //the path that user entered
       cats, //the categories
       user: req.session.user, //the user
