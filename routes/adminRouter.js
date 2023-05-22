@@ -1,11 +1,13 @@
 import express from "express";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
+import { isAdmin } from "../controllers/userControllers.js";
+import mongoose from "mongoose";
 //add middleware is admin
 const adminRouter = express.Router();
 const PAGE_SIZE = 1;
 
-adminRouter.get("/products", async (req, res) => {
+adminRouter.get("/products",isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
   const pageSize = PAGE_SIZE;
@@ -26,8 +28,7 @@ adminRouter.get("/products", async (req, res) => {
     pages: Math.ceil(countProducts / pageSize),
   });
 });
-
-adminRouter.get("/products/:id", async (req, res) => {
+adminRouter.get("/products/:id",isAdmin, async (req, res) => {
   const productId = req.params.id;
   const product = await Product.findById(productId);
   const cats = await Product.find().distinct("category");
@@ -42,19 +43,19 @@ adminRouter.get("/products/:id", async (req, res) => {
     });
   } catch (error) {}
 });
-adminRouter.post("/products/:id", async (req, res) => {
+adminRouter.post("/products/:id",isAdmin, async (req, res) => {
   try {
     const productId = req.params.id;
     const product = await Product.findById(productId);
     if (product) {
-      product.name = req.body.name;
-      product.slug = req.body.slug;
-      product.price = req.body.price;
-      product.image = req.body.image;
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.description = req.body.description;
+      product.name = req.body.name || product.name;
+      product.slug = req.body.slug || product.slug;
+      product.price = req.body.price || product.price;
+      product.image = req.body.image || product.image;
+      product.category = req.body.category || product.category;
+      product.brand = req.body.brand || product.brand;
+      product.countInStock = req.body.countInStock || product.countInStock;
+      product.description = req.body.description || product.description;
       await product.save();
       res.send({ message: "Product Updated" });
     } else {
@@ -63,7 +64,8 @@ adminRouter.post("/products/:id", async (req, res) => {
   } catch (error) {}
 });
 
-adminRouter.get("/user", async (req, res) => {
+
+adminRouter.get("/users",isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
   const pageSize = query.pageSize || PAGE_SIZE;
@@ -76,7 +78,7 @@ adminRouter.get("/user", async (req, res) => {
   res.render("pages/route", {
     users,
     title: "List of user",
-    path: "user", //the path that user entered
+    path: "/admin/users", //the path that user entered
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart,
@@ -85,7 +87,7 @@ adminRouter.get("/user", async (req, res) => {
   });
 });
 
-adminRouter.get("/user/addnewuser", async (req, res) => {
+adminRouter.get("/user/addnewuser",isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
     title: "Add New User",
@@ -96,13 +98,15 @@ adminRouter.get("/user/addnewuser", async (req, res) => {
   });
 });
 
-adminRouter.get("/user/:mon", async (req, res) => {
+adminRouter.get("/user/:id",isAdmin, async (req, res) => {
   try {
-    const users = await User.findById(req.params.mon);
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+    const currentUser = await User.findById(req.params.id);
     const cats = await Product.find().distinct("category");
-    if (users) {
-      res.render("pages/UserEdit", {
-        users,
+    if (currentUser) {
+      res.render("pages/route", {
+        currentUser,
+        path: "/admin/user/edit",
         title: "Edit User", //the path that user entered
         cats, //the categories
         user: req.session.user, //the user
@@ -118,20 +122,20 @@ adminRouter.get("/user/:mon", async (req, res) => {
   }
 });
 
-adminRouter.post("/user/:id", async (req, res) => {
+adminRouter.post("/user/:id",isAdmin, async (req, res) => {
   const users = await User.findById(req.params.id);
   if (users) {
     users.name = req.body.name || users.name;
     users.email = req.body.email || users.email;
     users.isAdmin = Boolean(req.body.isAdmin);
     const updatedUser = await users.save();
-    res.send({ message: "User Updated", user: updatedUser });
+    req.session.user = updatedUser;
+    res.redirect("/admin/users");
   } else {
     res.status(404).send({ message: "User Not Found" });
   }
 });
-
-adminRouter.get("/user/delete/:id", async (req, res) => {
+adminRouter.get("/user/delete/:id",isAdmin, async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
     await user.deleteOne();
@@ -141,11 +145,11 @@ adminRouter.get("/user/delete/:id", async (req, res) => {
   }
 });
 
-adminRouter.get("/user/addnewuser", async (req, res) => {
+adminRouter.get("/user/addnewuser",isAdmin, async (req, res) => {
   res.render("addnewuser");
 });
 adminRouter.post(
-  '/log',(async (req, res) => {
+  '/log',isAdmin,async (req, res) => {
     const newProduct = new Product({
       name: req.body.product_name,
       slug: req.body.product_slug,
@@ -158,10 +162,9 @@ adminRouter.post(
     });
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
-  })
-);
+  });
 
-adminRouter.get('/products/admin/delete/:mon',(async (req, res) => {
+adminRouter.get('/products/admin/delete/:mon',isAdmin,async (req, res) => {
   
   const product = await Product.findById(req.params.mon); 
   if (product) {
@@ -172,10 +175,9 @@ adminRouter.get('/products/admin/delete/:mon',(async (req, res) => {
     res.send({ message: 'Product not Deleted' });
   }
 
-})
-);
+});
 
-adminRouter.get('/dash',
+adminRouter.get('/dash',isAdmin,
 async (req, res) => {
 
    const cats = await Product.find().distinct("category"); 
@@ -186,7 +188,7 @@ async (req, res) => {
     user: req.session.user, //the user
     cart: req.session.cart,});
 });
-adminRouter.post("/reports", (req, res) => {
+adminRouter.post("/reports",isAdmin, (req, res) => {
   const data = req.body;
   // Process the data and generate the report as needed
   console.log(data);
