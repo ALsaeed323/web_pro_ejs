@@ -11,8 +11,8 @@ import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import Product from "./models/productModel.js";
 import dotenv from "dotenv";
-import adminRouter from "./routes/adminRouter.js";
-import userRouter from "./routes/userRouter.js";
+import adminRouter from "./routes/adminRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 dotenv.config();
 
 //Read the current directory name

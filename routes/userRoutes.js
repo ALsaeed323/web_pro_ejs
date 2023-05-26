@@ -1,72 +1,117 @@
 import express from "express";
-import bcrypt from "bcryptjs";
-import expressAsyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import bcryptjs from "bcryptjs";
+
 const userRouter = express.Router();
 
-userRouter.post(
-  "/signin",
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.send({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          token: generateToken(user),
-        });
-        return;
-      }
-    }
-    res.status(401).send({ message: "Invalid email or password" });
-  })
-);
-
-userRouter.post(
-  "/signup",
-  expressAsyncHandler(async (req, res) => {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password),
-    });
-    const user = await newUser.save();
-    res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user),
-    });
-  })
-);
-
-userRouter.put(
-  "/profile",
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      if (req.body.password) {
-        user.password = bcrypt.hashSync(req.body.password, 8);
-      }
-
-      const updatedUser = await user.save();
-      res.send({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser),
-      });
+userRouter.post("/signin", async (req, res) => {
+  // Get email and password from the request
+  const { email, password } = req.body;
+  // Check for email and password in the request
+  if (!email || !password) {
+    return res.status(400).send({ message: "Email and password are required" });
+  }
+  try {
+    // Find the user in the database
+    const user = await User.findOne({ email });
+    // Check if user exists and password is correct
+    if (user && bcryptjs.compareSync(password, user.password)) {
+      // Save the user in the session
+      req.session.user = user;
+      return res.status(200).send({ message: "Logged in" });
     } else {
-      res.status(404).send({ message: "User not found" });
+      // Send error message if user doesn't exist or password is incorrect
+      return res.status(401).send({ message: "Invalid email or password" });
     }
-  })
-);
-
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
+userRouter.post("/logout", (req, res) => {
+  // Destroy the session
+  req.session.destroy();
+  res.status(200).send({ message: "Logged out" });
+});
+userRouter.post("/shipping", async (req, res) => {
+  try {
+    // Get the shipping address from the request
+    const { fullName, address, city, postalCode, country } = req.body;
+    // Create a new shipping address Object
+    const newShippingAddress = { fullName, address, city, postalCode, country };
+    // Find the user in the database and update the shipping address
+    const user = await User.findOneAndUpdate(
+      { _id: req.session.user._id },
+      {
+        shippingAddress: newShippingAddress,
+      },
+      {
+        new: true,
+      }
+    );
+    // Save the user with new data in the session
+    req.session.user = user;
+    res.status(200).send({ message: "Shipping address saved" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
+userRouter.post("/payment", async (req, res) => {
+  try {
+    // Get the shipping address from the request
+    const { paymentMethod } = req.body;
+    // Find the user in the database and update the Payment Method
+    const user = await User.findOneAndUpdate(
+      { _id: req.session.user._id },
+      {
+        paymentMethod,
+      },
+      {
+        new: true,
+      }
+    );
+    // Save the user with new data in the session
+    req.session.user = user;
+    res.status(200).send({ message: "Shipping address saved" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
+userRouter.post("/profile", async (req, res) => {
+  const user = await User.findById(req.session.user._id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = bcryptjs.hashSync(req.body.password);
+    }
+    const updatedUser = await user.save();
+    req.session.user = updatedUser;
+    res.status(200).send({ message: "User Updated" });
+  } else {
+    res.status(404).send({ message: "User Not Found" });
+  }
+});
+userRouter.post("/signup", async (req, res) => {
+    // Get name, email and password from the request
+    const { name, email, password } = req.body;
+    try {
+      // Create a new user
+      const user = await User.create({
+        name,
+        email,
+        password: password,
+        isAdmin: false,
+      });
+      // Save the user in the database
+      const createdUser = await user.save();
+      // Save the user in the session
+      req.session.user = createdUser;
+      res.status(200).send({ message: "Logged in" });
+    } catch (err) {
+      res.status(409).send({ message: "Invalid email" });
+    }
+});
 export default userRouter;

@@ -3,7 +3,6 @@ import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
-//add middleware is admin
 const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
