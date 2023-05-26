@@ -57,7 +57,7 @@
                   <td><%= user.email %></td>
                   <td><%= user.isAdmin ? 'YES' : 'NO' %></td>
                   <td><a href="/admin/user/<%= user._id %>"class="button">Edit</a>
-                    <a  action="delete"  href="/admin/user/delete/<%= user._id %>"class="button">Delete</a></td>
+                    <a action="delete"  class="button" onclick="deleteUserHandler(event,'<%= user._id %>')" >Delete</a></td>
                 </tr>
               <% }); %>
             </tbody>

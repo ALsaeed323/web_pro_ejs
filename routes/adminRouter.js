@@ -5,7 +5,7 @@ import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
 //add middleware is admin
 const adminRouter = express.Router();
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 4;
 
 adminRouter.get("/products",isAdmin, async (req, res) => {
   const { query } = req;
@@ -135,13 +135,14 @@ adminRouter.post("/user/:id",isAdmin, async (req, res) => {
     res.status(404).send({ message: "User Not Found" });
   }
 });
-adminRouter.get("/user/delete/:id",isAdmin, async (req, res) => {
+adminRouter.delete("/user/:id",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
   const user = await User.findById(req.params.id);
   if (user) {
     await user.deleteOne();
-    res.send({ message: " hello " });
+    res.status(200).send({ message: "deleted" });
   } else {
-    res.send({ message: "Product not Deleted" });
+    res.status(500).send({ message: "Product not Deleted" });
   }
 });
 
