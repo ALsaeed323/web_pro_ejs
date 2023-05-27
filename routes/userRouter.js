@@ -1,8 +1,27 @@
 import express from "express";
+import { body, validationResult } from "express-validator";
 import User from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
 
 const userRouter = express.Router();
+
+const validateSignup = [
+  body("username").notEmpty().withMessage("Username is required"),
+  body("email").isEmail().withMessage("Invalid email"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters"),
+  body("password")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
+    )
+    .withMessage(
+      "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character"
+    ),
+  body("confirmPassword")
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage("Passwords do not match"),
+];
 
 userRouter.post("/signin", async (req, res) => {
   // Get email and password from the request
