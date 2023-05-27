@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const mongoose = require('mongoose');
 const reportSchema = require(
     "reports",
@@ -7,13 +8,3 @@ const reportSchema = require(
         }
     )
 );
-// const report=require(
-//     "reports",
-//     new mongoose.Schema(
-//         {
-//             report:{ type: string, required : true,unique :false },
-//         },
-//         {
-
-//         }
-//     )
