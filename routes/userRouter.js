@@ -24,30 +24,35 @@ const validateSignup = [
 ];
 
 
-userRouter.post("/signin", async (req, res) => {
-  // Get email and password from the request
-  const { email, password } = req.body;
-  // Check for email and password in the request
-  if (!email || !password) {
-    return res.status(400).send({ message: "Email and password are required" });
+userRouter.post("/signup", validateSignup, async (req, res) => {
+  // Get name, email, and password from the request
+  const { name, email, password } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // Return validation errors if any
+    return res.status(400).send({ errors: errors.array() });
   }
+
   try {
-    // Find the user in the database
-    const user = await User.findOne({ email });
-    // Check if user exists and password is correct
-    if (user && bcryptjs.compareSync(password, user.password)) {
-      // Save the user in the session
-      req.session.user = user;
-      return res.status(200).send({ message: "Logged in" });
-    } else {
-      // Send error message if user doesn't exist or password is incorrect
-      return res.status(401).send({ message: "Invalid email or password" });
-    }
+    // Create a new user
+    const hashedPassword = bcryptjs.hashSync(password);
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      isAdmin: false,
+    });
+
+    // Save the user in the session
+    req.session.user = user;
+    return res.status(200).send({ message: "Logged in" });
   } catch (err) {
     console.error(err);
-    return res.status(500).send({ message: "Internal server error" });
+    return res.status(409).send({ message: "Invalid email" });
   }
 });
+
 userRouter.post("/logout", (req, res) => {
   // Destroy the session
   req.session.destroy();
