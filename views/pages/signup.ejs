@@ -1,21 +1,25 @@
 <div class="small-container container">
-<h3 class="my-3">Sign Up</h3>
+    <h3 class="my-3">Sign Up</h3>
     <form id="signupForm" onsubmit="signupHandler(event)">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
+            <span id="nameError" class="error-message"></span>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" class="form-control" id="signupEmail" required placeholder="Enter email">
+            <span id="emailError" class="error-message"></span>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="signupPassword" required placeholder="Enter Password">
+            <span id="passwordError" class="error-message"></span>
         </div>
         <div class="mb-3">
             <label for="confirmPassword" class="form-label">Confirm Password</label>
             <input type="password" class="form-control" id="signupConfirmPassword" required placeholder="Confirm Password">
+            <span id="confirmPasswordError" class="error-message"></span>
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Sign In</button>
@@ -25,3 +29,85 @@
         </div>
     </form>
 </div>
+
+<script>
+    function signupHandler(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Clear previous error messages
+        clearErrorMessages();
+
+        // Perform validation
+        var nameInput = document.getElementById('signupName');
+        var emailInput = document.getElementById('signupEmail');
+        var passwordInput = document.getElementById('signupPassword');
+        var confirmPasswordInput = document.getElementById('signupConfirmPassword');
+
+        // Validate name
+        if (nameInput.value.trim() === '') {
+            displayErrorMessage('nameError', 'Please enter your name.');
+            nameInput.focus();
+            return;
+        }
+
+        // Validate email
+        if (emailInput.value.trim() === '') {
+            displayErrorMessage('emailError', 'Please enter your email address.');
+            emailInput.focus();
+            return;
+        }
+
+        // Validate password
+        if (passwordInput.value === '') {
+            displayErrorMessage('passwordError', 'Please enter a password.');
+            passwordInput.focus();
+            return;
+        }
+
+        // Validate confirm password
+        if (confirmPasswordInput.value === '') {
+            displayErrorMessage('confirmPasswordError', 'Please confirm your password.');
+            confirmPasswordInput.focus();
+            return;
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            displayErrorMessage('confirmPasswordError', 'Password and confirm password do not match.');
+            confirmPasswordInput.focus();
+            return;
+        }
+
+        // If all validations pass, you can proceed with form submission
+        // Here, you can send the form data to the server or perform any other desired actions
+        displaySuccessMessage('Form submitted successfully!');
+        // signupForm.submit(); // Uncomment this line to submit the form
+    }
+
+    function displayErrorMessage(elementId, message) {
+        var errorElement = document.getElementById(elementId);
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+
+    function displaySuccessMessage(message) {
+        var successMessage = document.createElement('p');
+        successMessage.textContent = message;
+        successMessage.classList.add('success-message');
+
+        var form = document.getElementById('signupForm');
+        form.appendChild(successMessage);
+    }
+
+    function clearErrorMessages() {
+        var errorMessages = document.getElementsByClassName('error-message');
+        for (var i = 0; i < errorMessages.length; i++) {
+            errorMessages[i].style.display = 'none';
+            errorMessages[i].textContent = '';
+        }
+
+        var successMessage = document.querySelector('.success-message');
+        if (successMessage) {
+            successMessage.remove();
+        }
+    }
+</script>
