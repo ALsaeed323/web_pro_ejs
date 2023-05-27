@@ -60,11 +60,11 @@
             case "/admin/products": %>
             <%- include('./adminproducts',{products,countProducts,page,pages}); %>
             <% break;
-            case "user": %>
-            <%- include('./UserList',{users}); %>
+            case "/admin/users": %>
+            <%- include('./userlist',{users}); %>
             <% break;
-            case "useredit": %>
-            <%- include('./UserEdit',{user}); %>
+            case "/admin/user/edit": %>
+            <%- include('./UserEdit',{user:currentUser}); %>
             <% break;
             case "Updateproduct": %>
             <%- include('./Updateproduct',{product}); %>

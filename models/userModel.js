@@ -25,26 +25,16 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save", function(next) {
   const user = this;
-
-  // Only hash the password if it has been modified (or is new)
-  if (!user.isModified('password')) return next();
-
-  // Commenting out the hashing code
-  /*
+  if (!user.isModified('password')) return next();  
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
     if (err) return next(err);
 
     bcrypt.hash(user.password, salt, function(err, hash) {
       if (err) return next(err);
-
       user.password = hash;
       next();
     });
   });
-  */
-
-  // Skipping password hashing
-  next();
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
