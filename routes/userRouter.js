@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs";
 const userRouter = express.Router();
 
 const validateSignup = [
-  body("username").notEmpty().withMessage("Username is required"),
+  body("name").notEmpty().withMessage("Name is required"),
   body("email").isEmail().withMessage("Invalid email"),
   body("password")
     .isLength({ min: 6 })
@@ -22,6 +22,7 @@ const validateSignup = [
     .custom((value, { req }) => value === req.body.password)
     .withMessage("Passwords do not match"),
 ];
+
 
 userRouter.post("/signin", async (req, res) => {
   // Get email and password from the request
