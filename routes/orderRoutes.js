@@ -38,8 +38,6 @@ orderRouter.get("/mine", async (req, res) => {
   }
 });
 
-
-
 orderRouter.get("/:id", async (req, res) => {
   const order = await Order.findById(req.params.id);
   if (order) {

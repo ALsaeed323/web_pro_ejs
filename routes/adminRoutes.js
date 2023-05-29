@@ -1,6 +1,7 @@
 import express from "express";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
+import Order from "../models/orderModel.js";
 import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
 const adminRouter = express.Router();
@@ -122,18 +123,18 @@ adminRouter.get("/user/:id",isAdmin, async (req, res) => {
 });
 
 adminRouter.post("/user/:id",isAdmin, async (req, res) => {
-  const users = await User.findById(req.params.id);
-  if (users) {
-    users.name = req.body.name || users.name;
-    users.email = req.body.email || users.email;
-    users.isAdmin = Boolean(req.body.isAdmin);
-    const updatedUser = await users.save();
-    req.session.user = updatedUser;
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = Boolean(req.body.isAdmin);
+    user.save();
     res.redirect("/admin/users");
   } else {
     res.status(404).send({ message: "User Not Found" });
   }
 });
+
 adminRouter.delete("/user/:id",isAdmin, async (req, res) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
   const user = await User.findById(req.params.id);
@@ -148,6 +149,7 @@ adminRouter.delete("/user/:id",isAdmin, async (req, res) => {
 adminRouter.get("/user/addnewuser",isAdmin, async (req, res) => {
   res.render("addnewuser");
 });
+
 adminRouter.post(
   '/log',isAdmin,async (req, res) => {
     const newProduct = new Product({
@@ -162,7 +164,7 @@ adminRouter.post(
     });
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
-  });
+});
 
 adminRouter.get('/products/admin/delete/:mon',isAdmin,async (req, res) => {
   
@@ -193,6 +195,16 @@ adminRouter.post("/reports",isAdmin, (req, res) => {
   // Process the data and generate the report as needed
   console.log(data);
   res.send('Report generated successfully!');
+});
+adminRouter.post("/order/:id/pay",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+  }
+  const updatedOrder = await order.save();
+  res.send({ message: "Order Paid", order: updatedOrder });
 });
 
 export default adminRouter;
