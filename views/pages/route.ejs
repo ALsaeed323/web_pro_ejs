@@ -49,7 +49,7 @@
             <%- include('./placeorder',{user,cart}); %>
             <% break;
             case "order": %>
-            <%- include('./order',{order}); %>
+            <%- include('./order',{order,user}); %>
             <% break;
             case "profile": %>
             <%- include('./profile',{user}); %>

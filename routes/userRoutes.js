@@ -15,7 +15,7 @@ userRouter.post("/signin", async (req, res) => {
     // Find the user in the database
     const user = await User.findOne({ email });
     // Check if user exists and password is correct
-    if (user && bcryptjs.compareSync(password, user.password)) {
+    if (user && await bcryptjs.compare(password, user.password)) {
       // Save the user in the session
       req.session.user = user;
       return res.status(200).send({ message: "Logged in" });
