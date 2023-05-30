@@ -32,7 +32,7 @@ adminRouter.get("/d", async (req, res) => {
   });
 });
 
-adminRouter.get("/admin/products",isAdmin, async (req, res) => {
+adminRouter.get("/products",isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
   const pageSize = PAGE_SIZE;
@@ -53,7 +53,7 @@ adminRouter.get("/admin/products",isAdmin, async (req, res) => {
     pages: Math.ceil(countProducts / pageSize),
   });
 });
-adminRouter.get("/admin/products/:id",isAdmin, async (req, res) => {
+adminRouter.get("/products/:id",isAdmin, async (req, res) => {
   const productId = req.params.id;
   const product = await Product.findById(productId);
   const cats = await Product.find().distinct("category");
@@ -68,7 +68,7 @@ adminRouter.get("/admin/products/:id",isAdmin, async (req, res) => {
     });
   } catch (error) {}
 });
-adminRouter.post("/admin/products/:id",isAdmin, async (req, res) => {
+adminRouter.post("/products/:id",isAdmin, async (req, res) => {
   try {
     const productId = req.params.id;
     const product = await Product.findById(productId);
@@ -221,7 +221,7 @@ adminRouter.post("/reports",isAdmin, (req, res) => {
   console.log(data);
   res.send('Report generated successfully!');
 });
-adminRouter.post("/order/:id/pay",isAdmin, async (req, res) => {
+adminRouter.get("/order/:id/pay",isAdmin, async (req, res) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
   const order = await Order.findById(req.params.id);
   if (order) {
@@ -229,7 +229,8 @@ adminRouter.post("/order/:id/pay",isAdmin, async (req, res) => {
     order.paidAt = Date.now();
   }
   const updatedOrder = await order.save();
-  res.send({ message: "Order Paid", order: updatedOrder });
+  res.redirect("/orders/"+req.params.id);
+  // res.send({ message: "Order Paid", order: updatedOrder });
 });
 
 export default adminRouter;
