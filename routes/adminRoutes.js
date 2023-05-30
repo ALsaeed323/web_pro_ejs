@@ -7,7 +7,32 @@ import mongoose from "mongoose";
 const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
-adminRouter.get("/products",isAdmin, async (req, res) => {
+
+adminRouter.get("/d", async (req, res) => {
+  const cats = await Product.find().distinct("category");
+  const countUsers = await User.countDocuments();
+  const countOrders = await Order.countDocuments();
+  const totalSale = await Product.find().distinct("price");
+  let sumOfSales=0;
+  totalSale.forEach((ss) => {
+    sumOfSales = sumOfSales + ss;
+    ;
+  });
+  
+  res.render("pages/route", {
+    title: "dashboard",
+    path: "dashboard", //the path that user entered
+    countUsers,
+    countOrders,
+    sumOfSales,
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart,
+    
+  });
+});
+
+adminRouter.get("/admin/products",isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
   const pageSize = PAGE_SIZE;
@@ -28,7 +53,7 @@ adminRouter.get("/products",isAdmin, async (req, res) => {
     pages: Math.ceil(countProducts / pageSize),
   });
 });
-adminRouter.get("/products/:id",isAdmin, async (req, res) => {
+adminRouter.get("/admin/products/:id",isAdmin, async (req, res) => {
   const productId = req.params.id;
   const product = await Product.findById(productId);
   const cats = await Product.find().distinct("category");
@@ -43,7 +68,7 @@ adminRouter.get("/products/:id",isAdmin, async (req, res) => {
     });
   } catch (error) {}
 });
-adminRouter.post("/products/:id",isAdmin, async (req, res) => {
+adminRouter.post("/admin/products/:id",isAdmin, async (req, res) => {
   try {
     const productId = req.params.id;
     const product = await Product.findById(productId);
