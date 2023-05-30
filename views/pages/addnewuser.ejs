@@ -10,18 +10,23 @@
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
+                    
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="signupEmail" required placeholder="Enter email">
+                    <span id="emailErrorMessage" class="error-message"></span>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="signupPassword" required placeholder="Enter Password">
+                    <span id="passwordErrorMessage" class="error-message"></span>
+
                 </div>
                 <div class="mb-3">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control" id="signupConfirmPassword" required placeholder="Confirm Password">
+                    <span id="ConfirmpasswordErrorMessage" class="error-message"></span>
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Create </button>
