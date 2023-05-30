@@ -95,13 +95,14 @@
           <% if (user && user.isAdmin && !order.isPaid && !order.isDelivered) { %>
             <li class="list-group-item">
               <div class="d-grid">
-                <a href="/admin/order/<%= order._id %>/pay" class="btn btn-primary">Pay</a>
+                <a onclick="payOrder('<%= order._id %>')" class="btn btn-primary">Pay</a>
               </div>
+            </li>
           <% } %>
           <% if (user && user.isAdmin && order.isPaid && !order.isDelivered) { %>
             <li class="list-group-item">
               <div class="d-grid">
-                <button type="button" class="btn btn-primary" onclick="deliverHandler()">Deliver Order</button>
+                <a onclick="deliverOrder('<%= order._id%>')" class="btn btn-primary">Deliver Order</a>
               </div>
             </li>
           <% } %>

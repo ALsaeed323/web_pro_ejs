@@ -66,6 +66,9 @@
             case "/admin/user/edit": %>
             <%- include('./UserEdit',{user:currentUser}); %>
             <% break;
+            case "/admin/orders": %>
+            <%- include('./orderlist',{orders}); %>
+            <% break;
             case "Updateproduct": %>
             <%- include('./Updateproduct',{product}); %>
             <% break;

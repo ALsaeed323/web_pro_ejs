@@ -5,8 +5,6 @@
 
 .navigation-button {
         padding: 5px 10px;
-        background-color: #007bff;
-        color: #fff;
         text-decoration: none;
         border-radius: 4px;
         transition: background-color 1s ease;
@@ -37,7 +35,7 @@
     <div>
         <h1>Users</h1>
         <div class="handle">
-          <a href="/admin/user/addnewuser" class="navigation-button">Add New user</a>
+          <a href="/admin/user/addnewuser"class="btn btn-primary navigation-button">Add New user</a>
         </div>
           <table class="table">
             <thead>
@@ -53,11 +51,11 @@
               <% users.forEach((user) => { %>
                 <tr>
                   <td><%= user._id %></td>
-                  <td><%= user.name %></td>
+                  <td><%= user.name %></td>   
                   <td><%= user.email %></td>
                   <td><%= user.isAdmin ? 'YES' : 'NO' %></td>
-                  <td><a href="/admin/user/<%= user._id %>"class="button">Edit</a>
-                    <a action="delete"  class="button" onclick="deleteUserHandler(event,'<%= user._id %>')" >Delete</a></td>
+                  <td><a href="/admin/user/<%= user._id %>"class="btn btn-primary">Edit</a>
+                    <a action="delete"  class="btn btn-primary" onclick="deleteUserHandler(event,'<%= user._id %>')" >Delete</a></td>
                 </tr>
               <% }); %>
             </tbody>
