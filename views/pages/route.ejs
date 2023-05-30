@@ -31,7 +31,7 @@
             <%- include('./cart',{cart,user}); %>
             <% break;
             case "payment": %>
-            <%- include('./payment',{user}); %>
+            <%- include('./payment',{user,clientId}); %>
             <% break;
             case "shipping": %>
             <%- include('./shipping'); %>
