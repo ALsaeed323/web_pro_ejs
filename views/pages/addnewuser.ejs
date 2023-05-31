@@ -9,7 +9,6 @@
   <div class="small-container container">
     <h3 class="my-3">Create New Account for User</h3>
     <form id="signupForm" onsubmit="signupHandler(event)">
-<<<<<<< HEAD
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
@@ -39,54 +38,7 @@
   </div>
 
   <script>
-    const form = document.getElementById('addnewuser');
-    const passwordInput = document.getElementById('signupPassword');
-    const confirmPasswordInput = document.getElementById('signupConfirmPassword');
-
-    form.addEventListener('submit', function (event) {
-      if (!isPasswordValid(passwordInput.value)) {
-        event.preventDefault();
-        alert('Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
-      } else if (passwordInput.value !== confirmPasswordInput.value) {
-        event.preventDefault();
-        alert('Passwords do not match.');
-      }
-    });
-
-    function isPasswordValid(password) {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      return passwordRegex.test(password);
-    }
-  </script>
-=======
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
-            <span id="nameErrorMessage" class="error-message"></span>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="signupEmail" required placeholder="Enter email">
-            <span id="emailErrorMessage" class="error-message"></span>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="signupPassword" required placeholder="Enter Password">
-            <span id="passwordErrorMessage" class="error-message"></span>
-        </div>
-        <div class="mb-3">
-            <label for="confirmPassword" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="signupConfirmPassword" required placeholder="Confirm Password">
-            <span id="confirmPasswordErrorMessage" class="error-message"></span>
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Create</button>
-        </div>
-    </form>
-</div>
-
-<script>
-    function signupHandler(event) {
+        function signupHandler(event) {
         event.preventDefault(); // Prevent form submission for now
 
         // Validate form inputs
@@ -138,9 +90,25 @@
         // You can add your code here to perform the actual form submission
         // alert('Form submitted successfully!');
     }
-</script>
+    const form = document.getElementById('addnewuser');
+    const passwordInput = document.getElementById('signupPassword');
+    const confirmPasswordInput = document.getElementById('signupConfirmPassword');
 
->>>>>>> f6c2a8f932660482f980bc254eb023fc1ce0cb3a
+    form.addEventListener('submit', function (event) {
+      if (!isPasswordValid(passwordInput.value)) {
+        event.preventDefault();
+        alert('Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      } else if (passwordInput.value !== confirmPasswordInput.value) {
+        event.preventDefault();
+        alert('Passwords do not match.');
+      }
+    });
+
+    function isPasswordValid(password) {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return passwordRegex.test(password);
+    }
+  </script>
 </body>
 
 </html>
