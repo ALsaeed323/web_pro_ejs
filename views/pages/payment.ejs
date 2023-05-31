@@ -3,21 +3,55 @@
     <div class="container small-container">
         <h1 class="my-3">Payment Method</h1>
         <form id="paymentForm" onsubmit="paymentHandler(event)">
-            <div class="mb-3">
-                <input type="radio" id="PayPal" name="paymentMethod" value="PayPal" <%= user.paymentMethod === "PayPal" && "checked" %>>
-                <label for="PayPal">PayPal</label>
-            </div>
-            <div class="mb-3">
-                <input type="radio" id="Stripe" name="paymentMethod" value="Stripe" <%= user.paymentMethod === "Stripe" && "checked" %> >
-                <label for="Stripe">Stripe</label>
-            </div>
-            <div class="mb-3">
-                <input type="radio" id="Cash" name="paymentMethod" value="Cash" <%= user.paymentMethod === "Cash" && "checked" %> >
-                <label for="Cash">Cash on delivery</label>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-primary">Continue</button>
-            </div>
+          <div class="mb-3">
+            <input type="radio" id="PayPal" name="paymentMethod" value="PayPal">
+            <label for="PayPal">PayPal</label>
+          </div>
+          <div class="mb-3">
+            <input type="radio" id="Stripe" name="paymentMethod" value="Stripe">
+            <label for="Stripe">Stripe</label>
+          </div>
+          <div class="mb-3">
+            <input type="radio" id="Cash" name="paymentMethod" value="Cash">
+            <label for="Cash">Cash on delivery</label>
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary">Continue</button>
+          </div>
         </form>
-    </div>
-</div>
+      
+        <div id="paypal-button-container" style="width: 10px;"></div>
+      </div>
+      
+      <script src="https://www.paypal.com/sdk/js?client-id=Adl807sAwea4chd_atEpuqif_yg519DmWDHUqKS1bZKaSyCl1SGo_kYAb0PUj2xl771F95W7Jng_mAME"></script>
+      <script>
+        function paymentHandler(event) {
+          event.preventDefault();
+          var selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      
+          if (selectedPaymentMethod === 'PayPal') {
+            createPaypalOrder();
+          } else {
+            // Perform other payment actions (e.g., Stripe)
+          }
+        }
+      
+        function createPaypalOrder() {
+          paypal.Buttons({
+            createOrder: function(data, actions) {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: '299.99'
+                    }
+                  }
+                ]
+              });
+            }
+          }).render('#paypal-button-container');
+        }
+      
+        
+      </script>
+      

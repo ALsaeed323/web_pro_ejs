@@ -87,7 +87,6 @@ app.get("/:route", async (req, res) => {
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
-    clientId:process.env.PAYPAL_CLIENT_ID// API clientId
   });
 });
 

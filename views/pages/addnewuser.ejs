@@ -4,56 +4,89 @@
     
 </head>
 <body>
-    <div class="small-container container">
-        <h3 class="my-3">Create New Account for User</h3>
-            <form id="signupForm" onsubmit="signupHandler(event)">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
-                    
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="signupEmail" required placeholder="Enter email">
-                    <span id="emailErrorMessage" class="error-message"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="signupPassword" required placeholder="Enter Password">
-                    <span id="passwordErrorMessage" class="error-message"></span>
-
-                </div>
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="signupConfirmPassword" required placeholder="Confirm Password">
-                    <span id="ConfirmpasswordErrorMessage" class="error-message"></span>
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Create </button>
-                </div>
-                
-            </form>
+  <div class="small-container container">
+    <h3 class="my-3">Create New Account for User</h3>
+    <form id="signupForm" onsubmit="signupHandler(event)">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="signupName" required placeholder="Enter Name">
+            <span id="nameErrorMessage" class="error-message"></span>
         </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="signupEmail" required placeholder="Enter email">
+            <span id="emailErrorMessage" class="error-message"></span>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signupPassword" required placeholder="Enter Password">
+            <span id="passwordErrorMessage" class="error-message"></span>
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="signupConfirmPassword" required placeholder="Confirm Password">
+            <span id="confirmPasswordErrorMessage" class="error-message"></span>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+</div>
 
-        <script>
-            const form = document.getElementById('addnewuser');
-            const passwordInput = document.getElementById('signupPassword');
-            const confirmPasswordInput = document.getElementById('signupConfirmPassword');
-          
-            form.addEventListener('submit', function(event) {
-              if (!isPasswordValid(passwordInput.value)) {
-                event.preventDefault();
-                alert('Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
-              } else if (passwordInput.value !== confirmPasswordInput.value) {
-                event.preventDefault();
-                alert('Passwords do not match.');
-              }
-            });
-          
-            function isPasswordValid(password) {
-              const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-              return passwordRegex.test(password);
-            }
-          </script>
+<script>
+    function signupHandler(event) {
+        event.preventDefault(); // Prevent form submission for now
+
+        // Validate form inputs
+        var nameInput = document.getElementById('signupName');
+        var emailInput = document.getElementById('signupEmail');
+        var passwordInput = document.getElementById('signupPassword');
+        var confirmPasswordInput = document.getElementById('signupConfirmPassword');
+
+        var nameErrorMessage = document.getElementById('nameErrorMessage');
+        var emailErrorMessage = document.getElementById('emailErrorMessage');
+        var passwordErrorMessage = document.getElementById('passwordErrorMessage');
+        var confirmPasswordErrorMessage = document.getElementById('confirmPasswordErrorMessage');
+
+        // Validate name
+        if (nameInput.value.trim() === '') {
+            nameErrorMessage.textContent = 'Please enter your name.';
+        } else {
+            nameErrorMessage.textContent = '';
+        }
+
+        // Validate email
+        var emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (!emailRegex.test(emailInput.value)) {
+            emailErrorMessage.textContent = 'Please enter a valid email address.';
+        } else {
+            emailErrorMessage.textContent = '';
+        }
+
+        // Validate password
+        if (passwordInput.value.length < 8) {
+            passwordErrorMessage.textContent = 'Password must be at least 8 characters long.';
+        } else {
+            passwordErrorMessage.textContent = '';
+        }
+
+        // Validate confirm password
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            confirmPasswordErrorMessage.textContent = 'Passwords do not match.';
+        } else {
+            confirmPasswordErrorMessage.textContent = '';
+        }
+
+        // Check if any error messages are displayed
+        if (nameErrorMessage.textContent || emailErrorMessage.textContent || passwordErrorMessage.textContent || confirmPasswordErrorMessage.textContent) {
+            return; // Do not submit the form if there are errors
+        }
+
+        // If all inputs are valid, submit the form
+        // You can add your code here to perform the actual form submission
+        // alert('Form submitted successfully!');
+    }
+</script>
+
 </body>
 </html>
