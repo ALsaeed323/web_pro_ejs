@@ -224,28 +224,5 @@
 
     }
   };
-  function clearErrorMessages() {
-    var errorMessages = document.getElementsByClassName('error-message');
-    for (var i = 0; i < errorMessages.length; i++) {
-      errorMessages[i].style.display = 'none';
-      errorMessages[i].textContent = '';
-    }
-    var successMessage = document.querySelector('.success-message');
-    if (successMessage) {
-      successMessage.remove();
-    }
-  }
-  function displayErrorMessage(elementId, message) {
-    var errorElement = document.getElementById(elementId);
-    errorElement.textContent = message;
-    errorElement.style.display = 'block';
-  }
-  function displaySuccessMessage(message) {
-    var successMessage = document.createElement('p');
-    successMessage.textContent = message;
-    successMessage.classList.add('success-message');
 
-    var form = document.getElementById('signupForm');
-    form.appendChild(successMessage);
-  }
 </script>

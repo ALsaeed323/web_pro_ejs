@@ -86,7 +86,17 @@ app.get("/:route", async (req, res) => {
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
     clientId:process.env.PAYPAL_CLIENT_ID// API clientId
-    
+  });
+});
+
+app.use(async (req, res) => {
+  const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
+  res.status(404).render("pages/route", {
+    path: "404", //the path that user entered
+    title: "Page Not Found", //the title of the page
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart, //the cart
   });
 });
 

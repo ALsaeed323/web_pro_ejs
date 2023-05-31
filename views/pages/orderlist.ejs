@@ -1,0 +1,39 @@
+<div>
+  <h1>Orders</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>USER</th>
+        <th>DATE</th>
+        <th>TOTAL</th>
+        <th>PAID</th>
+        <th>DELIVERED</th> 
+        <th>ACTIONS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach((order) => { %>
+      <tr>
+        <td><%=order._id%></td>
+        <td><%=order.user ? order.user.name : "DELETED USER"%></td>
+        <td><%= order.createdAt.toISOString().substring(0, 10)%></td>
+        <td>$<%=order.totalPrice.toFixed(2)%></td>
+        <td><%=order.isPaid ? order.paidAt.toISOString().substring(0, 10) : "No"%></td>
+        <td><%=order.isDelivered?order.deliveredAt.toISOString().substring(0, 10):"No"%></td>
+        <td><a href="/orders/<%= order._id %>"class="btn btn-primary">Edit</a>
+          <a action="delete"  class="btn btn-primary" onclick="deleteOrderHandler(event,'<%= order._id %>')">Delete</a></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% for (let x = 0; x < pages; x++) { %>
+    <a
+      class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
+      href="/admin/orders?page=<%= x + 1 %>"
+    >
+      <%= x + 1 %>
+    </a>
+    <% } %>
+
+</div>
