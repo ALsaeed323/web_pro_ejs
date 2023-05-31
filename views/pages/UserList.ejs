@@ -1,74 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
- <style>
-
-.navigation-button {
-        padding: 5px 10px;
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 1s ease;
-        margin: 10px 0;
-        float: right;
-      }
-
-      .navigation-button:hover {
-        background-color: #0056b3;
-      }
-    .button {
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: #007bff;
-  text-decoration: none;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
- </style>
-</head>
 <body>
+  <div>
+    <h1>Users</h1>
     <div>
-        <h1>Users</h1>
-        <div class="handle">
-          <a href="/admin/user/addnewuser"class="btn btn-primary navigation-button">Add New user</a>
-        </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>EMAIL</th>
-                <th>IS ADMIN</th>
-                <th>ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% users.forEach((user) => { %>
-                <tr>
-                  <td><%= user._id %></td>
-                  <td><%= user.name %></td>   
-                  <td><%= user.email %></td>
-                  <td><%= user.isAdmin ? 'YES' : 'NO' %></td>
-                  <td><a href="/admin/user/<%= user._id %>"class="btn btn-primary">Edit</a>
-                    <a action="delete"  class="btn btn-primary" onclick="deleteUserHandler(event,'<%= user._id %>')" >Delete</a></td>
-                </tr>
-              <% }); %>
-            </tbody>
-          </table>
-          <% for (let x = 0; x < pages; x++) { %>
-            <a
-              class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
-              href="/admin/users?page=<%= x + 1 %>"
+      <a href="/admin/user/addnewuser" class="btn btn-primary navigation-button"
+        >Add New user</a
+      >
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+          <th>EMAIL</th>
+          <th>IS ADMIN</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach((user) => { %>
+        <tr>
+          <td><%= user._id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.isAdmin ? 'YES' : 'NO' %></td>
+          <td>
+            <a href="/admin/user/<%= user._id %>" class="btn btn-primary"
+              >Edit</a
             >
-              <%= x + 1 %>
-            </a>
-            <% } %>
-       
-      </div>
+            <a
+              action="delete"
+              class="btn btn-primary"
+              onclick="deleteUserHandler(event,'<%= user._id %>')"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% for (let x = 0; x < pages; x++) { %>
+    <a
+      class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
+      href="/admin/users?page=<%= x + 1 %>"
+    >
+      <%= x + 1 %>
+    </a>
+    <% } %>
+  </div>
 </body>
-</html>

@@ -8,6 +8,21 @@ const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
 //products
+adminRouter.get("/products/:id",isAdmin, async (req, res) => {
+  const productId = req.params.id;
+  const product = await Product.findById(productId);
+  const cats = await Product.find().distinct("category");
+  try {
+    res.render("pages/route", {
+      product,
+      title: "Update Product" + product.name,
+      path: "updateproduct", //the path that user entered
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,
+    });
+  } catch (error) {}
+});
 adminRouter.get("/products",isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
@@ -29,21 +44,6 @@ adminRouter.get("/products",isAdmin, async (req, res) => {
     pages: Math.ceil(countProducts / pageSize),
   });
 });
-adminRouter.get("/products/:id",isAdmin, async (req, res) => {
-  const productId = req.params.id;
-  const product = await Product.findById(productId);
-  const cats = await Product.find().distinct("category");
-  try {
-    res.render("pages/route", {
-      product,
-      title: "Update Product" + product.name,
-      path: "Updateproduct", //the path that user entered
-      cats, //the categories
-      user: req.session.user, //the user
-      cart: req.session.cart,
-    });
-  } catch (error) {}
-});
 adminRouter.post("/products/:id",isAdmin, async (req, res) => {
   try {
     const productId = req.params.id;
@@ -64,7 +64,39 @@ adminRouter.post("/products/:id",isAdmin, async (req, res) => {
     }
   } catch (error) {}
 });
-//users
+adminRouter.delete('/product/:id/image',isAdmin,async (req, res) => {
+  //delete photo from local storge
+  const productId = req.params.id;
+  const product =  await Product.findByIdAndUpdate(productId,{ $unset: { image: "" } },{ new: true, useFindAndModify: false });
+  if (product) {
+    res.send({ message: "Product Updated" });
+  } else {
+    res.status(404).send({ message: "Product Not Found" });
+  }
+});
+
+  // const product = await Product.findById(req.params.mon); 
+  // if (product) {
+  //    await product.deleteOne();
+  //    res.send({ message:"hello " });
+  // }
+  // else{
+  //   res.send({ message: 'Product not Deleted' });
+  // }
+// });
+adminRouter.get('/products/admin/delete/:mon',isAdmin,async (req, res) => {
+  
+  const product = await Product.findById(req.params.mon); 
+  if (product) {
+     await product.deleteOne();
+     res.send({ message:"hello " });
+  }
+  else{
+    res.send({ message: 'Product not Deleted' });
+  }
+
+});
+
 adminRouter.get("/users",isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
@@ -144,19 +176,59 @@ adminRouter.delete("/user/:id",isAdmin, async (req, res) => {
 adminRouter.get("/user/addnewuser",isAdmin, async (req, res) => {
   res.render("addnewuser");
 });
-adminRouter.get('/products/admin/delete/:mon',isAdmin,async (req, res) => {
+
+//orders
+adminRouter.get("/orders",isAdmin, async (req, res) => {
   
-  const product = await Product.findById(req.params.mon); 
-  if (product) {
-     await product.deleteOne();
-     res.send({ message:"hello " });
-  }
-  else{
-    res.send({ message: 'Product not Deleted' });
-  }
-
+  const { query } = req;
+  const page = query.page || 1;
+  const pageSize = query.pageSize || PAGE_SIZE;
+  const orders = await Order.find({}).populate("user", "name").skip(pageSize * (page - 1))
+  .limit(pageSize);;
+  const countOrders = await Order.countDocuments();
+  const cats = await Product.find().distinct("category");
+  res.render("pages/route", {
+    orders,
+    cats,
+    title: "List of Orders",
+    path: "/admin/orders", //the path that user entered
+    user: req.session.user, //the user
+    cart: req.session.cart,
+    page,
+    pages: Math.ceil(countOrders / pageSize),
+  });
 });
-
+adminRouter.delete("/order/:id",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    await order.deleteOne();
+    res.status(200).send({ message: "Order deleted" });
+  } else {
+    res.status(500).send({ message: "Order not Deleted" });
+  }
+});
+adminRouter.post("/order/:id/pay",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+  }
+  await order.save();
+  res.redirect("/orders/"+req.params.id);
+  // res.send({ message: "Order Paid", order: updatedOrder });
+});
+adminRouter.post("/order/:id/deliver",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+  }
+  await order.save();
+  res.redirect("/orders/"+req.params.id);
+});
 
 //idk
 adminRouter.post('/log',isAdmin,async (req, res) => {
@@ -214,56 +286,4 @@ adminRouter.post("/reports",isAdmin, (req, res) => {
   res.send('Report generated successfully!');
 });
 
-//orders
-adminRouter.get("/orders",isAdmin, async (req, res) => {
-  
-  const { query } = req;
-  const page = query.page || 1;
-  const pageSize = query.pageSize || PAGE_SIZE;
-  const orders = await Order.find({}).populate("user", "name").skip(pageSize * (page - 1))
-  .limit(pageSize);;
-  const countOrders = await Order.countDocuments();
-  const cats = await Product.find().distinct("category");
-  res.render("pages/route", {
-    orders,
-    cats,
-    title: "List of Orders",
-    path: "/admin/orders", //the path that user entered
-    user: req.session.user, //the user
-    cart: req.session.cart,
-    page,
-    pages: Math.ceil(countOrders / pageSize),
-  });
-});
-adminRouter.delete("/order/:id",isAdmin, async (req, res) => {
-  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
-  const order = await Order.findById(req.params.id);
-  if (order) {
-    await order.deleteOne();
-    res.status(200).send({ message: "Order deleted" });
-  } else {
-    res.status(500).send({ message: "Order not Deleted" });
-  }
-});
-adminRouter.post("/order/:id/pay",isAdmin, async (req, res) => {
-  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
-  const order = await Order.findById(req.params.id);
-  if (order) {
-    order.isPaid = true;
-    order.paidAt = Date.now();
-  }
-  await order.save();
-  res.redirect("/orders/"+req.params.id);
-  // res.send({ message: "Order Paid", order: updatedOrder });
-});
-adminRouter.post("/order/:id/deliver",isAdmin, async (req, res) => {
-  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
-  const order = await Order.findById(req.params.id);
-  if (order) {
-    order.isDelivered = true;
-    order.deliveredAt = Date.now();
-  }
-  await order.save();
-  res.redirect("/orders/"+req.params.id);
-});
 export default adminRouter;
