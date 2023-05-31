@@ -1,92 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <style>
-      .navigation-button {
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-        margin: 10px 0;
-        float: right;
-      }
-
-      .navigation-button:hover {
-        background-color: #0056b3;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      th,
-      td {
-        padding: 10px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-        max-width: 15px;
-        overflow: hidden;
-      }
-
-      th {
-        background-color: #f2f2f2;
-      }
-
-      img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-      }
-
-      .delete-btn {
-        background-color: #aa0000;
-        color: #fff;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-      }
-      .delete-btn:hover {
-        background-color: #ff0000;
-      }
-
-      .modify-btn {
-        background-color: #157313;
-        color: #fff;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-      }
-      .modify-btn:hover {
-        background-color: #1ab417;
-      }
-
-      @media (max-width: 768px) {
-        .action-col {
-          display: none;
-        }
-        .delete-btn {
-          padding: 2px 2px;
-        }
-        .modify-btn {
-          padding: 2px 2px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="handle">
+<div>
       <h2>Display all product</h2>
-      <a href="/addcard" class="navigation-button">Add New Card</a>
+      <div>
+        <a href="/admin/user/addnewuser" class="btn btn-primary navigation-button"
+          >Add New Product</a
+        >
+      </div>
     </div>
-    <table>
+    <table class="table">
       <thead>
         <tr>
           <th>Id</th>
@@ -109,10 +29,10 @@
           <td><%= product.image %></td>
           <td><%= product.brand %></td>
           <td>
-            <a href="/admin/products/delete/<%= product._id %>" class="delete-btn">Delete</a>
+            <a href="/admin/products/delete/<%= product._id %>" class="btn btn-primary">Delete</a>
           </td>
           <td>
-            <a href="/admin/products/<%= product._id%>" class="modify-btn">Modify</a>
+            <a href="/admin/products/<%= product._id%>" class="btn btn-primary">Modify</a>
           </td>
         </tr>
         <%})%>
@@ -128,5 +48,3 @@
       </a>
       <% } %>
     </div>
-  </body>
-</html>

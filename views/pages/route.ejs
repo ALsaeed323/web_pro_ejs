@@ -31,7 +31,7 @@
             <%- include('./cart',{cart,user}); %>
             <% break;
             case "payment": %>
-            <%- include('./payment',{user,clientId}); %>
+            <%- include('./payment',{user}); %>
             <% break;
             case "shipping": %>
             <%- include('./shipping'); %>
@@ -64,13 +64,13 @@
             <%- include('./userlist',{users}); %>
             <% break;
             case "/admin/user/edit": %>
-            <%- include('./UserEdit',{user:currentUser}); %>
+            <%- include('./useredit',{user:currentUser}); %>
             <% break;
             case "/admin/orders": %>
             <%- include('./orderlist',{orders}); %>
             <% break;
-            case "Updateproduct": %>
-            <%- include('./Updateproduct',{product}); %>
+            case "/admin/product": %>
+            <%- include('./updateproduct',{product}); %>
             <% break;
             case "dashboard": %>
             <%- include('./dashboard',{countUsers,countOrders,sumOfSales}); %>
