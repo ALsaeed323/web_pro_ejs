@@ -1,21 +1,22 @@
 <div class="container small-container">
       <h1>Edit Product <%= product._id %></h1>
-      <form  method="post" action="/products/admin/<%= product._id%>">
+      <form  onsubmit="updateProductHandler(event,'<%= product._id %>')">
         <div class="mb-3">
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.name %>" required>
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="updateProductName" name="name" value="<%= product.name %>" >
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Slug</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.slug %>" required>
+          <label for="slug" class="form-label">slug</label>
+          <input type="text" class="form-control" id="updateProductSlug" name="slug" value="<%= product.slug %>" >
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Category</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.category %>" required>
+          <label for="category" class="form-label">Category</label>
+          <input type="text" class="form-control" id="updateProductCategory" name="category" value="<%= product.category %>" >
         </div>
         <div class="mb-3">
           <% if(!product.image){ %>
-            <label for="name" class="form-label">Image</label>
-            <input type="file" onchange="uploadPhotoHandler(event,'<%= product._id %>')" class="form-control" id="name" name="name" value="<%= product.image %>" required>
+            <label for="image" class="form-label">Image</label>
+            <input type="file" onchange="uploadPhotoHandler(event,'<%= product._id %>')" class="form-control" id="updateProductImage" name="image" value="<%= product.image %>" >
             <% }else{ %>
               <label class="form-label">Image</label>
               <div class="list-group-item">
@@ -27,23 +28,23 @@
             <% } %>
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Price</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.price %>" required>
+          <label for="price" class="form-label">Price</label>
+          <input type="text" class="form-control" id="updateProductPrice" name="price" value="<%= product.price %>" >
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Count In Stock</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.countInStock %>" required>
+          <label for="countInStock" class="form-label">Count In Stock</label>
+          <input type="text" class="form-control" id="updateProductCountInStock" name="countInStock" value="<%= product.countInStock %>" >
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Brand</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.brand %>" required>
+          <label for="brand" class="form-label">Brand</label>
+          <input type="text" class="form-control" id="updateProductBrand" name="brand" value="<%= product.brand %>" >
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Description</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= product.description %>" required>
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="updateProductDescription" name="description" value="<%= product.description %>" >
         </div>
         <div class="mb-3">
-          <button type="submit" class="btn btn-primary">Create Product</button>
+          <button type="submit" class="btn btn-primary">Update Product</button>
         </div>
       </form>
-    </div>
+</div>

@@ -7,7 +7,7 @@ const Product = mongoose.model(
       name: { type: String, required: true, unique: true },
       slug: { type: String, required: true, unique: true },
       category: { type: String, required: true },
-      image: { type: String, required: true },
+      image: { type: String, required: false },
       price: { type: Number, required: true },
       countInStock: { type: Number, required: true },
       brand: { type: String, required: true },

@@ -251,4 +251,42 @@
     console.error('Error:', error);
   });
   }
-</script>
+  const deleteProductHandler = async (id) => {
+    const resposnce = await fetch(`/admin/product/${id}`, {
+      method: "DELETE",
+    });
+    if(resposnce.status === 200)
+    {
+      window.location.reload();
+    }
+    else{
+      alert("Something went wrong");
+    }
+  };
+  const updateProductHandler = async (e,id) => {
+    e.preventDefault();
+    const name= document.getElementById("updateProductName").value;
+    const slug = document.getElementById("updateProductSlug").value;
+    const price= document.getElementById("updateProductPrice").value;
+    const brand = document.getElementById("updateProductBrand").value;
+    const category = document.getElementById("updateProductCategory").value;
+    const countInStock = document.getElementById("updateProductCountInStock").value;
+    const description = document.getElementById("updateProductDescription").value;
+    const data = { name, price, brand, category, countInStock, description, slug };
+    const res = await fetch(`/admin/product/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    console.log(res);
+    if(res.status === 200)
+    {
+      redirect("/admin/products");
+    }
+    else{
+      alert("Something went wrong");
+    }
+  }
+  </script>

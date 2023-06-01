@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import Order from "../models/orderModel.js";
 import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
+import fs from "fs";
 const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
@@ -67,23 +68,14 @@ adminRouter.post("/products/:id",isAdmin, async (req, res) => {
 adminRouter.delete('/product/:id/image',isAdmin,async (req, res) => {
   //delete photo from local storge
   const productId = req.params.id;
-  const product =  await Product.findByIdAndUpdate(productId,{ $unset: { image: "" } },{ new: true, useFindAndModify: false });
+  const product =  await Product.findByIdAndUpdate(productId,{ $unset: { image: "" } },{ new: false, useFindAndModify: false });
+  fs.unlinkSync("." + product.image);
   if (product) {
     res.send({ message: "Product Updated" });
   } else {
     res.status(404).send({ message: "Product Not Found" });
   }
 });
-
-  // const product = await Product.findById(req.params.mon); 
-  // if (product) {
-  //    await product.deleteOne();
-  //    res.send({ message:"hello " });
-  // }
-  // else{
-  //   res.send({ message: 'Product not Deleted' });
-  // }
-// });
 adminRouter.get('/products/admin/delete/:mon',isAdmin,async (req, res) => {
   
   const product = await Product.findById(req.params.mon); 
@@ -96,6 +88,36 @@ adminRouter.get('/products/admin/delete/:mon',isAdmin,async (req, res) => {
   }
 
 });
+adminRouter.put("/product/:id",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    product.name = req.body.name || product.name;
+    product.slug = req.body.slug || product.slug;
+    product.price = req.body.price || product.price;
+    product.category = req.body.category || product.category;
+    product.brand = req.body.brand || product.brand;
+    product.image = product.image || "";
+    product.countInStock = req.body.countInStock || product.countInStock;
+    product.description = req.body.description || product.description;
+    await product.save();
+    res.status(200).send("OK");
+  } else {
+    res.status(404).send({ message: "Product Not Found" });
+  }
+});
+adminRouter.delete("/product/:id",isAdmin, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    await product.deleteOne();
+    res.status(200).send({ message: "deleted" });
+  } else {
+    res.status(500).send({ message: "Product not Deleted" });
+  }
+});
+
 
 adminRouter.get("/users",isAdmin, async (req, res) => {
   const { query } = req;

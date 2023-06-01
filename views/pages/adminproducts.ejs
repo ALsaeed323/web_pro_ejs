@@ -15,8 +15,7 @@
           <th>Category</th>
           <th class="action-col">Image</th>
           <th>Brand</th>
-          <th>Delete</th>
-          <th>Modify</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -29,7 +28,7 @@
           <td><%= product.image %></td>
           <td><%= product.brand %></td>
           <td>
-            <a href="/admin/products/delete/<%= product._id %>" class="btn btn-primary">Delete</a>
+            <a onclick="deleteProductHandler('<%= product._id %>')" class="btn btn-primary">Delete</a>
           </td>
           <td>
             <a href="/admin/products/<%= product._id%>" class="btn btn-primary">Modify</a>
