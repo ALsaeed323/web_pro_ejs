@@ -84,7 +84,7 @@ app.get("/:route", async (req, res) => {
   res.render("pages/route", {
     path: req.params.route.toLowerCase(), //the path that user entered
     title: title[req.params.route], //the title of the page
-    cats, //the categories
+    cats, //the categories 
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
   });
