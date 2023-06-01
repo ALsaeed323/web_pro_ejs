@@ -36,22 +36,19 @@
     } else {
       const data = await response.json(); // extract the body data
       console.log(data);
-      displayErrorMessage('emailErrorMessage','Invalid email');
+      displayErrorMessage('emailErrorMessage', 'Invalid email');
 
     }
   };
   const signupHandler = async (e) => {
     e.preventDefault();
+    clearErrorMessages();
     const name = document.getElementById("signupName").value;
     const email = document.getElementById("signupEmail").value;
     const password = document.getElementById("signupPassword").value;
     const confimPassword = document.getElementById(
       "signupConfirmPassword"
     ).value;
-    if (password !== confimPassword) {
-      displayErrorMessage('passwordErrorMessage','Password and Confirm Password do not match');
-      return;
-    }
     const response = await fetch("/user/signup", {
       method: "POST",
       headers: {
@@ -59,15 +56,59 @@
       },
       body: JSON.stringify({ name, email, password }),
     });
+    if (password !== confimPassword) {
+      displayErrorMessage('passwordErrorMessage', 'Password and Confirm Password do not match');
+      return;
+    }
     if (response.status === 200) {
       window.location.href = "/";
     } else if (response.status === 409) {
-      displayErrorMessage('emailErrorMessage','ُEmail already exist');
+      displayErrorMessage('emailErrorMessage', 'ُEmail already exist');
     } else {
       const data = await response.json(); // extract the body data
       console.log(data);
-      displayErrorMessage('emailErrorMessage','something went wrong');
+      displayErrorMessage('emailErrorMessage', 'something went wrong');
     }
+    var nameInput = document.getElementById('signupName');
+    var emailInput = document.getElementById('signupEmail');
+    var passwordInput = document.getElementById('signupPassword');
+    var confirmPasswordInput = document.getElementById('signupConfirmPassword');
+
+    // Validate name
+    if (nameInput.value.trim() === '') {
+      displayErrorMessage('nameError', 'Please enter your name.');
+      nameInput.focus();
+      return;
+    }
+
+    // Validate email
+    if (emailInput.value.trim() === '') {
+      displayErrorMessage('emailError', 'Please enter your email address.');
+      emailInput.focus();
+      return;
+    }
+
+    // Validate password
+    if (passwordInput.value === '') {
+      displayErrorMessage('passwordError', 'Please enter a password.');
+      passwordInput.focus();
+      return;
+    }
+
+    // Validate confirm password
+    if (confirmPasswordInput.value === '') {
+      displayErrorMessage('confirmPasswordError', 'Please confirm your password.');
+      confirmPasswordInput.focus();
+      return;
+    }
+
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      displayErrorMessage('confirmPasswordError', 'Password and confirm password do not match.');
+      confirmPasswordInput.focus();
+      return;
+    }
+
+    displaySuccessMessage('Form submitted successfully!');
   };
   const signoutHandler = (e) => {
     e.preventDefault();
@@ -78,10 +119,10 @@
       },
     }).then((res) => {
       if (res.status === 200) {
-        if(window.location.href === "/"){
+        if (window.location.href === "/") {
           location.reload();
         }
-        else{
+        else {
           window.location.href = "/";
         }
       } else {
@@ -143,8 +184,7 @@
       },
       body: JSON.stringify(data),
     });
-    if (resposnce.status === 200) 
-    {
+    if (resposnce.status === 200) {
       const res = await resposnce.json();
       console.log(res);
       window.location.href = `/orders/${res.id}`;
@@ -152,15 +192,15 @@
   };
   const profileHandler = async (e) => {
     e.preventDefault();
-    const name= document.getElementById("profileName").value;
-    const email= document.getElementById("profileEmail").value;
+    const name = document.getElementById("profileName").value;
+    const email = document.getElementById("profileEmail").value;
     const password = document.getElementById("profilePassword").value;
     const confimPassword = document.getElementById("profileConfirmPassword").value;
     if (password !== confimPassword) {
-      displayErrorMessage('passwordErrorMessage','Password and Confirm Password do not match');
+      displayErrorMessage('passwordErrorMessage', 'Password and Confirm Password do not match');
       return;
     }
-    const data = { name, email, password    };
+    const data = { name, email, password };
     const resposnce = await fetch("/user/profile", {
       method: "POST",
       headers: {
@@ -170,17 +210,16 @@
     });
     window.location.href = `/`;
   };
-  const deleteUserHandler = async (e,id) => {
+  const deleteUserHandler = async (e, id) => {
     e.preventDefault();
     const resposnce = await fetch(`/admin/user/${id}`, {
       method: "DELETE",
     });
-    if(resposnce.status === 200)
-    {
+    if (resposnce.status === 200) {
       showMessage("User Deleted");
       window.location.reload();
     }
-    else{
+    else {
       showMessage("Something went wrong");
 
     }
@@ -222,6 +261,7 @@
       alert("Something went wrong");
     }
   };
+<<<<<<< HEAD
   const deleteImageHandler = async (e,id) => {
     e.preventDefault();
     const resposnce = await fetch(`/admin/product/${id}/image`, {
@@ -290,3 +330,6 @@
     }
   }
   </script>
+=======
+</script>
+>>>>>>> 84a9a17b575a2c0c2e53bd73a44d6c4df3dd307e
