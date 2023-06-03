@@ -297,34 +297,54 @@ adminRouter.post('/log',isAdmin,async (req, res) => {
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
 });
-adminRouter.get('/dash',isAdmin,
-async (req, res) => {
-
-   const cats = await Product.find().distinct("category"); 
-   res.render("pages/route",{
-    title:"Dashboard",
-    path:"dashboard", //the path that user entered
-    cats, //the categories
-    user: req.session.user, //the user
-    cart: req.session.cart,});
-});
 adminRouter.get("/d", async (req, res) => {
   const cats = await Product.find().distinct("category");
   const countUsers = await User.countDocuments();
   const countOrders = await Order.countDocuments();
   const totalSale = await Product.find().distinct("price");
-  let sumOfSales=0;
-  totalSale.forEach((ss) => {
-    sumOfSales = sumOfSales + ss;
-    ;
-  });
+
+  const orders = await Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        numOrders: { $sum: 1 },
+        totalSales: { $sum: '$totalPrice' },
+      },
+    },
+  ]);
+
+
+  const dailyOrders = await Order.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: '%d', date: '$createdAt' } },
+          orders: { $sum: 1 },
+          sales: { $sum: '$totalPrice' },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+    const TotalSales = orders.map(order => order.totalSales);
+    const xId = [];
+    const ySales = [];
+
+
+dailyOrders.forEach(order => {
+  xId.push(parseInt(order._id));
+  ySales.push(parseInt(order.sales));
+});
+
+    console.log(xId);
+    console.log(ySales);
   
   res.render("pages/route", {
-    title: "dashboard",
+    title: "Dashboard",
     path: "dashboard", //the path that user entered
-    countUsers,
-    countOrders,
-    sumOfSales,
+    X_date :xId, // x-axis date for flow chart 
+    Y_sales :ySales, // y-axis sales for flow chart
+    countUsers,  // number of user in site
+    countOrders,  //  number of Orders in site
+    sumOfSales :TotalSales, // the total sales order
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart,
