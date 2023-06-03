@@ -1,5 +1,5 @@
-<div class="container" style="position: fixed; bottom: 0; left: 0;">
-  <div class="row">
+<div class="container-md" style="position: fixed; bottom: 0; left: 0;">
+  <div class="row row-sm">
     <div class="col-md-5">
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -64,7 +64,7 @@
     let uname;
 
     app.querySelector(".join-screen #join-user").addEventListener("click", function () {
-      let username = app.querySelector(".join-screen #username").value;
+      let username = user.username;
       if (username.length === 0) {
         return;
       }

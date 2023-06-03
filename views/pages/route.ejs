@@ -42,9 +42,6 @@
             case "updateproduct": %>
             <%- include('./updateproduct'); %>
             <% break;
-            case "payment": %>
-            <%- include('./payment'); %>
-            <% break;
             case "placeorder": %>
             <%- include('./placeorder',{user,cart}); %>
             <% break;
@@ -86,7 +83,7 @@
             <%break; } %>
       </div>
       </main>
-          <%- include('./chat'); %>
+          <%- include('./chat',{user}); %>
     <footer><%- include('../partials/footer') %></footer>
   </div>
 </body>
