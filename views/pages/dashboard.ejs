@@ -56,7 +56,7 @@
               </div>
               <div class="progresss">
                 <div class="number">
-                  <p><%=sumOfSales%></p>
+                  <p>$<%=sumOfSales%></p>
                 </div>
               </div>
             </div>
@@ -69,30 +69,81 @@
       <!-- end of main-->
       
       <canvas id="myChart" style="width:90%;max-width:1200px"></canvas>
-
+      <canvas id="pieChart"></canvas>
 <script>
-const xValues = [50,60,70,80,90,100,110,120,130,140,150];
-const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+const xDate = JSON.parse('<%= X_date %>'); // Parse JSON string
+const ySales = JSON.parse('<%= Y_sales %>'); // Parse JSON string
 
-new Chart("myChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill:false,
-      lineTension: 0,
-      backgroundColor: "rgba(0,0,255,1.0)",
-      borderColor: "rgba(0,0,255,0.1)",
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    scales: {
-      yAxes: [{ticks: {min: 0, max:16}}],
-    }
-  }
-});
+const ctx1 = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: xDate,
+        datasets: [{
+          label: 'Sales',
+          data: ySales,
+          backgroundColor: 'rgba(0, 123, 255, 0.2)',
+          borderColor: 'rgba(0, 123, 255, 1)',
+          borderWidth: 0
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: 'Sales'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Date'
+            }
+          }
+        }
+      }
+    });
+
+
+     // Sample data
+     const categoryData = [
+      { category: 'pants', count: 20 },
+      { category: 'pantalon', count: 15 },
+      { category: 't-shirt', count: 10 }
+    ];
+
+    // Extract categories and counts from the data
+    const categories = categoryData.map(item => item.category);
+    const counts = categoryData.map(item => item.count);
+
+    // Create a chart using Chart.js
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: categories,
+        datasets: [{
+          data: counts,
+          backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(255, 205, 86, 0.7)'],
+          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 205, 86, 1)'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Category Distribution'
+          }
+        }
+      }
+    });
 </script>
        
     </div>
