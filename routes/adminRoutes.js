@@ -341,26 +341,17 @@ const productCategories = await Product.aggregate([
   },
 ]);
 
-const categories = productCategories.map(item => item._id);
-const counts = productCategories.map(item => item.count);
-
-    console.log(productCategories);
-    console.log(categories);
-    console.log(counts);
-  
+const categor = productCategories.map(item => {return {category: item._id, count: item.count};});
+  const categories = {categories: categor};
   res.render("pages/route", {
     title: "Dashboard",
     path: "dashboard", //the path that user entered
-
-
-
-
-
     X_date: JSON.stringify(xId), // Convert to JSON string
     Y_sales: JSON.stringify(ySales), // Convert to JSON string
     countUsers,  // number of user in site
     countOrders,  //  number of Orders in site
     sumOfSales :TotalSales, // the total sales order
+    categories,
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart,
