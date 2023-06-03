@@ -340,8 +340,8 @@ dailyOrders.forEach(order => {
   res.render("pages/route", {
     title: "Dashboard",
     path: "dashboard", //the path that user entered
-    X_date :xId, // x-axis date for flow chart 
-    Y_sales :ySales, // y-axis sales for flow chart
+    X_date: JSON.stringify(xId), // Convert to JSON string
+    Y_sales: JSON.stringify(ySales), // Convert to JSON string
     countUsers,  // number of user in site
     countOrders,  //  number of Orders in site
     sumOfSales :TotalSales, // the total sales order

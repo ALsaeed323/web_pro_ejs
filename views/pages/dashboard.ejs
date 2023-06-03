@@ -71,17 +71,17 @@
       <canvas id="myChart" style="width:90%;max-width:1200px"></canvas>
 
 <script>
-const xValues = [50,60,70,80,90,100,110,120,130,140,150];
-const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+const xDate = JSON.parse('<%= X_date %>'); // Parse JSON string
+const ySales = JSON.parse('<%= Y_sales %>'); // Parse JSON string
 
 const ctx = document.getElementById('myChart').getContext('2d');
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: '<%=X_date%>',
+        labels: xDate,
         datasets: [{
           label: 'Sales',
-          data: '<%=Y_sales%>',
+          data: ySales,
           backgroundColor: 'rgba(0, 123, 255, 0.2)',
           borderColor: 'rgba(0, 123, 255, 1)',
           borderWidth: 0
