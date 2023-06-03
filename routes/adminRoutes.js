@@ -294,35 +294,73 @@ adminRouter.post('/log', isAdmin, async (req, res) => {
   const product = await newProduct.save();
   res.send({ message: 'Product Created', product });
 });
-adminRouter.get('/dash', isAdmin,
-  async (req, res) => {
-
-    const cats = await Product.find().distinct("category");
-    res.render("pages/route", {
-      title: "Dashboard",
-      path: "dashboard", //the path that user entered
-      cats, //the categories
-      user: req.session.user, //the user
-      cart: req.session.cart,
-    });
-});
 adminRouter.get("/d", async (req, res) => {
   const cats = await Product.find().distinct("category");
   const countUsers = await User.countDocuments();
   const countOrders = await Order.countDocuments();
   const totalSale = await Product.find().distinct("price");
-  let sumOfSales = 0;
-  totalSale.forEach((ss) => {
-    sumOfSales = sumOfSales + ss;
-    ;
-  });
 
+  const orders = await Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        numOrders: { $sum: 1 },
+        totalSales: { $sum: '$totalPrice' },
+      },
+    },
+  ]);
+
+   // // line chart for sales order
+  const dailyOrders = await Order.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: '%d', date: '$createdAt' } },
+          orders: { $sum: 1 },
+          sales: { $sum: '$totalPrice' },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+    const TotalSales = orders.map(order => order.totalSales);
+    const xId = [];
+    const ySales = [];
+
+
+dailyOrders.forEach(order => {
+  xId.push(parseInt(order._id));
+  ySales.push(parseInt(order.sales));
+});
+
+//  //  pie chart for category
+const productCategories = await Product.aggregate([
+  {
+    $group: {
+      _id: '$category',
+      count: { $sum: 1 },
+    },
+  },
+]);
+
+const categories = productCategories.map(item => item._id);
+const counts = productCategories.map(item => item.count);
+
+    console.log(productCategories);
+    console.log(categories);
+    console.log(counts);
+  
   res.render("pages/route", {
-    title: "dashboard",
+    title: "Dashboard",
     path: "dashboard", //the path that user entered
-    countUsers,
-    countOrders,
-    sumOfSales,
+
+
+
+
+
+    X_date: JSON.stringify(xId), // Convert to JSON string
+    Y_sales: JSON.stringify(ySales), // Convert to JSON string
+    countUsers,  // number of user in site
+    countOrders,  //  number of Orders in site
+    sumOfSales :TotalSales, // the total sales order
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart,
