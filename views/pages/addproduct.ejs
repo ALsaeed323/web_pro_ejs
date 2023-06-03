@@ -1,0 +1,40 @@
+<div class="container small-container">
+  <h1>New Product</h1>
+  <form method="POST" action="/admin/product" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="newProductName" class="form-label">Name</label>
+      <input type="text" class="form-control" id="newProductName" name="name" required >
+    </div>
+    <div class="mb-3">
+      <label for="newProductSlug" class="form-label">slug</label>
+      <input type="text" class="form-control" id="newProductSlug" name="slug" required >
+    </div>
+    <div class="mb-3">
+      <label for="newProductCategory" class="form-label">Category</label>
+      <input type="text" class="form-control" id="newProductCategory" name="category"  required>
+    </div>
+    <div class="mb-3">
+      <label for="newProductImage" class="form-label">Image</label>
+      <input type="file" class="form-control" id="newProductImage" name="image" required >
+    </div>
+    <div class="mb-3">
+      <label for="newProductPrice" class="form-label">Price</label>
+      <input type="text" class="form-control" id="newProductPrice" name="price"  required>
+    </div>
+    <div class="mb-3">
+      <label for="newProductCountInStock" class="form-label">Count In Stock</label>
+      <input type="text" class="form-control" id="newProductCountInStock" name="countInStock"  required>
+    </div>
+    <div class="mb-3">
+      <label for="newProductBrand" class="form-label">Brand</label>
+      <input type="text" class="form-control" id="newProductBrand" name="brand"  required>
+    </div>
+    <div class="mb-3">
+      <label for="newProductDescription" class="form-label">Description</label>
+      <input type="text" class="form-control" id="newProductDescription" name="description"  required>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">New Product</button>
+    </div>
+  </form>
+</div>

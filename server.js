@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import seedRouter from "./routes/seedRoutes.js";
 import mongoose from "mongoose";
 import session from "express-session";
+import fileUpload from "express-fileupload";
 import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
@@ -31,7 +32,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use("/public", express.static(__dirname + "/public"));
-
+app.use(fileUpload({
+  limits: {
+      fileSize: 3 * 1024 * 1024 // 3 MB
+  },
+  abortOnLimit: true
+}));
 //connection database
 if (process.env.MONGODB_URI) {
   mongoose

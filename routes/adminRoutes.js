@@ -5,6 +5,7 @@ import Order from "../models/orderModel.js";
 import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
 import fs from "fs";
+import { uploadImage } from "../controllers/uploadControllers.js";
 const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
@@ -115,6 +116,35 @@ adminRouter.delete("/product/:id",isAdmin, async (req, res) => {
     res.status(200).send({ message: "deleted" });
   } else {
     res.status(500).send({ message: "Product not Deleted" });
+  }
+});
+adminRouter.get("/addproduct",isAdmin, async (req, res) => {
+  const cats = await Product.find().distinct("category");
+  res.render("pages/route", {
+    title: "Add Product",
+    path: "/admin/addproduct", //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart, //the cart
+  });
+});
+adminRouter.post("/product",isAdmin,uploadImage, async(req,res) => {
+  try {
+    console.log(req.body);
+    const product = new Product({
+      name: req.body.name,
+      slug: req.body.slug,
+      price: req.body.price,
+      image: req.body.image,
+      category: req.body.category,
+      brand: req.body.brand,
+      countInStock: req.body.countInStock,
+      description: req.body.description,
+    });
+    await product.save();
+    res.redirect("/admin/products");
+  } catch (error) {
+    res.status(500).send({ message: "Product Not Created" });
   }
 });
 
