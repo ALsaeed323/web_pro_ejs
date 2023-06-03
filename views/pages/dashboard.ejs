@@ -108,12 +108,7 @@ const ctx1 = document.getElementById('myChart').getContext('2d');
 
 
      // Sample data
-     const categoryData = [
-      { category: 'pants', count: 20 },
-      { category: 'pantalon', count: 15 },
-      { category: 't-shirt', count: 10 }
-    ];
-
+     const categoryData = JSON.parse('<%= JSON.stringify(categories.categories) %>'.replaceAll('&#34',"\"").replaceAll(";",""))
     // Extract categories and counts from the data
     const categories = categoryData.map(item => item.category);
     const counts = categoryData.map(item => item.count);
