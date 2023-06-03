@@ -313,7 +313,7 @@ adminRouter.get("/d", async (req, res) => {
     },
   ]);
 
-
+   // // line chart for sales order
   const dailyOrders = await Order.aggregate([
       {
         $group: {
@@ -334,12 +334,31 @@ dailyOrders.forEach(order => {
   ySales.push(parseInt(order.sales));
 });
 
-    console.log(xId);
-    console.log(ySales);
+//  //  pie chart for category
+const productCategories = await Product.aggregate([
+  {
+    $group: {
+      _id: '$category',
+      count: { $sum: 1 },
+    },
+  },
+]);
+
+const categories = productCategories.map(item => item._id);
+const counts = productCategories.map(item => item.count);
+
+    console.log(productCategories);
+    console.log(categories);
+    console.log(counts);
   
   res.render("pages/route", {
     title: "Dashboard",
     path: "dashboard", //the path that user entered
+
+
+
+
+
     X_date: JSON.stringify(xId), // Convert to JSON string
     Y_sales: JSON.stringify(ySales), // Convert to JSON string
     countUsers,  // number of user in site
