@@ -69,13 +69,13 @@
       <!-- end of main-->
       
       <canvas id="myChart" style="width:90%;max-width:1200px"></canvas>
-
+      <canvas id="pieChart"></canvas>
 <script>
 const xDate = JSON.parse('<%= X_date %>'); // Parse JSON string
 const ySales = JSON.parse('<%= Y_sales %>'); // Parse JSON string
 
-const ctx = document.getElementById('myChart').getContext('2d');
-    new Chart(ctx, {
+const ctx1 = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx1, {
       type: 'line',
       data: {
         labels: xDate,
@@ -101,6 +101,45 @@ const ctx = document.getElementById('myChart').getContext('2d');
               display: true,
               text: 'Date'
             }
+          }
+        }
+      }
+    });
+
+
+     // Sample data
+     const categoryData = [
+      { category: 'pants', count: 20 },
+      { category: 'pantalon', count: 15 },
+      { category: 't-shirt', count: 10 }
+    ];
+
+    // Extract categories and counts from the data
+    const categories = categoryData.map(item => item.category);
+    const counts = categoryData.map(item => item.count);
+
+    // Create a chart using Chart.js
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: categories,
+        datasets: [{
+          data: counts,
+          backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(255, 205, 86, 0.7)'],
+          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 205, 86, 1)'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Category Distribution'
           }
         }
       }
