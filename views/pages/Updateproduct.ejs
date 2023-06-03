@@ -16,7 +16,7 @@
         <div class="mb-3">
           <% if(!product.image){ %>
             <label for="image" class="form-label">Image</label>
-            <input type="file" onchange="uploadPhotoHandler(event,'<%= product._id %>')" class="form-control" id="updateProductImage" name="image" value="<%= product.image %>" >
+            <input type="file" accept="image/png, image/gif, image/jpeg" onchange="uploadPhotoHandler(event,'<%= product._id %>')" class="form-control" id="updateProductImage" name="image" value="<%= product.image %>" >
             <% }else{ %>
               <label class="form-label">Image</label>
               <div class="list-group-item">
@@ -29,11 +29,11 @@
         </div>
         <div class="mb-3">
           <label for="price" class="form-label">Price</label>
-          <input type="text" class="form-control" id="updateProductPrice" name="price" value="<%= product.price %>" >
+          <input type="number" type="number" class="form-control" id="updateProductPrice" name="price" value="<%= product.price %>" >
         </div>
         <div class="mb-3">
           <label for="countInStock" class="form-label">Count In Stock</label>
-          <input type="text" class="form-control" id="updateProductCountInStock" name="countInStock" value="<%= product.countInStock %>" >
+          <input type="number" type="number" class="form-control" id="updateProductCountInStock" name="countInStock" value="<%= product.countInStock %>" >
         </div>
         <div class="mb-3">
           <label for="brand" class="form-label">Brand</label>

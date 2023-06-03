@@ -14,7 +14,6 @@ import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 import adminRouter from "./routes/adminRoutes.js";
 import userRouter from "./routes/userRoutes.js";
-import uploadRouter from "./routes/uploadRoutes.js";
 dotenv.config();
 
 //Read the current directory name
@@ -63,7 +62,6 @@ app.use("/cart", cartRouter);
 app.use("/orders", orderRouter);
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
-app.use("/upload", uploadRouter);
 
 app.get("/", async (req, res) => {
   //if there is no cart, create one
