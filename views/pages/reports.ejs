@@ -61,12 +61,8 @@
         function generateReport() {
           var table = document.getElementById("reportTable");
           var data = [];
-    
-          // Iterate through table rows
           for (var i = 1; i < table.rows.length; i++) {
             var rowData = [];
-    
-            // Iterate through cells in each row
             for (var j = 0; j < table.rows[i].cells.length; j++) {
               var cellData = table.rows[i].cells[j].querySelector('input').value;
               rowData.push(cellData);
@@ -74,8 +70,6 @@
     
             data.push(rowData);
           }
-    
-          // Here, you can process the data and generate the report as needed
           console.log(data);
         }
     </script>

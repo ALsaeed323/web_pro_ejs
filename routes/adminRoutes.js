@@ -2,6 +2,7 @@ import express from "express";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import Order from "../models/orderModel.js";
+import Reports from "/pages/reports.ejs";
 import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
 import fs from "fs";
@@ -180,6 +181,32 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
     cart: req.session.cart,
   });
 });
+
+
+
+
+
+
+// new report
+adminRouter.post("/report", isAdmin, async (req, res) => {
+  try {
+    console.log(req.body);
+    const report = new Reports({
+      report:req.body.report,
+    });
+    await report.save();
+    res.redirect("/reports");
+  } catch (error) {
+    res.status(500).send({ message: "Report Not Created" });
+  }
+});
+
+
+
+
+
+
+
 
 
 // add new user to  site
