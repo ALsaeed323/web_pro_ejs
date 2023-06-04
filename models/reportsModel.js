@@ -5,6 +5,9 @@ const reportSchema = require(
     new mongoose.Schema(
         {
             report: { type: String, required: true, unique: false },
+        },
+        {
+            timestamps: true,
         }
     )
 );

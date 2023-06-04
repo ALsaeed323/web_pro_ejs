@@ -30,7 +30,16 @@
       },
       body: JSON.stringify({ email, password }),
     });
-
+    var emailInput = document.getElementById('signinEmail');
+    var passwordInput = document.getElementById('signinPassword');
+    var emailErrorMessage = document.getElementById('emailErrorMessage');
+    var passwordErrorMessage = document.getElementById('passwordErrorMessage');
+    // Validate email
+    if (emailInput.value != email.value && passwordInput.value != password.value) {
+      emailErrorMessage.textContent = 'you have entered an invalid password or invalide email';
+      passwordInput.focus();
+      emailInput.focus();
+    }
     if (response.status === 200) {
       window.location.href = "/";
     } else {
@@ -224,89 +233,84 @@
 
     }
   };
-  const payOrder = async (id) =>{
+  const payOrder = async (id) => {
     const resposnce = await fetch(`/admin/order/${id}/pay`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
     });
-    if (resposnce.status === 200) 
-    {
+    if (resposnce.status === 200) {
       window.location.reload();
     }
   }
-  const deliverOrder = async (id) =>{
+  const deliverOrder = async (id) => {
     const resposnce = await fetch(`/admin/order/${id}/deliver`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
     });
-    if (resposnce.status === 200) 
-    {
+    if (resposnce.status === 200) {
       window.location.reload();
     }
   }
-  const deleteOrderHandler = async (e,id) => {
+  const deleteOrderHandler = async (e, id) => {
     e.preventDefault();
     const resposnce = await fetch(`/admin/order/${id}`, {
       method: "DELETE",
     });
-    if(resposnce.status === 200)
-    {
+    if (resposnce.status === 200) {
       window.location.reload();
     }
-    else{
+    else {
       alert("Something went wrong");
     }
   };
-  const deleteImageHandler = async (e,id) => {
+  const deleteImageHandler = async (e, id) => {
     e.preventDefault();
     const resposnce = await fetch(`/admin/product/${id}/image`, {
       method: "DELETE",
     });
-    if(resposnce.status === 200)
-    {
+    if (resposnce.status === 200) {
       window.location.reload();
     }
-    else{
+    else {
       alert("Something went wrong");
     }
   };
-  const uploadPhotoHandler = (e,id) =>{
-  e.preventDefault();
-  let formData = new FormData();
-  formData.append('image', e.target.files[0]);
-  fetch(`/admin/product/${id}`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(result => {
-    window.location.reload();
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+  const uploadPhotoHandler = (e, id) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    fetch(`/admin/product/${id}`, {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
   const deleteProductHandler = async (id) => {
     const resposnce = await fetch(`/admin/product/${id}`, {
       method: "DELETE",
     });
-    if(resposnce.status === 200)
-    {
+    if (resposnce.status === 200) {
       window.location.reload();
     }
-    else{
+    else {
       alert("Something went wrong");
     }
   };
-  const updateProductHandler = async (e,id) => {
+  const updateProductHandler = async (e, id) => {
     e.preventDefault();
-    const name= document.getElementById("updateProductName").value;
+    const name = document.getElementById("updateProductName").value;
     const slug = document.getElementById("updateProductSlug").value;
-    const price= document.getElementById("updateProductPrice").value;
+    const price = document.getElementById("updateProductPrice").value;
     const brand = document.getElementById("updateProductBrand").value;
     const category = document.getElementById("updateProductCategory").value;
     const countInStock = document.getElementById("updateProductCountInStock").value;
@@ -320,12 +324,11 @@
       body: JSON.stringify(data),
     })
     console.log(res);
-    if(res.status === 200)
-    {
+    if (res.status === 200) {
       redirect("/admin/products");
     }
-    else{
+    else {
       alert("Something went wrong");
     }
   }
-  </script>
+</script>
