@@ -36,7 +36,8 @@
     var passwordErrorMessage = document.getElementById('passwordErrorMessage');
     // Validate email
     if (emailInput.value != email.value && passwordInput.value != password.value) {
-      emailErrorMessage.textContent = 'you have entered an invalid password or invalide email';
+       document.getElementById('passwordErrorMessage').textContent = 'you have entered an invalid password or invalide email';
+       document.getElementById('emailErrorMessage').textContent = 'you have entered an invalid password or invalide email';
       passwordInput.focus();
       emailInput.focus();
     }
