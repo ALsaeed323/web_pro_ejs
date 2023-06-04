@@ -8,6 +8,9 @@
   --mainGrey: #9b9999;
   --TransGrey: rgba(0, 0, 0, 0.1);
 }
+.error-message{
+  color:red;
+}
 .card {
   border: none;
   border-radius: 0;

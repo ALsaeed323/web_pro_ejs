@@ -180,6 +180,23 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
     cart: req.session.cart,
   });
 });
+
+
+// add new user to  site
+adminRouter.post("/user", isAdmin, async (req, res) => {
+  try {
+    console.log(req.body);
+    const product = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    });
+    await product.save();
+    res.redirect("/admin/users");
+  } catch (error) {
+    res.status(500).send({ message: "Product Not Created" });
+  }
+});
 adminRouter.get("/user/:id", isAdmin, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
