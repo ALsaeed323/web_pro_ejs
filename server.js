@@ -14,6 +14,7 @@ import Product from "./models/productModel.js";
 import dotenv from "dotenv";
 import adminRouter from "./routes/adminRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 //Read the current directory name
@@ -24,8 +25,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
+app.use(cookieParser());
 app.use(
-  session({ secret: "Your_Secret_Key", resave: false, saveUninitialized: true })
+  session({ secret: "Your_Secret_Key", resave: false, saveUninitialized: true ,
+   cookie: {
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  },})
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
