@@ -35,12 +35,15 @@
     var emailErrorMessage = document.getElementById('emailErrorMessage');
     var passwordErrorMessage = document.getElementById('passwordErrorMessage');
     // Validate email
-    if (emailInput.value != email.value && passwordInput.value != password.value) {
-       document.getElementById('passwordErrorMessage').textContent = 'you have entered an invalid password or invalide email';
-       document.getElementById('emailErrorMessage').textContent = 'you have entered an invalid password or invalide email';
+    if (passwordInput.value != password.value) {
+      document.getElementById('passwordErrorMessage').textContent = 'you have entered an invalid password';
       passwordInput.focus();
+    }
+    else if (emailInput.value != email.value) {
+      document.getElementById('emailErrorMessage').textContent = 'you have entered an invalide email';
       emailInput.focus();
     }
+  
     if (response.status === 200) {
       window.location.href = "/";
     } else {
