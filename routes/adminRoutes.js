@@ -181,6 +181,8 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
   });
 });
 
+
+// add new user to  site
 adminRouter.post("/user", isAdmin, async (req, res) => {
   try {
     console.log(req.body);
