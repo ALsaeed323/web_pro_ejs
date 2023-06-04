@@ -9,14 +9,14 @@
     <main>
       <div class="container mt-3">
         <% switch (path) {
+          case "reports": %>
+          <%- include('./reports'); %>
+          <% break;
             case "signin": %>
             <%- include('./signin'); %>
           <% break;
             case "products": %>
             <%- include('./products',{products}); %>
-            <% break;
-            case "reports": %>
-            <%- include('./reports'); %>
             <% break;
             case "product": %>
             <%- include('./product',{product}); %>
@@ -35,12 +35,6 @@
             <% break;
             case "shipping": %>
             <%- include('./shipping'); %>
-            <% break;
-            case "addcard": %>
-            <%- include('./addcard',{}); %>
-            <% break;
-            case "updateproduct": %>
-            <%- include('./updateproduct'); %>
             <% break;
             case "placeorder": %>
             <%- include('./placeorder',{user,cart}); %>
@@ -72,10 +66,13 @@
             case "/admin/addproduct": %>
             <%- include('./addproduct'); %>
             <% break;
-            case "dashboard": %>
+            case "/admin/dashboard": %>
             <%- include('./dashboard',{countUsers,countOrders,sumOfSales,categories}); %>
             <% break;
-            case "addnewuser": %>
+            case "/admin/updateproduct": %>
+            <%- include('./updateproduct'); %>
+            <% break;
+            case "/admin/addnewuser": %>
             <%- include('./addnewuser'); %>
             <%break;
             default:%>

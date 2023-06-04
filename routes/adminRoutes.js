@@ -43,7 +43,7 @@ adminRouter.get("/products/:id", isAdmin, async (req, res) => {
     res.render("pages/route", {
       product,
       title: "Update Product" + product.name,
-      path: "updateproduct", //the path that user entered
+      path: "/admin/updateproduct", //the path that user entered
       cats, //the categories
       user: req.session.user, //the user
       cart: req.session.cart,
@@ -72,13 +72,18 @@ adminRouter.post("/products/:id", isAdmin, async (req, res) => {
 });
 adminRouter.delete('/product/:id/image', isAdmin, async (req, res) => {
   //delete photo from local storge
-  const productId = req.params.id;
-  const product = await Product.findByIdAndUpdate(productId, { $unset: { image: "" } }, { new: false, useFindAndModify: false });
-  fs.unlinkSync("." + product.image);
-  if (product) {
-    res.send({ message: "Product Updated" });
-  } else {
-    res.status(404).send({ message: "Product Not Found" });
+  try{
+    const productId = req.params.id;
+    const product = await Product.findByIdAndUpdate(productId, { $unset: { image: "" } }, { new: false, useFindAndModify: false });
+    fs.unlinkSync("." + product.image);
+    if (product) {
+      res.send({ message: "Product Updated" });
+    } else {
+      res.status(404).send({ message: "Product Not Found" });
+    }
+  }
+  catch(error){
+    res.status(404).send({ message: "Image is already deleted" });
   }
 });
 adminRouter.put("/product/:id", isAdmin, async (req, res) => {
@@ -175,7 +180,7 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
     title: "Add New User",
-    path: "addnewuser", //the path that user entered
+    path: "/admin/addnewuser", //the path that user entered
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart,
@@ -254,6 +259,9 @@ adminRouter.post("/user/:id", isAdmin, async (req, res) => {
     user.email = req.body.email || user.email;
     user.isAdmin = Boolean(req.body.isAdmin);
     user.save();
+    if (req.params.id === req.session.user._id) {
+      req.session.user = user;
+    }
     res.redirect("/admin/users");
   } else {
     res.status(404).send({ message: "User Not Found" });
@@ -338,7 +346,7 @@ adminRouter.post('/log', isAdmin, async (req, res) => {
   const product = await newProduct.save();
   res.send({ message: 'Product Created', product });
 });
-adminRouter.get("/d", async (req, res) => {
+adminRouter.get("/dashboard",isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   const countUsers = await User.countDocuments();
   const countOrders = await Order.countDocuments();
@@ -389,7 +397,7 @@ const categor = productCategories.map(item => {return {category: item._id, count
   const categories = {categories: categor};
   res.render("pages/route", {
     title: "Dashboard",
-    path: "dashboard", //the path that user entered
+    path: "/admin/dashboard", //the path that user entered
     X_date: JSON.stringify(xId), // Convert to JSON string
     Y_sales: JSON.stringify(ySales), // Convert to JSON string
     countUsers,  // number of user in site
