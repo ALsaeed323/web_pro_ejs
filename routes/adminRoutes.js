@@ -192,19 +192,19 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
 
 
 
-// new report
-adminRouter.post("/report", isAdmin, async (req, res) => {
-  try {
-    console.log(req.body);
-    const report = new Reports({
-      report:req.body.report,
-    });
-    await report.save();
-    res.redirect("/reports");
-  } catch (error) {
-    res.status(500).send({ message: "Report Not Created" });
-  }
-});
+ // new report
+ adminRouter.post("/report", isAdmin, async (req, res) => {
+   try {
+     console.log(req.body);
+     const report = new Reports({
+       report:req.body.report,
+     });
+     await report.save();
+     res.redirect("/reports");
+   } catch (error) {
+     res.status(500).send({ message: "Report Not Created" });
+   }
+ });
 
 
 
