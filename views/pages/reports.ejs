@@ -59,14 +59,16 @@
   <h1>Reports</h1>
   <br>
   <form id="reportForm" onsubmit="post">
-    <label for="issue"><h2>What are the issues you had when you were using our website ?</h2></label>
+    <label for="issue">
+      <h2>What are the issues you had when you were using our website ?</h2>
+    </label>
     <br>
     <div id="issueContainer">
-      <input type="text" name="issue"placeholder="Enter the Problem">
+      <input type="text" name="issue" placeholder="Enter the Problem">
     </div>
   </form>
   <button class="add-button" onclick="addIssue()">Add Problem</button>
-  <button class="submit" onclick="submitReport()">Submit</button>
+  <button class="submit" onclick="submitReport(event)">Submit</button>
 
   <script>
     function addIssue() {
@@ -77,10 +79,18 @@
       container.appendChild(newIssue);
     }
 
-    function submitReport() {
+    async function submitReport(e) {
+      e.preventDefault();
       var form = document.getElementById("reportForm");
+      console.log(form.issue.value);
       console.log("Submitting the form...");
-      form.submit();
+      const res = await fetch("/user/reports", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reports:form.issue.value }),
+       })
     }
   </script>
 </body>

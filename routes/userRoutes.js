@@ -119,7 +119,7 @@ userRouter.post("/reports",  async (req, res) => {
   try {
     console.log(req.body);
     const report = new Report({
-      report: req.body.report,
+      report: req.body.reports,
     });
     await report.save();
     res.redirect("/index");
