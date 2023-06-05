@@ -64,6 +64,7 @@
 
     app.querySelector(".join-screen #join-user").addEventListener("click", function () {
       let username = '<%= (typeof user !== "undefined") &&( user.isAdmin ? "Admin" : user.name) %>'
+      
       if (username.length === 0) {
         return;
       }
@@ -138,7 +139,6 @@
     // Hide the container if the user is undefined
     const container = document.querySelector(".container-md");
     const hide = '<%= typeof user !== "undefined" ? "user" : "undefined" %>';
-    console.log(hide);
     if ( hide === "undefined") {
       container.style.display = "none";
     }
