@@ -69,6 +69,7 @@ app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 
 app.get("/", async (req, res) => {
+  const products = await Product.find();
   //if there is no cart, create one
   const cats = await Product.find().distinct("category");
   //render the index page
@@ -76,6 +77,9 @@ app.get("/", async (req, res) => {
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
+    products,
+    
+    
   });
 });
 
