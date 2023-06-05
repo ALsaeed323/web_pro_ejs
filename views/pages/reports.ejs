@@ -7,20 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reports</title>
   <style>
-    table {
-      border-collapse: collapse;
+    form {
       width: 100%;
     }
 
-    th,
-    td {
-      padding: 8px;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
+    label {
+      display: block;
+      margin-bottom: 10px;
     }
 
-    th {
-      background-color: #f2f2f2;
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
     }
 
     .generate-Reports {
@@ -58,55 +56,31 @@
 </head>
 
 <body>
-  <h2>Reports</h2>
-  <table id="reportTable">
-    <thead>
-      <tr>
-        <th>what are the issues you had when you were using our website ?</th>
-      </tr>
-    </thead>
-    <tbody class="body">
-      <tr>
-        <td><input type='text'></td>
-      </tr>
-    </tbody>
-  </table>
-  <button class="add-button" onclick="addRow()">Add Row</button>
+  <h1>Reports</h1>
+  <br>
+  <form id="reportForm" onsubmit="post">
+    <label for="issue"><h2>What are the issues you had when you were using our website ?</h2></label>
+    <br>
+    <div id="issueContainer">
+      <input type="text" name="issue"placeholder="Enter the Problem">
+    </div>
+  </form>
+  <button class="add-button" onclick="addIssue()">Add Problem</button>
   <button class="submit" onclick="submitReport()">Submit</button>
 
   <script>
-    function addRow() {
-      var table = document.getElementById("reportTable").getElementsByTagName('tbody')[0];
-      var newRow = table.insertRow(table.rows.length);
-      var columnsCount = table.rows[0].cells.length;
-
-      for (var i = 0; i < columnsCount; i++) {
-        var cell = newRow.insertCell(i);
-        cell.innerHTML = "<input type='text'>";
-      }
+    function addIssue() {
+      var container = document.getElementById("issueContainer");
+      var newIssue = document.createElement("input");
+      newIssue.setAttribute("type", "text");
+      newIssue.setAttribute("name", "issue");
+      container.appendChild(newIssue);
     }
 
     function submitReport() {
-      var table = document.getElementById("reportTable");
-      var data = [];
-      for (var i = 1; i < table.rows.length; i++) {
-        var rowData = [];
-        for (var j = 0; j < table.rows[i].cells.length; j++) {
-          var cellData = table.rows[i].cells[j].querySelector('input').value;
-          rowData.push(cellData);
-        }
-
-        data.push(rowData);
-      }
-
-      
-      console.log("Submitting the following data:", data);
-      var tbody = document.querySelector("#reportTable tbody");
-      tbody.innerHTML = "";
-      var firstRowInputs = document.querySelectorAll("#reportTable tbody tr:first-child input");
-      firstRowInputs.forEach(function (input) {
-        input.value = "";
-      });
+      var form = document.getElementById("reportForm");
+      console.log("Submitting the form...");
+      form.submit();
     }
   </script>
 </body>
