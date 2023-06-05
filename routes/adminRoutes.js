@@ -7,6 +7,7 @@ import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
 import fs from "fs";
 import { uploadImage } from "../controllers/uploadControllers.js";
+import Report from "../models/reportsModel.js";
 const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
