@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/userModel.js";
+import Report from "../models/reportsModel.js";
 import bcryptjs from "bcryptjs";
 
 const userRouter = express.Router();
@@ -113,5 +114,17 @@ userRouter.post("/signup", async (req, res) => {
     } catch (err) {
       res.status(409).send({ message: "Invalid email" });
     }
+});
+userRouter.post("/reports",  async (req, res) => {
+  try {
+    console.log(req.body);
+    const report = new Report({
+      report: req.body.report,
+    });
+    await report.save();
+    res.redirect("/index");
+  } catch (error) {
+    res.status(500).send({ message: "Report Not Created" });
+  }
 });
 export default userRouter;
