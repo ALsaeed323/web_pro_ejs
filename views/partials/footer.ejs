@@ -1,6 +1,6 @@
 <footer class="text-center">Copyright Spring 2023 The Awesome SWE230</footer>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 
 <script>
   const redirect = async (link) => {
@@ -58,77 +58,6 @@
     }
   }
 };
-
-  const signupHandler = async (e) => {
-    e.preventDefault();
-    clearErrorMessages();
-    const name = document.getElementById("signupName").value;
-    const email = document.getElementById("signupEmail").value;
-    const password = document.getElementById("signupPassword").value;
-    const confimPassword = document.getElementById(
-      "signupConfirmPassword"
-    ).value;
-    const response = await fetch("/user/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-    if (password !== confimPassword) {
-      displayErrorMessage('passwordErrorMessage', 'Password and Confirm Password do not match');
-      return;
-    }
-    if (response.status === 200) {
-      window.location.href = "/";
-    } else if (response.status === 409) {
-      displayErrorMessage('emailErrorMessage', 'ُEmail already exist');
-    } else {
-      const data = await response.json(); // extract the body data
-      console.log(data);
-      displayErrorMessage('emailErrorMessage', 'something went wrong');
-    }
-    var nameInput = document.getElementById('signupName');
-    var emailInput = document.getElementById('signupEmail');
-    var passwordInput = document.getElementById('signupPassword');
-    var confirmPasswordInput = document.getElementById('signupConfirmPassword');
-
-    // Validate name
-    if (nameInput.value.trim() === '') {
-      displayErrorMessage('nameError', 'Please enter your name.');
-      nameInput.focus();
-      return;
-    }
-
-    // Validate email
-    if (emailInput.value.trim() === '') {
-      displayErrorMessage('emailError', 'Please enter your email address.');
-      emailInput.focus();
-      return;
-    }
-
-    // Validate password
-    if (passwordInput.value === '') {
-      displayErrorMessage('passwordError', 'Please enter a password.');
-      passwordInput.focus();
-      return;
-    }
-
-    // Validate confirm password
-    if (confirmPasswordInput.value === '') {
-      displayErrorMessage('confirmPasswordError', 'Please confirm your password.');
-      confirmPasswordInput.focus();
-      return;
-    }
-
-    if (passwordInput.value !== confirmPasswordInput.value) {
-      displayErrorMessage('confirmPasswordError', 'Password and confirm password do not match.');
-      confirmPasswordInput.focus();
-      return;
-    }
-
-    displaySuccessMessage('Form submitted successfully!');
-  };
   const signoutHandler = (e) => {
     e.preventDefault();
     fetch("/user/logout", {
