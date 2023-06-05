@@ -15,7 +15,7 @@
 </table>
 <div>
     <% for (let x=0; x < pages; x++) { %>
-        <a class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>" href="/admin/reports?page=<%= x + 1 %>">
+        <a class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>" href="/admin/adminreports?page=<%= x + 1 %>">
             <%= x + 1 %>
         </a>
         <% } %>
