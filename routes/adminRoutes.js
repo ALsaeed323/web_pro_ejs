@@ -2,11 +2,11 @@ import express from "express";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 import Order from "../models/orderModel.js";
-import Reports from "/pages/reports.ejs";
 import { isAdmin } from "../controllers/userControllers.js";
 import mongoose from "mongoose";
 import fs from "fs";
 import { uploadImage } from "../controllers/uploadControllers.js";
+import Report from "../models/reportsModel.js";
 const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
@@ -193,10 +193,10 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
 
 
 // new report
-adminRouter.post("/report", isAdmin, async (req, res) => {
+adminRouter.post("/report",isAdmin, async (req, res) => {
   try {
     console.log(req.body);
-    const report = new Reports({
+    const report = new Report({
       report:req.body.report,
     });
     await report.save();
