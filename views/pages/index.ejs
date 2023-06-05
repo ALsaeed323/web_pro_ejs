@@ -89,17 +89,20 @@
                     </div>
                 </div>
                 <div class="col-10 mx-auto col-md-6 col-lg-9 my-3">
+                    <% for (let j = 0; j < 1; j++) { %>
+                        <% let product = products[j]; %>
                     <div class="row">
+                        
                         <div class="col-md-6 col-lg-3 my-3">
                             <div class="category-container">
                                 <img src="/public/image/shirt1.jpg" class="img-fluid category-img" alt="">
                                 <a href="#" class="category-link">
                                     <h6 class="text-uppercase mb-0">
-                                        Men shirt
+                                        <%= product.name %>
                                     </h6>
                                     <p class="text-yellow mb-0">
                                         <div class="col">Price:</div>
-                                        <div class="col">$<%= products.price %></div>
+                                        <div class="col">$<%= product.price %></div>
                                     </p>
                                 </a>
                             </div>
@@ -109,10 +112,11 @@
                                 <img src="../../public/image/shirt2.jpg" class="img-fluid category-img" alt="">
                                 <a href="index.html" class="category-link">
                                     <h6 class="text-uppercase mb-0">
-                                        Men shirt
+                                        <%= product.name %>
                                     </h6>
                                     <p class="text-yellow mb-0">
-                                        20 items
+                                       <div class="col">Price:</div>
+                                        <div class="col">$<%= product.price+50 %></div>
                                     </p>
                                 </a>
                             </div>
@@ -122,10 +126,11 @@
                                 <img src="../../public/image/shirt3.jpg" class="img-fluid category-img" alt="">
                                 <a href="index.html" class="category-link">
                                     <h6 class="text-uppercase mb-0">
-                                        Men shirt
+                                        <%= product.name %>
                                     </h6>
                                     <p class="text-yellow mb-0">
-                                        25 items
+                                       <div class="col">Price:</div>
+                                        <div class="col">$<%= product.price+40 %></div>
                                     </p>
                                 </a>
                             </div>
@@ -135,17 +140,20 @@
                                 <img src="../../public/image/shirt4.jpg" class="img-fluid category-img" alt="">
                                 <a href="index.html" class="category-link">
                                     <h6 class="text-uppercase mb-0">
-                                        Men shirt
+                                        <%= product.name %>
                                     </h6>
                                     <p class="text-yellow mb-0">
-                                        10 items
+                                       <div class="col">Price:</div>
+                                        <div class="col">$<%= product.price+20 %></div>
                                     </p>
                                 </a>
                             </div>
                         </div>
+                        <% };%>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
     <section id="phone-filler">
