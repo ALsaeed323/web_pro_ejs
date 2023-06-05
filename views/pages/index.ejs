@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <%- include('../partials/head'); %>
-      </head>
+
+<head>
+    <%- include('../partials/head'); %>
+</head>
+
 <body>
     <!-- hhh -->
     <header><%- include('../partials/header',{cats,user,cart}); %></header>
     <div class="banner d-flex align-items-center pl-3 pl-lg-5">
         <div>
             <h1 class="text-slanted text-capitalize mb-0">
-              American Eagle 
+                American Eagle
             </h1>
             <h1 class="text-lowercase font-weight-bold">
-              Outfitters Egypt
+                Outfitters Egypt
             </h1>
             <a href="/products" class="btn btn-yellow " style="background-color:  #ffcc00;"> view collection </a>
         </div>
@@ -80,7 +82,7 @@
                         product categories
                     </h5>
                     <p class="text-muted text-capitalize">
-                       The best clothes that give a beautiful appearance and impression and very powerful outfit..
+                        The best clothes that give a beautiful appearance and impression and very powerful outfit..
                     </p>
                     <a href="/products" class="categorie-link text-weight-bold text-capitalize ">
                         view all categories
@@ -89,26 +91,27 @@
                     </div>
                 </div>
                 <div class="col-10 mx-auto col-md-6 col-lg-9 my-3">
-                   
-                    <div class="row">
-                        <% for (let j = 0; j < 4; j++) { %>
-                        <% let product = products[j]; %>
 
-                        <div class="col-md-6 col-lg-3 my-3">
-                            <div class="category-container">
-                                <img src="<%= product.image  %>" class="img-fluid category-img" alt="">
-                                <a href=<%="/products/" +product._id %> class="category-link">
-                                    <h6 class="text-uppercase mb-0">
-                                        <%= product.name %>
-                                    </h6>
-                                    <p class="text-yellow mb-0">
-                                        <div class="col">Price:</div>
-                                        <div class="col">$<%= product.price %></div>
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
-                        <% };%>
+                    <div class="row">
+                        <% for (let j=0; j < 4; j++) { %>
+                            <% let product=products[j]; %>
+
+                                <div class="col-md-6 col-lg-3 my-3">
+                                    <div class="category-container">
+                                        <img src="<%= product.image  %>" class="img-fluid category-img" alt="">
+                                        <a href=<%="/products/" +product._id %> class="category-link">
+                                            <h6 class="text-uppercase mb-0">
+                                                <%= product.name %>
+                                            </h6>
+                                            <p class="text-yellow mb-0">
+                                                <div class="col">Price:</div>
+                                                <div class="col">$<%= product.price %>
+                                                </div>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <% };%>
 
                     </div>
                 </div>
@@ -126,7 +129,8 @@
                     <p class="text-capitalize">
                         A diverse collection that keeps pace with fashion and self-expression
                     </p>
-                    <a href="/products" class="btn btn-yellow " style="background-color:  #ffcc00;"> view collection </a>
+                    <a href="/products" class="btn btn-yellow " style="background-color:  #ffcc00;"> view collection
+                    </a>
                 </div>
             </div>
         </div>
@@ -140,36 +144,45 @@
                         featured products
                     </h1>
                     <p class="text-muted">
-                      one of the most trusted global companies
+                        one of the most trusted global companies
                     </p>
                 </div>
             </div>
-              
-            
+
+
             <div class="row">
-                <% let i = 0 ; products.forEach((product)=>{ i++; %>
-                <div class="col-10 mx-auto col-md-6 col-lg-4">
-                    <div class="featured-container p-5">
-                        <img src="<%= product.image %>" alt="" class="img-fluid">
-                     
-                          
-                        <% if (product.countInStock === 0) { %>
-                            <button class="btn btn-light" disabled>Out of stock</button>
-                          <% } else { %>
-                        <a href="#" class="featured-store-link text-capitalize "   onclick="addToCartHandler('<%= product._id %>')">add to cart</a>
-                        <% }  %>
+                <% let i=0 ; products.forEach((product)=>{ i++; %>
+                    <div class="col-10 mx-auto col-md-6 col-lg-4">
+                        <div class="featured-container p-5">
+                            <img src="<%= product.image %>" alt="" class="img-fluid">
+
+                            <a href=<%="/products/" +product._id %>>
+                                <span class="featured-search-icon" data-toggle="modal" data-target="#productModal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </span>
+                            </a>
+                            <% if (product.countInStock===0) { %>
+                                <button class="btn btn-light" disabled>Out of stock</button>
+                                <% } else { %>
+                                    <a href="#" class="featured-store-link text-capitalize "
+                                        onclick="addToCartHandler('<%= product._id %>')">add to cart</a>
+                                    <% } %>
+                        </div>
+                        <h6 class="text-capitalize text-center my-2">
+                            special product
+                        </h6>
+                        <h6 class="text-center">
+                            <span class="text-muted old-price mx-2">$<%= ((product.price )+100) %></span>
+                            <span>$<%= product.price %></span>
+                        </h6>
                     </div>
-                    <h6 class="text-capitalize text-center my-2">
-                        special product
-                    </h6>
-                    <h6 class="text-center">
-                        <span class="text-muted old-price mx-2">$<%= ((product.price )+100) %></span>
-                        <span>$<%= product.price  %></span>
-                    </h6>
-                </div>
-                 <% });%>
+                    <% });%>
             </div>
-           
+
         </div>
     </section>
     <section id="newsletter" class="newsletter py-5">
@@ -246,7 +259,7 @@
         </div>
     </section>
     <%- include('./chat'); %>
-    <footer><%- include('../partials/footer'); %></footer>
+        <footer><%- include('../partials/footer'); %></footer>
 </body>
 
 </html>
