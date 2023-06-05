@@ -1,47 +1,52 @@
 <div>
-      <h2>Display all product</h2>
-      <div>
-        <a href="/admin/addproduct" class="btn btn-primary navigation-button"
-          >Add New Product</a
-        >
-      </div>
-    </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Category</th>
-          <th class="action-col">Image</th>
-          <th>Brand</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% products.forEach((product) => { %>
-        <tr>
-          <td><%= product.name %></td>
-          <td><%= product.price %></td>
-          <td><%= product.category %></td>
-          <td><%= product.image %></td>
-          <td><%= product.brand %></td>
-          <td>
-            <a onclick="deleteProductHandler('<%= product._id %>')" class="btn btn-primary">Delete</a>
-          </td>
-          <td>
-            <a href="/admin/products/<%= product._id%>" class="btn btn-primary">Modify</a>
-          </td>
-        </tr>
-        <%})%>
-      </tbody>
-    </table>
-    <div>
-      <% for (let x = 0; x < pages; x++) { %>
-      <a
-        class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>"
-        href="/admin/products?page=<%= x + 1 %>"
-      >
-        <%= x + 1 %>
-      </a>
-      <% } %>
-    </div>
+  <h2>Display all product</h2>
+  <div>
+    <a href="/admin/addproduct" class="btn btn-primary navigation-button">Add New Product</a>
+  </div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th class="action-col">Image</th>
+      <th>Brand</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% products.forEach((product)=> { %>
+      <tr>
+        <td>
+          <%= product.name %>
+        </td>
+        <td>
+          <%= product.price %>
+        </td>
+        <td>
+          <%= product.category %>
+        </td>
+        <td>
+          <%= product.image %>
+        </td>
+        <td>
+          <%= product.brand %>
+        </td>
+        <td>
+          <a onclick="deleteProductHandler('<%= product._id %>')" class="btn btn-primary">Delete</a>
+        </td>
+        <td>
+          <a href="/admin/products/<%= product._id%>" class="btn btn-primary">Modify</a>
+        </td>
+      </tr>
+      <%})%>
+  </tbody>
+</table>
+<div>
+  <% for (let x=0; x < pages; x++) { %>
+    <a class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>" href="/admin/products?page=<%= x + 1 %>">
+      <%= x + 1 %>
+    </a>
+    <% } %>
+</div>

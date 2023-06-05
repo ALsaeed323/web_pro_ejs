@@ -12,6 +12,9 @@
           case "reports": %>
           <%- include('./reports'); %>
           <% break;
+          case "adminreports": %>
+          <%- include('./adminreports',{reports}); %>
+          <% break;
             case "signin": %>
             <%- include('./signin'); %>
           <% break;

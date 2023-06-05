@@ -73,7 +73,7 @@ adminRouter.post("/products/:id", isAdmin, async (req, res) => {
 });
 adminRouter.delete('/product/:id/image', isAdmin, async (req, res) => {
   //delete photo from local storge
-  try{
+  try {
     const productId = req.params.id;
     const product = await Product.findByIdAndUpdate(productId, { $unset: { image: "" } }, { new: false, useFindAndModify: false });
     fs.unlinkSync("." + product.image);
@@ -83,7 +83,7 @@ adminRouter.delete('/product/:id/image', isAdmin, async (req, res) => {
       res.status(404).send({ message: "Product Not Found" });
     }
   }
-  catch(error){
+  catch (error) {
     res.status(404).send({ message: "Image is already deleted" });
   }
 });
@@ -115,7 +115,7 @@ adminRouter.delete("/product/:id", isAdmin, async (req, res) => {
     res.status(500).send({ message: "Product not Deleted" });
   }
 });
-adminRouter.post("/product/:id", isAdmin,uploadImage, async (req, res) => {
+adminRouter.post("/product/:id", isAdmin, uploadImage, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
   await Product.findByIdAndUpdate(
     req.params.id,
@@ -187,33 +187,6 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
     cart: req.session.cart,
   });
 });
-
-
-
-
-
-
-//  // new report
-//  adminRouter.post("/report", isAdmin, async (req, res) => {
-//    try {
-//      console.log(req.body);
-//      const report = new Reports({
-//        report:req.body.report,
-//      });
-//      await report.save();
-//      res.redirect("/reports");
-//    } catch (error) {
-//      res.status(500).send({ message: "Report Not Created" });
-//    }
-//  });
-
-
-
-
-
-
-
-
 
 // add new user to  site
 adminRouter.post("/user", isAdmin, async (req, res) => {
@@ -347,7 +320,7 @@ adminRouter.post('/log', isAdmin, async (req, res) => {
   const product = await newProduct.save();
   res.send({ message: 'Product Created', product });
 });
-adminRouter.get("/dashboard",isAdmin, async (req, res) => {
+adminRouter.get("/dashboard", isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   const countUsers = await User.countDocuments();
   const countOrders = await Order.countDocuments();
@@ -363,39 +336,39 @@ adminRouter.get("/dashboard",isAdmin, async (req, res) => {
     },
   ]);
 
-   // // line chart for sales order
+  // // line chart for sales order
   const dailyOrders = await Order.aggregate([
-      {
-        $group: {
-          _id: { $dateToString: { format: '%d', date: '$createdAt' } },
-          orders: { $sum: 1 },
-          sales: { $sum: '$totalPrice' },
-        },
+    {
+      $group: {
+        _id: { $dateToString: { format: '%d', date: '$createdAt' } },
+        orders: { $sum: 1 },
+        sales: { $sum: '$totalPrice' },
       },
-      { $sort: { _id: 1 } },
-    ]);
-    const TotalSales = orders.map(order => order.totalSales);
-    const xId = [];
-    const ySales = [];
-
-
-dailyOrders.forEach(order => {
-  xId.push(parseInt(order._id));
-  ySales.push(parseInt(order.sales));
-});
-
-//  //  pie chart for category
-const productCategories = await Product.aggregate([
-  {
-    $group: {
-      _id: '$category',
-      count: { $sum: 1 },
     },
-  },
-]);
+    { $sort: { _id: 1 } },
+  ]);
+  const TotalSales = orders.map(order => order.totalSales);
+  const xId = [];
+  const ySales = [];
 
-const categor = productCategories.map(item => {return {category: item._id, count: item.count};});
-  const categories = {categories: categor};
+
+  dailyOrders.forEach(order => {
+    xId.push(parseInt(order._id));
+    ySales.push(parseInt(order.sales));
+  });
+
+  //  //  pie chart for category
+  const productCategories = await Product.aggregate([
+    {
+      $group: {
+        _id: '$category',
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const categor = productCategories.map(item => { return { category: item._id, count: item.count }; });
+  const categories = { categories: categor };
   res.render("pages/route", {
     title: "Dashboard",
     path: "/admin/dashboard", //the path that user entered
@@ -403,7 +376,7 @@ const categor = productCategories.map(item => {return {category: item._id, count
     Y_sales: JSON.stringify(ySales), // Convert to JSON string
     countUsers,  // number of user in site
     countOrders,  //  number of Orders in site
-    sumOfSales :TotalSales, // the total sales order
+    sumOfSales: TotalSales, // the total sales order
     categories,
     cats, //the categories
     user: req.session.user, //the user
@@ -417,5 +390,24 @@ adminRouter.post("/reports", isAdmin, (req, res) => {
   console.log(data);
   res.send('Report generated successfully!');
 });
-
+adminRouter.get("/adminreports", isAdmin, async (req, res) => {
+  const cats = await Product.find().distinct("category");
+  const { query } = req;
+  const page = query.page || 1;
+  const pageSize = PAGE_SIZE;
+  const reports = await Report.find()
+    .skip(pageSize * (page - 1))
+    .limit(pageSize);
+  const countUsers = await Report.countDocuments();
+  res.render("pages/route", {
+    title: "Reports",
+    path: "adminreports",
+    reports, //the path that user entered
+    cats, //the categories
+    user: req.session.user, //the user
+    cart: req.session.cart, //the cart
+    page,
+    pages: Math.ceil(countUsers / pageSize),
+  });
+});
 export default adminRouter;
