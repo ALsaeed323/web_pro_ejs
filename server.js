@@ -76,6 +76,8 @@ app.get("/", async (req, res) => {
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
+    
+    
   });
 });
 
