@@ -11,7 +11,7 @@
     <div class="banner d-flex align-items-center pl-3 pl-lg-5">
         <div>
             <h1 class="text-slanted text-capitalize mb-0">
-                American Eagle
+                American Eagle Outfitters
             </h1>
             <h1 class="text-lowercase font-weight-bold">
                 Outfitters Egypt
@@ -98,7 +98,7 @@
 
                                 <div class="col-md-6 col-lg-3 my-3">
                                     <div class="category-container">
-                                        <img src="<%= product.image  %>" class="img-fluid category-img" alt="">
+                                        <img src="<%= product.image  %>" class="img-fluid category-img" alt="<%=product.slug%>">
                                         <a href=<%="/products/" +product._id %> class="category-link">
                                             <h6 class="text-uppercase mb-0">
                                                 <%= product.name %>
@@ -154,7 +154,7 @@
                 <% let i=0 ; products.forEach((product)=>{ i++; %>
                     <div class="col-10 mx-auto col-md-6 col-lg-4">
                         <div class="featured-container p-5">
-                            <img src="<%= product.image %>" alt="" class="img-fluid">
+                            <img src="<%= product.image %>" alt="<%=product.slug%>" class="img-fluid">
                             <a href=<%="/products/" +product._id %>>
                                 <span class="featured-search-icon" data-toggle="modal" data-target="#productModal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
