@@ -29,6 +29,34 @@ userRouter.post("/signin", async (req, res) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 });
+userRouter.post("/forgetpass", async (req, res) => {
+  // Get email, password, and confirmPassword from the request
+  const { email, password, confirmPassword } = req.body;
+  // Check for email, password, and confirmPassword in the request
+  if (!email || !password || !confirmPassword) {
+    return res.status(400).send({ message: "Email, password, and confirmPassword are required" });
+  }
+  try {
+    // Find the user in the database
+    const user = await User.findOne({ email });
+    // Check if the user exists
+    if (!user) {
+      return res.status(401).send({ message: "User not found" });
+    }
+    // Check if the password and confirmPassword match
+    if (password !== confirmPassword) {
+      return res.status(400).send({ message: "Password and confirmPassword do not match" });
+    }
+    // Update the user's password
+    user.password = password;
+    // Save the updated user in the database
+    await user.save();
+    return res.status(200).send({ message: "Password changed successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
 userRouter.post("/logout", (req, res) => {
   // Destroy the session
   req.session.destroy();
