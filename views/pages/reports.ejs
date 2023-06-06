@@ -58,9 +58,9 @@
 <body>
   <h1>Reports</h1>
   <br>
-  <form id="reportForm" onsubmit="post">
+  <form id="reportForm">
     <label for="issue">
-      <h2>What are the issues you had when you were using our website ?</h2>
+      <h2>What are the issues you had when you were using our website?</h2>
     </label>
     <br>
     <div id="issueContainer">
@@ -69,6 +69,9 @@
   </form>
   <button class="add-button" onclick="addIssue()">Add Problem</button>
   <button class="submit" onclick="submitReport(event)">Submit</button>
+  
+  <!-- Success message -->
+  <div id="successMessage" style="display: none; color: green;">Form submitted successfully!</div>
 
   <script>
     function addIssue() {
@@ -82,15 +85,25 @@
     async function submitReport(e) {
       e.preventDefault();
       var form = document.getElementById("reportForm");
-      console.log(form.issue.value);
+      var issues = [];
+
+      // Collect all the issues
+      var issueInputs = document.getElementsByName("issue");
+      for (var i = 0; i < issueInputs.length; i++) {
+        issues.push(issueInputs[i].value);
+      }
+      console.log(issues);
       console.log("Submitting the form...");
       const res = await fetch("/user/reports", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ reports:form.issue.value }),
-       })
+        body: JSON.stringify({ reports: issues }),
+      });
+      // Display the success message
+      var successMessage = document.getElementById("successMessage");
+      successMessage.style.display = "block";
     }
   </script>
 </body>
