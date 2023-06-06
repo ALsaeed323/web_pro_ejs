@@ -121,7 +121,7 @@
       redirect("/placeorder");
     } 
   };
-  const forgotHandler = async (e) => {
+   const forgotHandler = async (e) => {
   e.preventDefault(); // Prevent the default form submission behavior
 
   // Get the form values
@@ -172,6 +172,7 @@
     } else {
       // Handle other status codes (e.g., 400, 401, 500)
       const errorData = await response.json();
+      document.getElementById('emailError').textContent = 'Please enter an email address.';
       // Display the error message returned from the server
       console.error(errorData.message);
     }

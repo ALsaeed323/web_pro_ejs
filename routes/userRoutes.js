@@ -48,6 +48,7 @@ userRouter.post("/forgetpass", async (req, res) => {
       return res.status(400).send({ message: "Password and confirmPassword do not match" });
     }
     // Update the user's password
+    console.log("hello");
     user.password = password;
     // Save the updated user in the database
     await user.save();
