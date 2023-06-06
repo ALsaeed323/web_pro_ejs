@@ -115,6 +115,9 @@ userRouter.post("/signup", async (req, res) => {
       res.status(409).send({ message: "Invalid email" });
     }
 });
+// userRouter.post("/email", async (req, res) => {
+  
+// });
 userRouter.post("/reports", async (req, res) => {
   try {
     console.log(req.body);

@@ -66,21 +66,18 @@
     let emailInput = document.getElementById("signupEmail");
     let passwordInput = document.getElementById("signupPassword");
     let confirmPasswordInput = document.getElementById("signupConfirmPassword");
-
     // Validate name
     if (nameInput.value.trim() === "") {
       displayErrorMessage("nameError", "Please enter your name.");
       nameInput.focus();
       return;
     }
-
     // Validate email
     if (emailInput.value.trim() === "") {
       displayErrorMessage("emailError", "Please enter your email address.");
       emailInput.focus();
       return;
     }
-
     // Validate password
     if (passwordInput.value === "") {
       displayErrorMessage("passwordError", "Please enter a password.");
@@ -113,14 +110,13 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name:nameInput, email:emailInput, password:passwordInput }),
+      body: JSON.stringify({ name:nameInput.value, email:emailInput.value, password:passwordInput.value }),
     });
     if (response.status === 200) {
     displaySuccessMessage("Form submitted successfully!");
       window.location.href = "/";
     } else if (response.status === 409) {
-        console.log("email already exist")
-      displayErrorMessage("emailError", "ُEmail already exist");
+      displayErrorMessage("emailError", "Email already exist");
     } else {
       const data = await response.json(); // extract the body data
       console.log(data);
