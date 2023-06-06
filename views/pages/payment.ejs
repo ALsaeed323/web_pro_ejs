@@ -19,36 +19,8 @@
       </div>
     </form>
 
-    <div id="paypal-button-container" style="width: 10px;"></div>
+   
   </div>
 
 
-  <script src="https://www.paypal.com/sdk/js?client-id=Adl807sAwea4chd_atEpuqif_yg519DmWDHUqKS1bZKaSyCl1SGo_kYAb0PUj2xl771F95W7Jng_mAME"></script>
-  <script>
-    function paymentHandler(event) {
-      event.preventDefault();
-      var selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-      if (selectedPaymentMethod === 'PayPal') {
-        createPaypalOrder();
-      } else {
-        // Perform other payment actions (e.g., Stripe)
-      }
-    }
-
-    function createPaypalOrder() {
-      paypal.Buttons({
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  value: '299.99'
-                }
-              }
-            ]
-          });
-        }
-      }).render('#paypal-button-container');
-    }
-  </script>
+  

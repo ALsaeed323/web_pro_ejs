@@ -20,44 +20,44 @@
     }
   };
   const signinHandler = async (e) => {
-  e.preventDefault();
-  const emailInput = document.getElementById('signinEmail');
-  const passwordInput = document.getElementById('signinPassword');
-  const email = emailInput.value;
-  const password = passwordInput.value;
-  const response = await fetch('/user/signin', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  var emailErrorMessage = document.getElementById('emailErrorMessage');
-  var passwordErrorMessage = document.getElementById('passwordErrorMessage');
+    e.preventDefault();
+    const emailInput = document.getElementById('signinEmail');
+    const passwordInput = document.getElementById('signinPassword');
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const response = await fetch('/user/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    var emailErrorMessage = document.getElementById('emailErrorMessage');
+    var passwordErrorMessage = document.getElementById('passwordErrorMessage');
     if (passwordInput.value !== password) {
-    passwordErrorMessage.textContent = 'You have entered an invalid password';
-    passwordInput.focus();
-    return;
-  } else if (emailInput.value !== email) {
-    emailErrorMessage.textContent = 'You have entered an invalid email';
-    emailInput.focus();
-    return;
-  }
-
-  if (response.status === 200) {
-    window.location.href = '/';
-  } else {
-    const data = await response.json(); // Extract the response body
-    console.log(data);
-    if (data.errorType === 'email') {
-      emailErrorMessage.textContent = 'Invalid email';
-      emailInput.focus();
-    } else {
-      passwordErrorMessage.textContent = 'Invalid password';
+      passwordErrorMessage.textContent = 'You have entered an invalid password';
       passwordInput.focus();
+      return;
+    } else if (emailInput.value !== email) {
+      emailErrorMessage.textContent = 'You have entered an invalid email';
+      emailInput.focus();
+      return;
     }
-  }
-};
+
+    if (response.status === 200) {
+      window.location.href = '/';
+    } else {
+      const data = await response.json(); // Extract the response body
+      console.log(data);
+      if (data.errorType === 'email') {
+        emailErrorMessage.textContent = 'Invalid email';
+        emailInput.focus();
+      } else {
+        passwordErrorMessage.textContent = 'Invalid password';
+        passwordInput.focus();
+      }
+    }
+  };
   const signoutHandler = (e) => {
     e.preventDefault();
     fetch("/user/logout", {
@@ -101,6 +101,28 @@
     });
     redirect("/payment");
   };
+  ////////////////////////////
+
+
+function createPaypalOrder() {
+  paypal
+    .Buttons({
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: '299.99',
+              },
+            },
+          ],
+        });
+      },
+      
+    })
+    .render('#paypal-button-container');
+}
+
   const paymentHandler = async (e) => {
     e.preventDefault();
     const data = {
@@ -112,9 +134,32 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+
+
     });
-    redirect("/placeorder");
+
+    // Payment request was successful
+    if (data.paymentMethod === "PayPal") {
+      
+  
+      redirect("/placeorder"); // Set the PayPal redirection URL
+      
+    
+    } else if (data.paymentMethod === "Cash") {
+      redirect("/placeorder");// Set the Cash redirection URL
+    } else if (data.paymentMethod === "Stripe") {
+      redirect("/placeorder"); // Set the Stripe redirection URL
+    }
+    else {
+      // Payment request failed
+      console.log("Payment request failed:", response.statusText);
+      // Perform any necessary error handling or display an error message to the user
+    }
+
+
   };
+
+
   const placeOrderHandler = async (e) => {
     e.preventDefault();
     const data = {
