@@ -1,22 +1,22 @@
-
 <div>
     <h2>Display All Reports</h2>
-</div>
-<table class="table">
+  </div>
+  <table class="table">
     <tbody>
-        <% reports.forEach((report)=> { %>
-            <tr>
-                <td>
-                    <%= report.report %>
-                </td>
-            </tr>
-            <% }) %>
+      <% for (let i = 0; i < reports.length; i++) { %>
+        <tr>
+          <td>
+            <%= reports[i].report %>
+          </td>
+        </tr>
+      <% } %>
     </tbody>
-</table>
-<div>
-    <% for (let x=0; x < pages; x++) { %>
-        <a class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>" href="/admin/adminreports?page=<%= x + 1 %>">
-            <%= x + 1 %>
-        </a>
-        <% } %>
-</div>
+  </table>
+  <div>
+    <% for (let x = 0; x < pages; x++) { %>
+      <a class="<%= x + 1 === Number(page) ? 'btn text-bold' : 'btn' %>" href="/admin/adminreports?page=<%= x + 1 %>">
+        <%= x + 1 %>
+      </a>
+    <% } %>
+  </div>
+  

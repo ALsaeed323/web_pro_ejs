@@ -115,16 +115,22 @@ userRouter.post("/signup", async (req, res) => {
       res.status(409).send({ message: "Invalid email" });
     }
 });
-userRouter.post("/reports",  async (req, res) => {
+// userRouter.post("/email", async (req, res) => {
+  
+// });
+userRouter.post("/reports", async (req, res) => {
   try {
     console.log(req.body);
-    const report = new Report({
-      report: req.body.reports,
-    });
-    await report.save();
+    for (let i = 0; i < req.body.reports.length; i++) {
+      const report = new Report({
+        report: req.body.reports[i],
+      });
+      await report.save();
+    }
     res.redirect("/index");
   } catch (error) {
-    res.status(500).send({ message: "Report Not Created" });
+    res.status(500).send({ message: "Report(s) not created" });
   }
 });
+
 export default userRouter;
