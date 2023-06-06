@@ -24,67 +24,47 @@
 
     </form>
 </div>
+
 <script>
     // Define the function to handle the form submission
-    const forgotHandler = async (e) => {
-  e.preventDefault(); // Prevent the default form submission behavior
+    function forgotHandler(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-  // Get the form values
-  const email = document.getElementById('signupEmail').value;
-  const password = document.getElementById('signupPassword').value;
-  const confirmPassword = document.getElementById('signupConfirmPassword').value;
+        // Get the form field values
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('signupConfirmPassword').value;
 
-  // Clear any previous error messages
-  document.getElementById('emailError').textContent = '';
-  document.getElementById('passwordError').textContent = '';
-  document.getElementById('confirmPasswordError').textContent = '';
+        // Reset any previous error messages
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        document.getElementById('confirmPasswordError').textContent = '';
 
-  // Check for email, password, and confirmPassword validity
-  if (!email || !password || !confirmPassword) {
-    // Display an error message if any field is missing
-    document.getElementById('emailError').textContent = 'Email is required';
-    document.getElementById('passwordError').textContent = 'Password is required';
-    document.getElementById('confirmPasswordError').textContent = 'Confirm Password is required';
-    return;
-  }
+        // Validate the email
+        if (!email) {
+            document.getElementById('emailError').textContent = 'Please enter an email address.';
+            return;
+        }
 
-  if (password !== confirmPassword) {
-    // Display an error message if password and confirmPassword do not match
-    document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
-    return;
-  }
+        // Validate the password
+        if (!password) {
+            document.getElementById('passwordError').textContent = 'Please enter a password.';
+            return;
+        }
 
-  // Define the request data
-  const data = {
-    email: email,
-    password: password,
-    confirmPassword: confirmPassword,
-  };
+        // Validate the confirm password
+        if (!confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Please confirm the password.';
+            return;
+        }
 
-  try {
-    // Make a POST request to the server-side endpoint
-    const response = await fetch("/user/forgetpass", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+        if (password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+            return;
+        }
 
-    if (response.ok) {
-      // Handle success, e.g., redirect to a new page
-      window.location.href = "/signin";
-    } else {
-      // Handle other status codes (e.g., 400, 401, 500)
-      const errorData = await response.json();
-      // Display the error message returned from the server
-      console.error(errorData.message);
+        // If all validations pass, you can proceed with form submission or further processing
+        console.log('Form submitted successfully!');
+        // You can add your code here to handle the form submission or perform any further actions
     }
-  } catch (error) {
-    // Handle network errors or exceptions
-    console.error(error);
-  }
-};
-
-
 </script>

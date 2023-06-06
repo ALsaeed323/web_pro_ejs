@@ -121,7 +121,65 @@
       redirect("/placeorder");
     } 
   };
-  
+  const forgotHandler = async (e) => {
+  e.preventDefault(); // Prevent the default form submission behavior
+
+  // Get the form values
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+  // Clear any previous error messages
+  document.getElementById('emailError').textContent = '';
+  document.getElementById('passwordError').textContent = '';
+  document.getElementById('confirmPasswordError').textContent = '';
+
+  // Check for email, password, and confirmPassword validity
+  if (!email || !password || !confirmPassword) {
+    // Display an error message if any field is missing
+    document.getElementById('emailError').textContent = 'Email is required';
+    document.getElementById('passwordError').textContent = 'Password is required';
+    document.getElementById('confirmPasswordError').textContent = 'Confirm Password is required';
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    // Display an error message if password and confirmPassword do not match
+    document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+    return;
+  }
+
+  // Define the request data
+  const data = {
+    email: email,
+    password: password,
+    confirmPassword: confirmPassword,
+  };
+
+  try {
+    // Make a POST request to the server-side endpoint
+    const response = await fetch("/user/forgetpass", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      // Handle success, e.g., redirect to a new page
+      window.location.href = "/signin";
+    } else {
+      // Handle other status codes (e.g., 400, 401, 500)
+      const errorData = await response.json();
+      // Display the error message returned from the server
+      console.error(errorData.message);
+    }
+  } catch (error) {
+    // Handle network errors or exceptions
+    console.error(error);
+  }
+};
 
 
 
