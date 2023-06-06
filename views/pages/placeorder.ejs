@@ -4,122 +4,190 @@ const itemsPrice = round2(cart.reduce((a, c) => a + c.quantity * c.price, 0));
 const shippingPrice = itemsPrice < 100 ? round2(0) : round2(10); taxPrice=round2(0.14 * itemsPrice);
 const totalPrice = itemsPrice + shippingPrice + taxPrice; 
 %>
-    <h1 className="my-3">Preview Order</h1>
-    <div class="row">
-      <div class="col-md-8">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Shipping</h5>
-            <p class="card-text">
-              <strong>Name:</strong>
-              <%= user.shippingAddress.fullName %> <br />
-                <strong>Address: </strong>
-                <%= user.shippingAddress.address %>,
-                  <%= user.shippingAddress.city %>, <%= user.shippingAddress.postalCode %>,
-                      <%= user.shippingAddress.country %>
-            </p>
-            <a href="/shipping">Edit</a>
-          </div>
-        </div>
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Payment</h5>
-            <p class="card-text">
-              <strong>Method:</strong>
-              <%= user.paymentMethod %>
-            </p>
-            <a href="/payment">Edit</a>
-          </div>
-        </div>
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Items</h5>
-            <ul class="list-group list-group-flush">
-              <% cart.forEach(function(item) { %>
-                <li class="list-group-item">
-                  <div class="row align-items-center">
-                    <div class="col-md-6">
-                      <img src="<%= item.image %>" alt="<%= item.name %>" class="img-fluid rounded img-thumbnail">
-                      <a href="/products/<%= item._id %>">
-                        <%= item.name %>
-                      </a>
-                    </div>
-                    <div class="col-md-3">
-                      <span>
-                        <%= item.quantity %>
-                      </span>
-                    </div>
-                    <div class="col-md-3">$<%= item.price %>
-                    </div>
-                  </div>
-                </li>
-                <% }); %>
-            </ul>
-            <a href="/cart">Edit</a>
-          </div>
-        </div>
+<h1 className="my-3">Preview Order</h1>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Shipping</h5>
+        <p class="card-text">
+          <strong>Name:</strong>
+          <%= user.shippingAddress.fullName %> <br />
+          <strong>Address: </strong>
+          <%= user.shippingAddress.address %>,
+          <%= user.shippingAddress.city %>, <%= user.shippingAddress.postalCode %>,
+          <%= user.shippingAddress.country %>
+        </p>
+        <a href="/shipping">Edit</a>
       </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Order Summary</h5>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col">Items</div>
-                  <div class="col">$ <%= itemsPrice.toFixed(2)%>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col">Shipping</div>
-                  <div class="col">$ <%= shippingPrice.toFixed(2) %>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col">Tax</div>
-                  <div class="col">$ <%= taxPrice.toFixed(2) %>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col">
-                    <strong> Order Total
-                    </strong>
-                  </div>
-                  <div class="col">
-                    <strong>$ <%= totalPrice.toFixed(2) %> </strong>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="d-grid">
-                  <button type="button" class="btn btn-primary"
-                  onclick="placeOrderHandler(event)"
-                   <%= cart.length===0 && "disabled" %>
-                    >
-                        Place Order
-                  </button>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="paypal-button-container" style="width: 10px;"></div>
     </div>
-  <script src="https://www.paypal.com/sdk/js?client-id=Adl807sAwea4chd_atEpuqif_yg519DmWDHUqKS1bZKaSyCl1SGo_kYAb0PUj2xl771F95W7Jng_mAME"></script>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Payment</h5>
+        <p class="card-text">
+          <strong>Method:</strong>
+          <%= user.paymentMethod %>
+        </p>
+        <a href="/payment">Edit</a>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Items</h5>
+        <ul class="list-group list-group-flush">
+          <% cart.forEach(function(item) { %>
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <img src="<%= item.image %>" alt="<%= item.name %>" class="img-fluid rounded img-thumbnail">
+                <a href="/products/<%= item._id %>">
+                  <%= item.name %>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <span>
+                  <%= item.quantity %>
+                </span>
+              </div>
+              <div class="col-md-3">$<%= item.price %>
+              </div>
+            </div>
+          </li>
+          <% }); %>
+        </ul>
+        <a href="/cart">Edit</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Order Summary</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">Items</div>
+              <div class="col">$ <%= itemsPrice.toFixed(2)%>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">Shipping</div>
+              <div class="col">$ <%= shippingPrice.toFixed(2) %>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">Tax</div>
+              <div class="col">$ <%= taxPrice.toFixed(2) %>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">
+                <strong> Order Total
+                </strong>
+              </div>
+              <div class="col">
+                <strong>$ <%= totalPrice.toFixed(2) %> </strong>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-grid">
+              <% if(user.paymentMethod !== "PayPal") {%>
+              <button type="button" class="btn btn-primary" onclick="placeOrderHandler(event)" <%= cart.length===0 && "disabled" %>>
+                Place Order
+              </button>
+              <% } %>
+              <br>
+              <div id="paypal-button-container" style="width: 10px;"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=Adl807sAwea4chd_atEpuqif_yg519DmWDHUqKS1bZKaSyCl1SGo_kYAb0PUj2xl771F95W7Jng_mAME"></script>
 
-    <script>
-      //don't remove the below variables
-      const user = JSON.parse('<%- JSON.stringify(user) %>');
-      const cart = JSON.parse('<%- JSON.stringify(cart) %>');
-      const itemsPrice = Number('<%= itemsPrice %>');
-      const shippingPrice = Number('<%= shippingPrice %>');
-      const taxPrice = Number('<%= taxPrice %>');
-      const totalPrice = Number('<%= totalPrice %>');
-    </script>
+<script>
+  const isPaypalShown = false;
+  //don't remove the below variables
+  const user = JSON.parse('<%- JSON.stringify(user) %>');
+  const cart = JSON.parse('<%- JSON.stringify(cart) %>');
+  const itemsPrice = Number('<%= itemsPrice %>');
+  const shippingPrice = Number('<%= shippingPrice %>');
+  const taxPrice = Number('<%= taxPrice %>');
+  const totalPrice = Number('<%= totalPrice %>');
+  if (user.paymentMethod === "PayPal") {
+    paypal
+      .Buttons({
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: totalPrice,
+              },
+            }, ],
+          });
+        },
+        onApprove: async function(data2, actions) {
+          const data = {
+            orderItems: cart,
+            itemsPrice,
+            shippingPrice,
+            taxPrice,
+            totalPrice,
+            user,
+          };
+          const resposnce = await fetch("/orders", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          if(resposnce.status === 200)
+          {
+            const res = await resposnce.json();
+            const r2 = await fetch(`/admin/order/${res.id}/pay`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            if(r2.status === 200){
+              window.location.href = `/orders/${res.id}`;
+            }
+          }
+        },
+      })
+      .render('#paypal-button-container');
+  }
+  const placeOrderHandler = async (e) => {
+    e.preventDefault();
+    const data = {
+      orderItems: cart,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+      user,
+    };
+    const resposnce = await fetch("/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (resposnce.status === 200) {
+      const res = await resposnce.json();
+      window.location.href = `/orders/${res.id}`;
+    }
+  };
+</script>

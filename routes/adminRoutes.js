@@ -283,7 +283,7 @@ adminRouter.delete("/order/:id", isAdmin, async (req, res) => {
     res.status(500).send({ message: "Order not Deleted" });
   }
 });
-adminRouter.post("/order/:id/pay", isAdmin, async (req, res) => {
+adminRouter.post("/order/:id/pay", async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
   const order = await Order.findById(req.params.id);
   if (order) {

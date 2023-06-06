@@ -101,27 +101,7 @@
     });
     redirect("/payment");
   };
-  ////////////////////////////
 
-
-function createPaypalOrder() {
-  paypal
-    .Buttons({
-      createOrder: function (data, actions) {
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                value: '299.99',
-              },
-            },
-          ],
-        });
-      },
-      
-    })
-    .render('#paypal-button-container');
-}
 
   const paymentHandler = async (e) => {
     e.preventDefault();
@@ -137,52 +117,13 @@ function createPaypalOrder() {
 
 
     });
-
-    // Payment request was successful
-    if (data.paymentMethod === "PayPal") {
-      
-  
-      redirect("/placeorder"); // Set the PayPal redirection URL
-      
-    
-    } else if (data.paymentMethod === "Cash") {
-      redirect("/placeorder");// Set the Cash redirection URL
-    } else if (data.paymentMethod === "Stripe") {
-      redirect("/placeorder"); // Set the Stripe redirection URL
-    }
-    else {
-      // Payment request failed
-      console.log("Payment request failed:", response.statusText);
-      // Perform any necessary error handling or display an error message to the user
-    }
-
-
-  };
-
-
-  const placeOrderHandler = async (e) => {
-    e.preventDefault();
-    const data = {
-      orderItems: cart,
-      itemsPrice,
-      shippingPrice,
-      taxPrice,
-      totalPrice,
-      user,
-    };
-    const resposnce = await fetch("/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
     if (resposnce.status === 200) {
-      const res = await resposnce.json();
-      console.log(res);
-      window.location.href = `/orders/${res.id}`;
-    }
+      redirect("/placeorder");
+    } 
   };
+
+
+
   const profileHandler = async (e) => {
     e.preventDefault();
     const name = document.getElementById("profileName").value;

@@ -108,11 +108,10 @@ const ctx1 = document.getElementById('myChart').getContext('2d');
 
 
      // Sample data
-     const categoryData = JSON.parse('<%= JSON.stringify(categories.categories) %>'.replaceAll('&#34',"\"").replaceAll(";",""))
+     const categoryData = JSON.parse('<%- JSON.stringify(categories.categories) %>')
     // Extract categories and counts from the data
     const categories = categoryData.map(item => item.category);
     const counts = categoryData.map(item => item.count);
-
     // Create a chart using Chart.js
     const ctx = document.getElementById('pieChart').getContext('2d');
     new Chart(ctx, {

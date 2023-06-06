@@ -7,10 +7,6 @@
         <label for="PayPal">PayPal</label>
       </div>
       <div class="mb-3">
-        <input type="radio" id="Stripe" name="paymentMethod" value="Stripe" <%= user && user.paymentMethod === "Stripe" ? "checked" : "" %>>
-        <label for="Stripe">Stripe</label>
-      </div>
-      <div class="mb-3">
         <input type="radio" id="Cash" name="paymentMethod" value="Cash" <%= user && user.paymentMethod === "Cash" ? "checked" : "" %>>
         <label for="Cash">Cash on delivery</label>
       </div>
@@ -18,8 +14,6 @@
         <button class="btn btn-primary">Continue</button>
       </div>
     </form>
-
-   
   </div>
 
 
