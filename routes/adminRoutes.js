@@ -12,7 +12,7 @@ const adminRouter = express.Router();
 const PAGE_SIZE = 4;
 
 //products
-//All products page
+//All products page   (:::::::::) done 
 adminRouter.get("/products", isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
@@ -35,95 +35,7 @@ adminRouter.get("/products", isAdmin, async (req, res) => {
   });
 });
 
-//Edit product page
-adminRouter.get("/products/:id", isAdmin, async (req, res) => {
-  const productId = req.params.id;
-  const product = await Product.findById(productId);
-  const cats = await Product.find().distinct("category");
-  try {
-    res.render("pages/route", {
-      product,
-      title: "Update Product" + product.name,
-      path: "/admin/updateproduct", //the path that user entered
-      cats, //the categories
-      user: req.session.user, //the user
-      cart: req.session.cart,
-    });
-  } catch (error) { }
-});
-adminRouter.post("/products/:id", isAdmin, async (req, res) => {
-  try {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-    if (product) {
-      product.name = req.body.name || product.name;
-      product.slug = req.body.slug || product.slug;
-      product.price = req.body.price || product.price;
-      product.image = req.body.image || product.image;
-      product.category = req.body.category || product.category;
-      product.brand = req.body.brand || product.brand;
-      product.countInStock = req.body.countInStock || product.countInStock;
-      product.description = req.body.description || product.description;
-      await product.save();
-      res.send({ message: "Product Updated" });
-    } else {
-      res.status(404).send({ message: "Product Not Found" });
-    }
-  } catch (error) { }
-});
-adminRouter.delete('/product/:id/image', isAdmin, async (req, res) => {
-  //delete photo from local storge
-  try {
-    const productId = req.params.id;
-    const product = await Product.findByIdAndUpdate(productId, { $unset: { image: "" } }, { new: false, useFindAndModify: false });
-    fs.unlinkSync("." + product.image);
-    if (product) {
-      res.send({ message: "Product Updated" });
-    } else {
-      res.status(404).send({ message: "Product Not Found" });
-    }
-  }
-  catch (error) {
-    res.status(404).send({ message: "Image is already deleted" });
-  }
-});
-adminRouter.put("/product/:id", isAdmin, async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
-  const product = await Product.findById(req.params.id);
-  if (product) {
-    product.name = req.body.name || product.name;
-    product.slug = req.body.slug || product.slug;
-    product.price = req.body.price || product.price;
-    product.category = req.body.category || product.category;
-    product.brand = req.body.brand || product.brand;
-    product.image = product.image || "";
-    product.countInStock = req.body.countInStock || product.countInStock;
-    product.description = req.body.description || product.description;
-    await product.save();
-    res.status(200).send("OK");
-  } else {
-    res.status(404).send({ message: "Product Not Found" });
-  }
-});
-adminRouter.delete("/product/:id", isAdmin, async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
-  const product = await Product.findById(req.params.id);
-  if (product) {
-    await product.deleteOne();
-    res.status(200).send({ message: "deleted" });
-  } else {
-    res.status(500).send({ message: "Product not Deleted" });
-  }
-});
-adminRouter.post("/product/:id", isAdmin, uploadImage, async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
-  await Product.findByIdAndUpdate(
-    req.params.id,
-    { image: req.body.image },
-    { new: true, useFindAndModify: false });
-  res.status(200).send({ message: "Image uploaded" });
-});
-//add product page
+// open page add product (::::::) done
 adminRouter.get("/addproduct", isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
@@ -134,7 +46,9 @@ adminRouter.get("/addproduct", isAdmin, async (req, res) => {
     cart: req.session.cart, //the cart
   });
 });
-//add product API
+
+
+// create product   (:::::::::) done 
 adminRouter.post("/product", isAdmin, uploadImage, async (req, res) => {
   try {
     console.log(req.body);
@@ -154,6 +68,88 @@ adminRouter.post("/product", isAdmin, uploadImage, async (req, res) => {
     res.status(500).send({ message: "Product Not Created" });
   }
 });
+
+
+
+// Open  Edit product page (::::::::) done
+adminRouter.get("/products/:id", isAdmin, async (req, res) => {
+  const productId = req.params.id;
+  const product = await Product.findById(productId);
+  const cats = await Product.find().distinct("category");
+  try {
+    res.render("pages/route", {
+      product,
+      title: "Update Product" + product.name,
+      path: "/admin/updateproduct", //the path that user entered
+      cats, //the categories
+      user: req.session.user, //the user
+      cart: req.session.cart,
+    });
+  } catch (error) { }
+});
+  //  edit product and save data (::::::::) done
+adminRouter.put("/product/:id", isAdmin, async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    product.name = req.body.name || product.name;
+    product.slug = req.body.slug || product.slug;
+    product.price = req.body.price || product.price;
+    product.category = req.body.category || product.category;
+    product.brand = req.body.brand || product.brand;
+    product.image = product.image || "";
+    product.countInStock = req.body.countInStock || product.countInStock;
+    product.description = req.body.description || product.description;
+    await product.save();
+    res.status(200).send("OK");
+  } else {
+    res.status(404).send({ message: "Product Not Found" });
+  }
+});
+ ///  upload img (::::::) done
+adminRouter.post("/product/:id", isAdmin, uploadImage, async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  await Product.findByIdAndUpdate(
+    req.params.id,
+    { image: req.body.image },
+    { new: true, useFindAndModify: false });
+  res.status(200).send({ message: "Image uploaded" });
+});
+
+adminRouter.delete('/product/:id/image', isAdmin, async (req, res) => {
+  //delete photo from local storge
+  try {
+    const productId = req.params.id;
+    const product = await Product.findByIdAndUpdate(productId, { $unset: { image: "" } }, { new: false, useFindAndModify: false });
+    fs.unlinkSync("." + product.image);
+    if (product) {
+      res.send({ message: "Product Updated" });
+    } else {
+      res.status(404).send({ message: "Product Not Found" });
+    }
+  }
+  catch (error) {
+    res.status(404).send({ message: "Image is already deleted" });
+  }
+});
+
+ // delete product 
+adminRouter.delete("/product/:id", isAdmin, async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    await product.deleteOne();
+    res.status(200).send({ message: "deleted" });
+  } else {
+    res.status(500).send({ message: "Product not Deleted" });
+  }
+});
+
+/////  products ends 
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////r
+
+
 
 
 adminRouter.get("/users", isAdmin, async (req, res) => {
