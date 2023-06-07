@@ -2,6 +2,8 @@ import express from "express";
 import User from "../models/userModel.js";
 import Report from "../models/reportsModel.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+import Product from "../models/productModel.js";
 
 const userRouter = express.Router();
 
@@ -30,33 +32,83 @@ userRouter.post("/signin", async (req, res) => {
   }
 });
 userRouter.post("/forgetpass", async (req, res) => {
-  // Get email, password, and confirmPassword from the request
-  const { email, password, confirmPassword } = req.body;
-  // Check for email, password, and confirmPassword in the request
-  if (!email || !password || !confirmPassword) {
-    return res.status(400).send({ message: "Email, password, and confirmPassword are required" });
-  }
-  try {
-    // Find the user in the database
+  const email = req.body.email;
+  try{
     const user = await User.findOne({ email });
-    // Check if the user exists
     if (!user) {
-      return res.status(401).send({ message: "User not found" });
+      return res.status(401).send({ message: "Invalid email" });
     }
-    // Check if the password and confirmPassword match
-    if (password !== confirmPassword) {
-      return res.status(400).send({ message: "Password and confirmPassword do not match" });
+    const token = jwt.sign(
+      {
+        email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+    const data = {
+      email,
+      title:"Reset Password",
+      message:`Please click on the link to reset your password http://127.0.0.1/user/forgetpass/${token} \n Link is only vaild for 24 Hours`,
     }
-    // Update the user's password
-    console.log("hello");
-    user.password = password;
-    // Save the updated user in the database
-    await user.save();
-    return res.status(200).send({ message: "Password changed successfully" });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send({ message: "Internal server error" });
+    await fetch("https://prod-23.westeurope.logic.azure.com:443/workflows/ff7fb991b3024216922cc62eed94c2c7/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aB5NNjoeSVItjkDIDA3gorsZJ1fUtRGOM7sHoiWCdbQ", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    res.send({ message: "Email sent" });
   }
+  catch(err){ 
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
+userRouter.get("/forgetpass/:token", async (req, res) => {
+  const token = req.params.token;
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
+    if (err) {
+      res.status(401).send({ message: "Invalid Token" });
+    } else {
+      try{
+        const cats = await Product.find().distinct("category"); //["Pants,Shitrs","Hoodie"]
+        res.render("./pages/route", { 
+          email:decode.email,
+          path: "/user/resetpass", //the path that user entered
+          title: "Rest Password", //the title of the page
+          cats, //the categories 
+          user: req.session.user, //the user
+          cart: req.session.cart, //the cart
+         });
+      }
+      catch(err){
+        console.error(err);
+        return res.status(500).send({ message: "Internal server error" });
+      }
+    }
+  });
+});
+userRouter.post("/forgetpass/:token", async (req, res) => {
+  const password = req.body.password;
+  const token = req.params.token;
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
+      if (err) {
+        res.status(401).send({ message: "Invalid Token" });
+      } else {
+        try{
+          const user = await User.findOne({ email:decode.email });
+          user.password = password;
+          await user.save();     
+          res.send({ message: "Password changed" })     
+        }
+        catch(err){
+          console.error(err);
+          return res.status(500).send({ message: "Internal server error" });
+        }
+      }
+    });
 });
 userRouter.post("/logout", (req, res) => {
   // Destroy the session
