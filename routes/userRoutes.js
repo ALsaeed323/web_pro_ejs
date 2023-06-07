@@ -50,7 +50,7 @@ userRouter.post("/forgetpass", async (req, res) => {
     const data = {
       email,
       title:"Reset Password",
-      message:`Please click on the link to reset your password http://127.0.0.1/user/forgetpass/${token} \n Link is only vaild for 24 Hours`,
+      message:`Please click on the link to reset your password https://eshtrely.live/user/forgetpass/${token} \n Link is only vaild for 24 Hours`,
     }
     await fetch("https://prod-23.westeurope.logic.azure.com:443/workflows/ff7fb991b3024216922cc62eed94c2c7/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aB5NNjoeSVItjkDIDA3gorsZJ1fUtRGOM7sHoiWCdbQ", {
       method: 'POST',
