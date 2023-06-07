@@ -73,13 +73,13 @@ app.get("/", async (req, res) => {
   //if there is no cart, create one
   const cats = await Product.find().distinct("category");
   //render the index page
-  res.render("pages/index", {
+  res.render("pages/route", {
+    path: "/index", //the path that user entered
+    title: "Home", //the title of the page
     cats, //the categories
     user: req.session.user, //the user
     cart: req.session.cart, //the cart
     products,
-    
-    
   });
 });
 

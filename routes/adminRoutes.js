@@ -51,7 +51,6 @@ adminRouter.get("/addproduct", isAdmin, async (req, res) => {
 // create product   (:::::::::) done 
 adminRouter.post("/product", isAdmin, uploadImage, async (req, res) => {
   try {
-    console.log(req.body);
     const product = new Product({
       name: req.body.name,
       slug: req.body.slug,
@@ -190,7 +189,6 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
 // add new user to site
 adminRouter.post("/user", isAdmin, async (req, res) => {
   try {
-    console.log(req.body);
     const product = new User({
       name: req.body.name,
       email: req.body.email,
@@ -385,7 +383,6 @@ adminRouter.get("/dashboard", isAdmin, async (req, res) => {
 adminRouter.post("/reports", isAdmin, (req, res) => {
   const data = req.body;
   // Process the data and generate the report as needed
-  console.log(data);
   res.send('Report generated successfully!');
 });
 adminRouter.get("/adminreports", isAdmin, async (req, res) => {

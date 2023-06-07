@@ -12,6 +12,9 @@
           case "reports": %>
           <%- include('./reports'); %>
           <% break;
+          case "/index": %>
+          <%- include('./index'); %>
+          <% break;
           case "adminreports": %>
           <%- include('./adminreports',{reports}); %>
           <% break;
@@ -89,7 +92,9 @@
             <%break; } %>
       </div>
       </main>
-          <%- include('./chat',{user}); %>
+      <% if(typeof user !== "undefined") { %>
+        <%- include('./chat',{user}); %>
+      <% } %>
     <footer><%- include('../partials/footer') %></footer>
   </div>
 </body>
