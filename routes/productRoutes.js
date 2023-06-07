@@ -16,54 +16,6 @@ productRouter.get("/", async (req, res) => {
     cart: req.session.cart,
   });
 });
-//product add new for mange card
-productRouter.get('addcard', async (req, res) => {
-  const cats = await Product.find().distinct("category");
-  res.render("pages/route", {
-    path: "products",
-    title: "addcard",
-    cats,
-    user: req.session.user,
-    cart: req.session.cart,
-  });
-});
-productRouter.post('addcard', async (req, res) => {
-  const newProduct = new Product({
-    name: 'sample name ' + Date.now(),
-    slug: 'sample-name-' + Date.now(),
-    image: '/images/p1.jpg',
-    price: 0,
-    category: 'sample category',
-    brand: 'sample brand',
-    countInStock: 0,
-    rating: 0,
-    numReviews: 0,
-    description: 'sample description',
-  });
-   const product = await newProduct.save();
-   res.send({message: "product created and",product});
-});
-
-productRouter.put(
-  '/:id',(async (req, res) => {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-    if (product) {
-      product.name = req.body.name;
-      product.slug = req.body.slug;
-      product.price = req.body.price;
-      product.image = req.body.image;
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.description = req.body.description;
-      await product.save();//need to update it's not gonna work like this
-      res.send({ message: 'Product Updated' });
-    } else {
-      res.status(404).send({ message: 'Product Not Found' });
-    }
-  })
-);
 
 productRouter.delete('/:id',(async (req, res) => {
     const product = await Product.findById(req.params.id);
