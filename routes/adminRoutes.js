@@ -151,7 +151,7 @@ adminRouter.delete("/product/:id", isAdmin, async (req, res) => {
 
 
 
-
+// display all user 
 adminRouter.get("/users", isAdmin, async (req, res) => {
   const { query } = req;
   const page = query.page || 1;
@@ -173,6 +173,9 @@ adminRouter.get("/users", isAdmin, async (req, res) => {
     pages: Math.ceil(countUsers / pageSize),
   });
 });
+
+
+// open add new user page 
 adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   res.render("pages/route", {
@@ -184,7 +187,7 @@ adminRouter.get("/user/addnewuser", isAdmin, async (req, res) => {
   });
 });
 
-// add new user to  site
+// add new user to site
 adminRouter.post("/user", isAdmin, async (req, res) => {
   try {
     console.log(req.body);
@@ -199,6 +202,8 @@ adminRouter.post("/user", isAdmin, async (req, res) => {
     res.status(500).send({ message: "Product Not Created" });
   }
 });
+
+// open edit new user page 
 adminRouter.get("/user/:id", isAdmin, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
@@ -222,6 +227,7 @@ adminRouter.get("/user/:id", isAdmin, async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
+// change data user and save 
 adminRouter.post("/user/:id", isAdmin, async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
@@ -237,6 +243,8 @@ adminRouter.post("/user/:id", isAdmin, async (req, res) => {
     res.status(404).send({ message: "User Not Found" });
   }
 });
+
+ // remove user from site 
 adminRouter.delete("/user/:id", isAdmin, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(404).send({ message: "ID is inncroent" });
   const user = await User.findById(req.params.id);
@@ -247,6 +255,13 @@ adminRouter.delete("/user/:id", isAdmin, async (req, res) => {
     res.status(500).send({ message: "Product not Deleted" });
   }
 });
+ // end the users 
+//////////////////////////////////////
+
+
+
+
+
 
 //orders
 adminRouter.get("/orders", isAdmin, async (req, res) => {
@@ -301,26 +316,11 @@ adminRouter.post("/order/:id/deliver", isAdmin, async (req, res) => {
   res.redirect("/orders/" + req.params.id);
 });
 
-//idk
-adminRouter.post('/log', isAdmin, async (req, res) => {
-  const newProduct = new Product({
-    name: req.body.product_name,
-    slug: req.body.product_slug,
-    image: req.body.product_image,
-    price: req.body.product_price,
-    category: req.body.product_category,
-    brand: req.body.product_brand,
-    countInStock: req.body.product_count,
-    description: req.body.product_description,
-  });
-  const product = await newProduct.save();
-  res.send({ message: 'Product Created', product });
-});
+ // dash board 
 adminRouter.get("/dashboard", isAdmin, async (req, res) => {
   const cats = await Product.find().distinct("category");
   const countUsers = await User.countDocuments();
   const countOrders = await Order.countDocuments();
-  const totalSale = await Product.find().distinct("price");
 
   const orders = await Order.aggregate([
     {
@@ -380,6 +380,8 @@ adminRouter.get("/dashboard", isAdmin, async (req, res) => {
 
   });
 });
+
+// reports 
 adminRouter.post("/reports", isAdmin, (req, res) => {
   const data = req.body;
   // Process the data and generate the report as needed
