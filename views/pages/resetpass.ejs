@@ -1,0 +1,66 @@
+<div class="small-container container">
+    <h3 class="my-3">Rest Password</h3>
+    <form id="forgetpass" onsubmit="restHandler(event)">
+        <h2>Type The new Password for: <%= email %></h2>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="forgetPassword" required placeholder="Enter Password" />
+            <span id="passwordError" class="error-message"></span>
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="forgetConfirmPassword" required
+                placeholder="Confirm Password" />
+            <span id="confirmPasswordError" class="error-message"></span>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+<script>
+    const restHandler = async (e) => {
+  e.preventDefault(); // Prevent the default form submission behavior
+  const password = document.getElementById('forgetPassword').value;
+  const confirmPassword = document.getElementById('forgetConfirmPassword').value;
+  document.getElementById('passwordError').textContent = '';
+  document.getElementById('confirmPasswordError').textContent = '';
+  // Check for password, and confirmPassword validity
+  if (!password || !confirmPassword) {
+    document.getElementById('passwordError').textContent = 'Password is required';
+    document.getElementById('confirmPasswordError').textContent = 'Confirm Password is required';
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    // Display an error message if password and confirmPassword do not match
+    document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+    return;
+  }
+  // Define the request data
+  const data = {
+    password: password,
+  };
+  try {
+    // Make a POST request to the server-side endpoint
+    const response = await fetch(window.location.pathname, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 200) {
+      // Handle success, e.g., redirect to a new page
+      window.location.href = "/signin";
+    } else {
+      const errorData = await response.json();
+      document.getElementById('passwordError').textContent = 'Something went wrong.';
+      console.error(errorData.message);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+</script>

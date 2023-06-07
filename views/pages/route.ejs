@@ -81,6 +81,9 @@
             case "/admin/addnewuser": %>
             <%- include('./addnewuser'); %>
             <%break;
+            case "/user/resetpass": %>
+            <%- include('./resetpass',{email}); %>
+            <%break;
             default:%>
             <h1>Error 404 : No Page found</h1>
             <%break; } %>
