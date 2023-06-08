@@ -1,35 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" href="/">Eshtrely</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#basic-navbar-nav"
-      aria-controls="basic-navbar-nav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#basic-navbar-nav"
+      aria-controls="basic-navbar-nav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="basic-navbar-nav">
       <form class="d-flex me-auto">
         <div class="input-group">
-          <input
-            type="text"
-            name="q"
-            id="q"
-            placeholder="Search Products..."
-            aria-label="Search Products"
-            aria-describedby="button-search"
-            class="form-control"
-          />
-          <button
-            class="btn btn-outline-primary"
-            onclick="searchHandler(event)"
-            id="button-search"
-            aria-label="Search Products Button"
-          >
+          <input type="text" name="q" id="q" placeholder="Search Products..." aria-label="Search Products"
+            aria-describedby="button-search" class="form-control" />
+          <button class="btn btn-outline-primary" onclick="searchHandler(event)" id="button-search"
+            aria-label="Search Products Button">
             <i class="fas fa-search"></i>
           </button>
         </div>
@@ -38,88 +20,86 @@
         <li class="nav-item">
           <a class="nav-link" href="/products">Products</a>
         </li>
-        <% cats.forEach((cat) => { %>
-        <li class="nav-item">
-          <a class="nav-link" href="/products/search/?category=<%= cat %>"
-            ><%= cat %></a
-          >
-        </li>
-        <% }); %>
-        <li class="nav-item">
-          <a class="nav-link" href="/cart"
-            >Cart<% if (cart && cart.length !== 0) {%><sup
-              ><span class="badge bg-danger rounded-pill"
-                ><%= cart.reduce((a, c) => a + c.quantity,0)%></span
-              ></sup
-            ><%}%></a
-          >
-        </li>
-        
-          
-       
-        <%  if (typeof user !== "undefined") { %>
+        <% cats.forEach((cat)=> { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/products/search/?category=<%= cat %>">
+              <%= cat %>
+            </a>
+          </li>
+          <% }); %>
+            <li class="nav-item">
+              <a class="nav-link" href="/cart">Cart<% if (cart && cart.length !==0) {%><sup><span
+                      class="badge bg-danger rounded-pill">
+                      <%= cart.reduce((a, c)=> a + c.quantity,0)%>
+                    </span></sup>
+                  <%}%></a>
+            </li>
 
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="basic-nav-dropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <%= user.name %>
 
-            <% if (user.isAdmin == true){%>
-          </a>
-              <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
-                <li>
-                  <a class="dropdown-item" href="/profile">Admin Profile</a>
+
+            <% if (typeof user !=="undefined" ) { %>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="basic-nav-dropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= user.name %>
+
+                    <% if (user.isAdmin==true){%>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
+                  <li>
+                    <a class="dropdown-item" href="/profile">Admin Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/admin/products">Products</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/admin/orders">Orders</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/admin/adminreports">Reports</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/admin/users">Users</a>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+
+                  <%}else{%>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
+                      <li>
+                        <a class="dropdown-item" href="/profile">User Profile</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="/reports">Reports</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="/orders/mine">Order History</a>
+                      </li>
+                      <li>
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <%}%>
+                        <li>
+                          <a class="dropdown-item" href="/" onclick="signoutHandler(event)">Sign Out</a>
+                        </li>
+                    </ul>
+              </li>
+              <% } else {%>
+                <li class="nav-item">
+                  <a class="nav-link" href="/signin">Sign In</a>
                 </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/products">Products</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/orders">Orders</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/adminreports">Reports</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/users">Users</a>
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-              
-              <%}else{%>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="basic-nav-dropdown">
-            <li>
-              <a class="dropdown-item" href="/profile">User Profile</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="/reports">Reports</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="/orders/mine">Order History</a>
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <%}%>
-            <li>
-              <a class="dropdown-item" href="/" onclick="signoutHandler(event)"
-                >Sign Out</a
-              >
-            </li>
-          </ul>
-        </li>
-        <% } else {%>
-        <li class="nav-item">
-          <a class="nav-link" href="/signin">Sign In</a>
-        </li>
-        <% } %>
+                
+                  <% } %>
+
       </ul>
     </div>
+    
   </div>
+  <%- include("../partials/translate") %>
 </nav>
