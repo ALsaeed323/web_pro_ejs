@@ -62,10 +62,10 @@ a {
     color: var(--color-dark);
 }
 
-img {
+/* img {
     display: block;
     width: 100%;
-}
+} */
 
 h1 {
     font-weight: 600;
@@ -129,8 +129,6 @@ canvas{
     
     margin: 1rem auto 0;
 }
-
-
 
 main .insights {
     display: grid;
